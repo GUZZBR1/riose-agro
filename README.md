@@ -2,6 +2,19 @@
 
 Riose Agro is a browser-based livestock simulation and experiment workspace. The institutional home introduces the project; `experiments.html` is the quantitative workspace for model comparisons, history, sensitivity analysis, and exports. `product.html` and `simulator.html` redirect older links to that workspace. Current outputs are demonstrative model results, not validated predictions or recommendations.
 
+## AMD ROCm validation evidence
+
+The repository includes an experimental AMD ROCm metabolism path. The recorded hardware validation below is tied to the ACT III release commit [`acb5cdf`](https://github.com/santleme/riose-agro/commit/acb5cdf6e3bc23d7e48026bc736da05427f89907) on `release/amd-act-iii`; it is evidence for that commit and workload, not a validation claim for this `main` revision or the full simulator.
+
+| Hardware check | Result |
+| --- | --- |
+| Device / runtime | AMD Instinct MI300X VF · ROCm/HIP 7.14.60850 · PyTorch 2.11.0+rocm7.14.1 |
+| Workload | `riose-livestock-metabolism-batch` · 24 animals · 48 output values |
+| Backend / parity | `amd_rocm` · PASS · maximum absolute difference `0` (tolerance `1e-12`) · no fallback |
+| Verifier | `AMD_PRODUCT_PATH_FUNCTIONAL` |
+
+Evidence: [environment](docs/evidence/amd/01-amd-environment.png) · [validation output](docs/evidence/amd/02-riose-amd-validation.png) · [backend detection](docs/evidence/amd/03-amd-backend-detection.png) · [validation scope and reproduction notes](docs/evidence/amd/AMD_VALIDATION.md). This check does not establish biological validity, whole-farm accuracy, or full-simulator AMD execution.
+
 ## License and publication status
 
 Project code is licensed under [Apache License 2.0](LICENSE). Third-party datasets carry separate terms; see each dataset's `data/**/manifest.json` for its source and license. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) provides selected attribution details and flags the unresolved XGain rights issue. Read the [ACT III owner-publication readiness review](docs/evidence/actiii-owner-publication-readiness.md) before making the repository public; it records an unresolved dataset-rights gate on the current `main` branch.
