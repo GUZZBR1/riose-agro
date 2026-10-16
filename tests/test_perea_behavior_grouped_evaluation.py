@@ -1,5 +1,6 @@
 import csv
 import json
+import io
 from pathlib import Path
 import subprocess
 import sys
@@ -14,14 +15,26 @@ PREDICTIONS = ROOT / "science/evidence/perea-behavior-grouped-oof-predictions.cs
 class PereaGroupedBehaviorEvaluationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run(
-            [sys.executable, "science/scripts/evaluations/evaluate_perea_behavior_grouped.py"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        cls.report = json.loads(REPORT.read_text(encoding="utf-8"))
+        outputs = (REPORT, REPORT.with_suffix(".md"), PREDICTIONS)
+        originals = {path: path.read_bytes() if path.exists() else None for path in outputs}
+        try:
+            subprocess.run(
+                [sys.executable, "science/scripts/evaluations/evaluate_perea_behavior_grouped.py"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            cls.report = json.loads(REPORT.read_text(encoding="utf-8"))
+            cls.prediction_rows = list(csv.DictReader(io.StringIO(PREDICTIONS.read_text(encoding="utf-8"), newline="")))
+        finally:
+            # Assertions consume the generated values in memory, while later
+            # tests continue to see the exact frozen evidence from checkout.
+            for path, original in originals.items():
+                if original is None:
+                    path.unlink(missing_ok=True)
+                else:
+                    path.write_bytes(original)
 
     def test_evaluation_scope_and_duplicate_policy_are_explicit(self):
         self.assertEqual(self.report["classification"], "within_source_grouped_by_animal_behavior_classification_diagnostic")
@@ -56,8 +69,7 @@ class PereaGroupedBehaviorEvaluationTests(unittest.TestCase):
         self.assertGreater(model["perClass"]["RU"]["recall"], 0.0)
 
     def test_oof_prediction_rows_keep_each_animal_in_one_fold(self):
-        with PREDICTIONS.open(encoding="utf-8", newline="") as handle:
-            rows = list(csv.DictReader(handle))
+        rows = self.prediction_rows
         self.assertEqual(len(rows), 8864)
         folds_by_animal = {}
         for row in rows:
