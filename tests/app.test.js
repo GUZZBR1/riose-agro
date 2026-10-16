@@ -11,7 +11,7 @@ test('conversational product and experiment dashboard are served without farm gr
   assert.equal(home.status, 200);
   const homeHtml = await home.text();
   assert.match(homeHtml, /Riose/);
-  assert.match(homeHtml, /href="product\.html"/);
+  assert.match(homeHtml, /href="\/product\.html"/);
   const product = await fetch(`${root}/product.html`);
   assert.equal(product.status, 200);
   const productHtml = await product.text();

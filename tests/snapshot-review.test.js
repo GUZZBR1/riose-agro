@@ -92,7 +92,7 @@ test('snapshot review endpoint validates locally alongside current experiment wo
 
   const page = await fetch(`${root}/`);
   assert.equal(page.status, 200);
-  assert.match(await page.text(), /href="product\.html"/);
+  assert.match(await page.text(), /href="\/product\.html"/);
   const reviewScript = await fetch(`${root}/site/client/snapshot-review.js`);
   assert.equal(reviewScript.status, 200);
   const schema = await fetch(`${root}/science/schemas/farm-snapshot.schema.json`);
@@ -131,7 +131,7 @@ test('outcome record page is served as a local-only scientific review flow', asy
   assert.doesNotMatch(pageText, /data-field="periodDays"[^>]*readonly/i);
   assert.doesNotMatch(pageText, /<form[^>]+action=/i);
   const home = await fetch(`${root}/`);
-  assert.match(await home.text(), /href="product\.html"/);
+  assert.match(await home.text(), /href="\/product\.html"/);
 
   const script = await fetch(`${root}/site/client/outcome-review.js`);
   assert.equal(script.status, 200);
