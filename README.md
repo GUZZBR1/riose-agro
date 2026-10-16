@@ -6,7 +6,7 @@
 
 **A browser-based workspace for exploring and comparing livestock scenarios through reproducible simulations.**
 
-RIOSE lets you compare modeled outcomes under different management choices and includes a separately documented AMD ROCm/PyTorch validation path. Its simplified models are exploratory; results are not validated forecasts or management recommendations.
+RIOSE lets you set a baseline, change one management factor, and compare runs that share the same starting conditions and seed. The browser workspace brings inputs, modeled outcomes, charts, daily results, and limitations together, so each experiment is easier to inspect and reproduce. The project also documents an AMD ROCm/PyTorch validation path. Simulations use simplified exploratory models; their results are not validated forecasts or management recommendations.
 
 [Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](docs/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
 
