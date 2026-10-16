@@ -17,7 +17,7 @@ Evidence: [environment](docs/evidence/amd/01-amd-environment.png) · [validation
 
 ## License and publication status
 
-Project code is licensed under [Apache License 2.0](LICENSE). Third-party datasets carry separate terms; see each dataset's `data/**/manifest.json` for its source and license. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) provides selected attribution details and flags the unresolved XGain rights issue. Read the [ACT III owner-publication readiness review](docs/evidence/actiii-owner-publication-readiness.md) before making the repository public; it records an unresolved dataset-rights gate on the current `main` branch.
+Project code is licensed under [Apache License 2.0](LICENSE). Third-party datasets carry separate terms; see each retained dataset's `data/**/manifest.json` for its source and license. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) records the XGain rights conflict and its removal from this branch. Read the [pre-launch remediation record](docs/security/prelaunch-remediations.md) and the [ACT III owner-publication readiness review](docs/evidence/actiii-owner-publication-readiness.md) before making the repository public; the inherited history still contains the removed XGain files.
 
 See the [repository layout guide](docs/architecture/repository-layout.md) for directory responsibilities and the reason browser page URLs remain at the root.
 
@@ -31,7 +31,7 @@ Requires Node.js 20 or newer. From this directory:
 npm start
 ```
 
-Open the printed local URL and choose `experiments.html`. `product.html` and `simulator.html` remain compatibility redirects. Snapshot review validates a linked file locally and never applies an uploaded file to a simulation. The bundled server binds to loopback; exposing it on another host requires `ALLOW_REMOTE_ACCESS=true` because snapshot validation is unauthenticated.
+Open the printed local URL and choose `experiments.html`. `product.html` and `simulator.html` remain compatibility redirects. Snapshot review validates a linked file locally and never applies an uploaded file to a simulation. The bundled server binds to loopback; setting `ALLOW_REMOTE_ACCESS=true` exposes static content only. Snapshot, LLM, and native-runner APIs require a direct loopback request and reject requests marked as forwarded by a proxy. Do not publish these API routes through a reverse proxy; use a separately authenticated backend for public API access.
 
 The product contains no farm-scene renderer, map, sprites, atlas, 3D models, or graphical physics. Scientific charts and research-page illustrations remain part of the experiment and institutional pages.
 
@@ -41,7 +41,7 @@ The product runs comparisons in a Web Worker; when the local native runner is av
 
 ### Optional scenario explanations
 
-The farm engine stays local and deterministic. `/api/explain` receives validated scenario settings and aggregate metrics; its fallback requires no provider or API key. To enable an optional language-provider adapter, set `LLM_PROVIDER=openai|groq|huggingface` and its matching server-side key (`OPENAI_API_KEY`, `GROQ_API_KEY`, or `HF_TOKEN`) before `npm start`; select a model with `LLM_MODEL` or the provider-specific `OPENAI_MODEL`, `GROQ_MODEL`, or `HF_MODEL`. Keys stay on the server. With no provider/key, or if a provider fails, the deterministic explanation is used. Explanations cannot modify simulation results or apply actions and are labeled as not measured.
+The farm engine stays local and deterministic. `/api/explain` receives validated scenario settings and aggregate metrics; its fallback requires no provider or API key. To enable an optional language-provider adapter for local use, set `LLM_PROVIDER=openai|groq|huggingface` and its matching server-side key (`OPENAI_API_KEY`, `GROQ_API_KEY`, or `HF_TOKEN`) before `npm start`; select a model with `LLM_MODEL` or the provider-specific `OPENAI_MODEL`, `GROQ_MODEL`, or `HF_MODEL`. Keys stay on the server. Prompts and aggregate settings are sent to the configured provider. With no provider/key, or if a provider fails, the deterministic explanation is used. Explanations cannot modify simulation results or apply actions and are labeled as not measured. These endpoints are loopback-only; do not expose them through a reverse proxy without adding authentication, quotas, and a trusted-proxy policy.
 
 Open **ADG e pastejo observados (USDA/CPER)** to explore animal-period ADG and grazing measures for the published yearling steers, or **Dados observados** to explore the separate published calf trial. Both pages show measurements separately from simulated results. Repeated animal IDs remain visible as repeated study periods, not independent animals. The USDA/CPER cohort is not labeled as mature cows; its fit to the approved “adult” product scope still needs independent zootechnical review.
 

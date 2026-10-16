@@ -49,10 +49,13 @@ def main() -> int:
 
     raw_dir = DATA_DIR / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
+    raw_root = raw_dir.resolve()
     (DATA_DIR / "source-api-metadata.json").write_bytes(metadata_bytes)
     selected = []
     for item in metadata.get("files", []):
         name = item["filename"]
+        if not isinstance(name, str) or not name or name in {".", ".."} or "/" in name or "\\" in name or "\x00" in name:
+            raise RuntimeError("Mendeley metadata contains an unsafe filename")
         details = item.get("content_details") or {}
         suffix = Path(name).suffix.lower()
         selected_file = suffix in SELECTED_SUFFIXES
@@ -66,7 +69,9 @@ def main() -> int:
         if selected_file:
             if not record["sha256"] or not record["downloadUrl"]:
                 raise RuntimeError(f"missing checksum or download link for {name}")
-            output = raw_dir / name
+            output = (raw_root / name).resolve()
+            if output.parent != raw_root:
+                raise RuntimeError("Mendeley filename resolves outside the raw data directory")
             if output.exists():
                 content = output.read_bytes()
             else:

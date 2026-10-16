@@ -181,9 +181,10 @@ class ReadinessFixtureTests(unittest.TestCase):
         self.assertIn("breed", perea["groups"])
 
         xgain = records["xgain-cattle-hourly-behavior"]
-        self.assertEqual(xgain["decision"], "CONDITIONAL")
+        self.assertEqual(xgain["decision"], "INELIGIBLE")
         self.assertIn("conflict", xgain["source"]["license"])
-        self.assertIn("human reference", xgain["metrics"]["predictiveMetrics"])
+        self.assertEqual(xgain["source"]["access"], "excluded_pending_authoritative_license_resolution")
+        self.assertNotIn("records", xgain["metrics"])
 
         cper = records["usda-cper-ltgi-internal-adg"]
         self.assertEqual(cper["metrics"]["oofRows"], 320)

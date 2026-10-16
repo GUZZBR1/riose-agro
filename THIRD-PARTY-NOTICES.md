@@ -1,6 +1,6 @@
 ## Publication gate note — XGain data
 
-The current `main` tree also contains `data/raw/zenodo-15600573/WP5_T5.7_IoT sensor data_v1_EV ILVO_dataset.zip` and derived data under `data/xgain-cattle-behavior/`. Its manifest records conflicting terms: the Zenodo record declares CC BY 4.0, while the archive README says CC BY-NC. This notice does not resolve that conflict or grant permission to redistribute the files. Keep the repository private until an authoritative license resolution is recorded or the data is removed from every ref that will be published and the applicable history is reviewed.
+The correction branch removes the XGain source archive, its derived Parquet and quality report, and the pipeline that produced them. The source record declares CC BY 4.0, while the archive README says CC BY-NC. This notice does not resolve that conflict or grant permission to redistribute the files. The branch inherits commits that still contain the removed files, and other remote branches also retain them. Keep the repository private until authoritative terms are recorded or the affected refs and their reachable history are cleaned and reviewed. See [the remediation record](docs/security/prelaunch-remediations.md).
 
 The root [LICENSE](LICENSE) applies to project code and does not override third-party dataset terms.
 

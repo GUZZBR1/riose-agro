@@ -32,7 +32,7 @@
       "labels_and_measurement": "Eating, rumination, other. Neck collar has raw 3-axis acceleration at 10 Hz; Rumiwatch halter measures jaw pressure and supplies behavior classifications at 10 Hz. The paper describes 3,460 hours and alignment checks between devices; analysis segments data into 90-second blocks.",
       "groups_and_grain": "README identifies farm-trial membership and source-test animals 04, 10, and 11. A timestamp-only audit read only timestamp columns, anchored paired 90-second half-open wall-clock windows to each README start time, and found shared nonempty windows for all 18 animals. Some collar files have timestamp inversions; row-index pairing is not justified.",
       "best_riose_module": "Separate housed-steer collar-to-RumiWatch instrument-agreement diagnostic using 90-second windows; not the pasture grazing behavior classifier.",
-      "decision": "CONDITIONAL",
+      "decision": "INELIGIBLE_PENDING_LICENSE_RESOLUTION",
       "decision_reason": "The open, licensed source is checksum-verified and contains animal IDs, raw collar axes, and instrument-derived halter classifications. The primary article uses 90-second windows and majority labels. This supports a distinct instrument-agreement task after timestamp-window processing; it does not provide human-confirmed labels or a pasture population.",
       "external_validation": "A source-defined animal split supports a bounded exploratory instrument-agreement diagnostic. The three source-test animals were already used in the publication, so this is not new literature-independent validation and cannot support farm/trial transfer.",
       "evidence": [
@@ -68,33 +68,25 @@
       "doi": "10.5281/zenodo.15600573",
       "official_record": "https://zenodo.org/records/15600573",
       "metadata_api": "https://zenodo.org/api/records/15600573",
-      "access": "Public anonymous ZIP download succeeded; Zenodo metadata gives CC BY 4.0 but the included README states CC BY-NC, so reuse remains conditional.",
+      "access": "The source record is public; source and derived files are excluded from this branch pending authoritative license resolution.",
       "license": "Zenodo record API declares CC BY 4.0, but README embedded in the downloaded archive declares CC BY-NC; commercial reuse is not cleared.",
       "files": {
-        "count": 1,
-        "filename": "WP5_T5.7_IoT sensor data_v1_EV ILVO_dataset.zip",
-        "size_bytes": 221938,
-        "direct_download": "https://zenodo.org/api/records/15600573/files/WP5_T5.7_IoT%20sensor%20data_v1_EV%20ILVO_dataset.zip/content",
-        "note": "Archive downloaded and inspected; normalized summary counts are in data/xgain-cattle-behavior/processed/ and the source ZIP checksum is verified.",
-        "archive_downloaded": true,
-        "archive_sha256": "a1e418f97e3c11b96f5fd6d7f7106688750083a00d6660f01f41f5ecc6471b16",
-        "normalized_parquet": "data/xgain-cattle-behavior/processed/xgain-hourly-behavior-counts-v1.parquet",
-        "normalized_records": 5760,
-        "archive_inspection": "Ten files, each 576 hourly rows; four class-count columns per hour sum to 60. No raw IMU or human-reference event labels in the archive."
+        "includedInBranch": false,
+        "note": "Source archive and all derived measurements were removed pending rights resolution. Historical commits still require review."
       },
-      "population": "10 multiparous Holstein cows at ILVO, Melle, Belgium; neck-mounted Axivity AX3 sensors; metadata says pasture access from 07:30-14:00. Archive timestamp coverage is 2024-05-31 00:00 through 2024-06-23 23:00.",
-      "labels_and_measurement": "Published ZIP contains only processed hourly counts of grazing, rumination, resting, and other activity. The README says labels were produced by a supervised decision tree, and separately describes observer labels used to train/validate; no raw sensor values or independent observer-reference labels are distributed. Counts are 1-minute outputs aggregated hourly.",
-      "groups_and_grain": "Archive has 10 separate workbook files named with ear-tag IDs; each contains 576 hourly records. Animal-hour grouping is explicit after filename parsing.",
-      "best_riose_module": "Behavioral monitoring exploration for pasture grazing and rumination; potentially edge/low-cost classifier work.",
+      "population": "Not assessed from data in this branch.",
+      "labels_and_measurement": "Not assessed; source files are excluded pending license resolution.",
+      "groups_and_grain": "Not assessed from data in this branch.",
+      "best_riose_module": "Not selected pending license resolution.",
       "decision": "CONDITIONAL",
-      "decision_reason": "Conditional for descriptive profiles and ingestion tests only. Class counts are classifier outputs rather than independent reference labels, raw sensor values are absent, and official CC BY metadata conflicts with a CC BY-NC statement in the embedded README. Not cleared for commercial training or validation.",
-      "external_validation": "Ineligible as external validation because released outcomes are model-generated aggregates, not independent human ground truth. Not suitable for DMI or ADG.",
+      "decision_reason": "Excluded from this branch because the source record's CC BY 4.0 statement conflicts with CC BY-NC in the embedded README. No measurements are retained or assessed here.",
+      "external_validation": "Not assessed; the source is excluded from this branch pending license resolution.",
       "evidence": [
         "https://zenodo.org/records/15600573",
         "https://zenodo.org/api/records/15600573",
         "https://pureportal.ilvo.be/en/datasets/iot-sensor-data-xgain-uc6/",
         "https://pureportal.ilvo.be/en/publications/computer-vision-and-deep-learning-for-remote-cattle-behavior-trac/",
-        "data/xgain-cattle-behavior/manifest.json"
+        "docs/evidence/open-scientific-data-discovery-2026-10.json"
       ]
     },
     {

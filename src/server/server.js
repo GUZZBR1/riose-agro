@@ -312,18 +312,23 @@ function sendJson(response, status, value) {
 async function serveStatic(pathname, response, env = process.env) {
   let decoded;
   try { decoded = decodeURIComponent(pathname); } catch { return sendJson(response, 400, {error: 'invalid_path'}); }
+  if (decoded.includes('\\') || decoded.includes('\0')) return sendJson(response, 400, {error: 'invalid_path'});
   const relative = decoded === '/' ? 'home.html' : decoded.replace(/^\/+/, '');
   if (relative.startsWith('tools/') && env.NODE_ENV === 'production') return sendJson(response, 404, {error: 'not_found'});
   const isProjectAsset = relative.startsWith('assets/') && !PUBLIC_FILES.has(relative) && !relative.split('/').some(part => part === '.' || part === '..');
+  const clientRoot = resolve(ROOT, 'src/client');
   const clientPath = relative.startsWith('src/client/') ? relative.slice('src/client/'.length) : '';
   const isClientFile = clientPath !== ''
     && clientPath.split('/').every(part => part !== '' && part !== '.' && part !== '..');
   const isLegacyClientFile = CLIENT_FILES.has(relative) && PUBLIC_FILES.has(relative);
   if (!PUBLIC_FILES.has(relative) && !isProjectAsset && !isClientFile) return sendJson(response, 404, {error: 'not_found'});
   const path = isProjectAsset ? resolve(ROOT, 'public', relative)
-    : isLegacyClientFile ? resolve(ROOT, 'src/client', relative)
+    : isClientFile ? resolve(clientRoot, clientPath)
+      : isLegacyClientFile ? resolve(clientRoot, relative)
       : resolve(ROOT, relative);
-  const allowedRoot = isProjectAsset ? resolve(ROOT, 'public') : ROOT;
+  const allowedRoot = isProjectAsset ? resolve(ROOT, 'public')
+    : isClientFile || isLegacyClientFile ? clientRoot
+      : ROOT;
   if (path !== allowedRoot && !path.startsWith(allowedRoot + sep)) return sendJson(response, 404, {error: 'not_found'});
   try {
     const body = await readFile(path);
@@ -335,13 +340,16 @@ async function serveStatic(pathname, response, env = process.env) {
 }
 
 function isLoopbackRequest(request) {
+  if (request.headers['x-forwarded-for'] || request.headers['x-real-ip'] || request.headers.forwarded) return false;
   const address = request.socket.remoteAddress ?? '';
   return address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
 }
 
 export function createServer({env = process.env, fetchImpl = fetch} = {}) {
+  let nativeComparisonActive = false;
   return createHttpServer(async (request, response) => {
-    const url = new URL(request.url, 'http://localhost');
+    let url;
+    try { url = new URL(request.url, 'http://localhost'); } catch { return sendJson(response, 400, {error: 'invalid_request_path'}); }
     if (url.pathname === '/api/native/configured-comparison') {
       if (request.method === 'GET') {
         const runner = nativeComparisonRunner(env, ROOT);
@@ -355,6 +363,8 @@ export function createServer({env = process.env, fetchImpl = fetch} = {}) {
         if (!request.headers['content-type']?.toLowerCase().startsWith('application/json')) {
           return sendJson(response, 415, {error: 'content_type_must_be_json'});
         }
+        if (nativeComparisonActive) return sendJson(response, 429, {error: 'native_runner_busy'});
+        nativeComparisonActive = true;
         try {
           const input = await readJsonWithLimit(request, MAX_NATIVE_COMPARISON_BODY_BYTES);
           if (!validateConfiguredComparisonRequest(input)) return sendJson(response, 400, {error: 'invalid_configured_comparison_request'});
@@ -367,12 +377,15 @@ export function createServer({env = process.env, fetchImpl = fetch} = {}) {
           });
         } catch (error) {
           return sendJson(response, error.status ?? 502, {error: error.status === 413 ? 'request_too_large' : 'native_comparison_failed'});
+        } finally {
+          nativeComparisonActive = false;
         }
       }
       response.setHeader('allow', 'GET, POST');
       return sendJson(response, 405, {error: 'method_not_allowed'});
     }
     if (url.pathname === '/api/interpret-experiment' && request.method === 'POST') {
+      if (!isLoopbackRequest(request)) return sendJson(response, 403, {error: 'llm_api_requires_loopback'});
       if (!request.headers['content-type']?.toLowerCase().startsWith('application/json')) {
         return sendJson(response, 415, {error: 'content_type_must_be_json'});
       }
@@ -392,6 +405,7 @@ export function createServer({env = process.env, fetchImpl = fetch} = {}) {
       }
     }
     if (url.pathname === '/api/explain' && request.method === 'POST') {
+      if (!isLoopbackRequest(request)) return sendJson(response, 403, {error: 'llm_api_requires_loopback'});
       if (!request.headers['content-type']?.toLowerCase().startsWith('application/json')) {
         return sendJson(response, 415, {error: 'content_type_must_be_json'});
       }
@@ -416,6 +430,7 @@ export function createServer({env = process.env, fetchImpl = fetch} = {}) {
       }
     }
     if (url.pathname === '/api/validate-snapshot' && request.method === 'POST') {
+      if (!isLoopbackRequest(request)) return sendJson(response, 403, {error: 'snapshot_api_requires_loopback'});
       if (!request.headers['content-type']?.toLowerCase().startsWith('application/json')) {
         return sendJson(response, 415, {error: 'content_type_must_be_json'});
       }

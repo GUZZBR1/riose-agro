@@ -18,4 +18,6 @@ src/client/product-world-renderer.bundle.js
 target/
 data/raw/zenodo-4064802/
 data/processed/zenodo-4064802/
+/data/raw/zenodo-15600573/
+/data/xgain-cattle-behavior/
 graphics-poc/dist/
