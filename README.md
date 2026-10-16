@@ -27,19 +27,11 @@ The current workspace is a browser interface for setting a baseline, changing on
 
 ## 2. What RIOSE is
 
-<table>
-  <tbody>
-    <tr>
-      <td width="72%" valign="middle">
-        RIOSE is an exploratory software prototype for livestock scenario comparison and research data exploration. It combines a deterministic JavaScript engine with a browser workspace, reproducible experiment records, selected Rust/WebAssembly components, and pages that display public observed datasets separately from simulated outputs.
-      </td>
-      <td width="28%" align="right" valign="middle">
-        <img src="docs/assets/readme/04-concept-cow.png" alt="Transparent PNG concept illustration of a Nelore cow; not rendered in the current workspace" width="240"><br>
-        <sub>Concept art, not an in-app feature.</sub>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<img align="right" width="240" src="docs/assets/readme/04-concept-cow.png" alt="Transparent PNG concept illustration of a Nelore cow; not rendered in the current workspace">
+
+RIOSE is an exploratory software prototype for livestock scenario comparison and research data exploration. It combines a deterministic JavaScript engine with a browser workspace, reproducible experiment records, selected Rust/WebAssembly components, and pages that display public observed datasets separately from simulated outputs.
+
+<br clear="all">
 
 The institutional home is [home.html](home.html). The quantitative workspace is [experiments.html](experiments.html). Older [product.html](product.html) and [simulator.html](simulator.html) URLs are compatibility redirects.
 
@@ -49,46 +41,27 @@ Livestock scenario tools can blur assumptions, observed records, and model outpu
 
 ## 4. The current approach
 
-<table>
-  <tbody>
-    <tr>
-      <td width="36%" align="left" valign="middle">
-        <img src="docs/assets/readme/05-concept-road.png" alt="Transparent PNG isometric concept illustration of a rural road; not part of the current application interface" width="280"><br>
-        <sub>Road concept art.</sub>
-      </td>
-      <td width="64%" valign="middle">
-        The workspace gives both scenarios the same seed, starting state, herd size, horizon, and unchanged settings, then changes one selected factor. It presents the inputs, outputs, charts, daily results, and limitations together. The engine runs locally in the browser; a comparison can be retained in that browser's local history and exported.
-        <br><br>
-        This makes experiments inspectable and repeatable. It does not make their outputs scientifically validated.
-      </td>
-    </tr>
-  </tbody>
-</table>
+<img align="left" width="260" src="docs/assets/readme/05-concept-road.png" alt="Transparent PNG isometric road concept art; not part of the current application interface">
+
+The workspace gives both scenarios the same seed, starting state, herd size, horizon, and unchanged settings, then changes one selected factor. It presents the inputs, outputs, charts, daily results, and limitations together. The engine runs locally in the browser; a comparison can be retained in that browser's local history and exported.
+
+This makes experiments inspectable and repeatable. It does not make their outputs scientifically validated.
+
+<br clear="all">
 
 ## 5. Product walkthrough
 
-<table>
-  <tbody>
-    <tr>
-      <td width="70%" valign="top">
-        Start at [experiments.html](experiments.html). Choose the herd size, seed, and time horizon, set the reference scenario, select the intervention factor, and run the comparison. The results view includes summary metrics, a time-series chart, daily output rows, and expandable input and limitation details.
-      </td>
-      <td width="30%" align="right" valign="top">
-        <img src="docs/assets/readme/08-concept-pickup.png" alt="Transparent PNG isometric concept illustration of a rural pickup truck; not rendered in the current workspace" width="250"><br>
-        <sub>Pickup concept art.</sub>
-      </td>
-    </tr>
-    <tr>
-      <td width="30%" align="left" valign="bottom">
-        <img src="docs/assets/readme/05-concept-road.png" alt="Transparent PNG rural road concept illustration" width="250"><br>
-        <sub>Road concept art.</sub>
-      </td>
-      <td width="70%" valign="middle">
-        The workspace also includes one-factor sensitivity exploration and a local run history. History stays in the browser unless the user exports it. The [observed-data pages](adult-data.html) provide a separate way to explore published measurements; those records are not silently used to calibrate or initialize the simulation.
-      </td>
-    </tr>
-  </tbody>
-</table>
+<img align="right" width="250" src="docs/assets/readme/08-concept-pickup.png" alt="Transparent PNG isometric pickup concept art; not rendered in the current workspace">
+
+Start at [experiments.html](experiments.html). Choose the herd size, seed, and time horizon, set the reference scenario, select the intervention factor, and run the comparison. The results view includes summary metrics, a time-series chart, daily output rows, and expandable input and limitation details.
+
+<br clear="all">
+
+<img align="left" width="250" src="docs/assets/readme/09-concept-livestock-truck.png" alt="Transparent PNG concept illustration of a livestock transport truck; not rendered in the current workspace">
+
+The workspace also includes one-factor sensitivity exploration and a local run history. History stays in the browser unless the user exports it. The [observed-data pages](adult-data.html) provide a separate way to explore published measurements; those records are not silently used to calibrate or initialize the simulation.
+
+<br clear="all">
 
 ## 6. Visual identity and concept art
 
