@@ -739,8 +739,21 @@ def read_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _reference_path(reference: str) -> Path:
+    """Resolve historical citations against the reorganized scientific tree."""
+    path = reference.split("#", 1)[0].replace("\\", "/")
+    if path.startswith(("data/", "experiments/")):
+        path = "science/" + path
+    elif path.startswith("docs/evidence/"):
+        path = "science/evidence/" + path.removeprefix("docs/evidence/")
+    candidate = (ROOT / path).resolve()
+    if not candidate.is_relative_to(ROOT.resolve()):
+        raise ValueError(f"Evidence reference escapes repository root: {reference}")
+    return candidate
+
+
 def _read_source_reference(reference: str) -> dict[str, Any]:
-    return read_json(ROOT / reference)
+    return read_json(_reference_path(reference))
 
 
 def _resolve_json_pointer(document: Any, pointer: str, reference: str) -> Any:
@@ -850,7 +863,7 @@ def build_record(source: dict[str, Any], read_reference=_read_source_reference) 
     }
     # Keep references demonstrably live; the detailed reports remain canonical.
     for ref in result["references"].values():
-        if ref and not (ROOT / ref.split("#", 1)[0]).is_file():
+        if ref and not _reference_path(ref).is_file():
             # Fixture readers may supply virtual references without writing any
             # source data into the repository.
             if read_reference is _read_source_reference:
@@ -1011,7 +1024,7 @@ def validate_readiness_report(document: dict[str, Any]) -> None:
                 _read_evidence_reference(reference, _read_source_reference)
                 if separator and not pointer.startswith("/"):
                     raise ValueError(f"Invalid component evidence pointer: {reference}")
-            elif not (ROOT / path).is_file():
+            elif not _reference_path(path).is_file():
                 raise FileNotFoundError(f"Missing component evidence reference: {reference}")
 
     processing = document.get("processing")

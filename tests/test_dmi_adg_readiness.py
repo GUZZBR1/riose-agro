@@ -26,6 +26,18 @@ class ReadinessFixtureTests(unittest.TestCase):
             elapsed_seconds=0.25,
         )
 
+    def test_historical_citations_resolve_to_canonical_scientific_files(self):
+        for historical, canonical in (
+            ("data/usda-cper/manifest.json", "science/data/usda-cper/manifest.json"),
+            ("experiments/biomass/dryad-external/evaluation-report.json", "science/experiments/biomass/dryad-external/evaluation-report.json"),
+            ("docs/evidence/usda-cper-association.json", "science/evidence/usda-cper-association.json"),
+        ):
+            with self.subTest(reference=historical):
+                self.assertEqual(READINESS._reference_path(historical), ROOT / canonical)
+                self.assertEqual(READINESS._read_source_reference(historical), READINESS._read_source_reference(canonical))
+        with self.assertRaisesRegex(ValueError, "escapes repository root"):
+            READINESS._reference_path("../outside.json")
+
     def test_mixed_public_private_absent_label_and_missing_license(self):
         report = self.build()
         records = {record["id"]: record for record in report["sources"]}
@@ -172,7 +184,7 @@ class ReadinessFixtureTests(unittest.TestCase):
         self.assertAlmostEqual(perea["metrics"]["nestedObservationWeightedAccuracy"], 0.813686850591186)
         self.assertNotIn("equalAnimalMacroF1", perea["metrics"])
         prior = perea["previousStaticGroupedOof"]
-        self.assertEqual(prior["sourceReport"], "science/evidence/perea-behavior-grouped-evaluation.json")
+        self.assertEqual(READINESS._reference_path(prior["sourceReport"]), ROOT / "science/evidence/perea-behavior-grouped-evaluation.json")
         self.assertEqual(prior["rows"], 8864)
         self.assertAlmostEqual(prior["equalAnimalMacroF1"], 0.6642230410345241)
         self.assertIn("not metrics for the nested-selected model", prior["interpretation"])
