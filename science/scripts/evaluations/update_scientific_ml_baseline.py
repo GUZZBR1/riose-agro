@@ -52,7 +52,7 @@ def engine_source_sha256(root: Path) -> str:
     """Mirror the versioned engine-source bundle framing used by engine-provenance.js."""
     bundle = bytearray()
     for filename in ENGINE_SOURCE_FILES:
-        source = (root / "src/client" / filename).read_bytes()
+        source = (root / "site/client" / filename).read_bytes()
         normalized = source.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
         bundle.extend(f"{filename}\0{len(normalized)}\0".encode("utf-8"))
         bundle.extend(normalized)

@@ -25,7 +25,7 @@ class MendeleyPastureBiomassRegistryTests(unittest.TestCase):
         selected = [file for file in self.manifest["files"] if file["selectedForDownload"]]
         self.assertEqual(len(selected), 20)
         for file in selected:
-            path = ROOT / file["localPath"]
+            path = ROOT / "science" / file["localPath"]
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             self.assertEqual(digest, file["sha256"], file["name"])
             self.assertEqual(digest, file["verifiedSha256"], file["name"])
@@ -45,7 +45,7 @@ class MendeleyPastureBiomassRegistryTests(unittest.TestCase):
         for campaign in self.report["campaigns"]:
             self.assertLess(campaign["dryWeightToRecordedYieldMaxAbsoluteDeltaKgHa"], 1e-5)
         output = self.report["outputs"][0]
-        path = ROOT / output["path"]
+        path = ROOT / "science" / output["path"]
         self.assertTrue(path.exists())
         self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), output["sha256"])
         self.assertEqual(output["format"], "parquet")

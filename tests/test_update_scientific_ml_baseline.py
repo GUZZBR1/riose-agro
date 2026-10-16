@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.science.evaluations.update_scientific_ml_baseline import (
+from science.scripts.evaluations.update_scientific_ml_baseline import (
     ALLOWED_REPORT,
     BASELINE_PATH,
     CPER_REPORT,
@@ -44,10 +44,10 @@ class UpdateScientificMlBaselineTest(unittest.TestCase):
         cper_path = self.root / CPER_REPORT
         cper_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / CPER_REPORT, cper_path)
-        self.engine_directory = self.root / "src/client"
+        self.engine_directory = self.root / "site/client"
         self.engine_directory.mkdir(parents=True)
         for filename in ENGINE_SOURCE_FILES:
-            shutil.copyfile(ROOT / "src/client" / filename, self.engine_directory / filename)
+            shutil.copyfile(ROOT / "site/client" / filename, self.engine_directory / filename)
         self.baseline = json.loads(self.baseline_path.read_text(encoding="utf-8"))
         self.report = json.loads(self.report_path.read_text(encoding="utf-8"))
         current_engine_sha256 = engine_source_sha256(self.root)

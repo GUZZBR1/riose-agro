@@ -33,3 +33,21 @@ test('conversational product and experiment dashboard are served without farm gr
     assert.equal((await fetch(`${root}${path}`)).status, 404, `${path} should no longer be served`);
   }
 });
+
+test('site links to repository documentation and the Perea data dictionary resolve', async t => {
+  const server = createServer({env: {}});
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const root = `http://127.0.0.1:${server.address().port}`;
+
+  for (const path of [
+    '/science/docs/revisao-independente-caso.md',
+    '/science/docs/modelos/interface-modelos-cientificos.md',
+    '/docs/historico-execucoes.md',
+    '/science/data/perea-rangeland-behavior/README_V2.txt',
+  ]) {
+    const response = await fetch(`${root}${path}`);
+    assert.equal(response.status, 200, `${path} should be served`);
+    assert.ok((await response.text()).length > 0, `${path} should have content`);
+  }
+});

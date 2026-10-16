@@ -26,7 +26,7 @@ class SupervisedReadinessReportTests(unittest.TestCase):
         VALIDATOR.validate(self.report)
 
     def test_dryad_yearling_candidate_is_included_but_ineligible_for_model_training(self):
-        matrix_path = ROOT / self.report["reviewedMatrix"]["path"]
+        matrix_path = VALIDATOR.evidence_file(self.report["reviewedMatrix"]["path"], "reviewed matrix")
         matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
         source = next(item for item in matrix["sources"] if item["id"] == "dryad-grazing-yearlings")
         self.assertEqual(source["outcomes"]["dmi"]["status"], "ineligible")
@@ -48,7 +48,7 @@ class SupervisedReadinessReportTests(unittest.TestCase):
         VALIDATOR.validate(self.report)
 
     def test_cattlesat_model_outputs_are_not_promoted_to_observed_dmi_rows(self):
-        matrix_path = ROOT / self.report["reviewedMatrix"]["path"]
+        matrix_path = VALIDATOR.evidence_file(self.report["reviewedMatrix"]["path"], "reviewed matrix")
         matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
         source = next(item for item in matrix["sources"] if item["id"] == "pasture-dmi-triage-cattlesat-2026")
         self.assertEqual(source["outcomes"]["dmi"]["status"], "ineligible")
