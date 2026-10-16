@@ -26,6 +26,8 @@ The captures were provided with the README request. The environment capture show
 
 ## Reproduction
 
+These commands reproduce the recorded run only at the release commit listed above. They do not run on current main: product.html is a compatibility redirect, the AMD livestock verifier is absent, and the current compute service supports vector scaling only. Check out `acb5cdf6e3bc23d7e48026bc736da05427f89907` before following the steps below.
+
 On a compatible AMD ROCm environment, from the repository root, start the compute service:
 
 ```sh

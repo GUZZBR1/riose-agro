@@ -1,137 +1,187 @@
-# Riose Agro — experimentos científicos
+# RIOSE
 
-Riose Agro is a browser-based livestock simulation and experiment workspace. The institutional home introduces the project; `experiments.html` is the quantitative workspace for model comparisons, history, sensitivity analysis, and exports. `product.html` and `simulator.html` redirect older links to that workspace. Current outputs are demonstrative model results, not validated predictions or recommendations.
+**An exploratory livestock simulation and experiment workspace, with a separately scoped AMD ROCm validation record.**
 
-## AMD ROCm validation evidence
+RIOSE lets users configure and compare livestock scenarios in a browser. Its outputs are deterministic demonstrations from simplified rules; they are not validated forecasts, biological measurements, or management recommendations.
 
-The repository includes an experimental AMD ROCm metabolism path. The recorded hardware validation below is tied to the ACT III release commit [`acb5cdf`](https://github.com/santleme/riose-agro/commit/acb5cdf6e3bc23d7e48026bc736da05427f89907) on `release/amd-act-iii`; it is evidence for that commit and workload, not a validation claim for this `main` revision or the full simulator.
+[Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](docs/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
 
-| Hardware check | Result |
+## 1. Product workspace
+
+The current workspace is a browser interface for setting a baseline, changing one selected factor, and reviewing the two simulated runs. The screenshots below were captured from the repository's current `experiments.html` page.
+
+![RIOSE experiment workspace with baseline and intervention inputs, sensitivity controls, history, and model limitations](docs/assets/readme/01-experiment-workspace.png)
+
+![RIOSE scenario comparison results with summary cards, a weight chart, daily output table, and local history](docs/assets/readme/02-scenario-results.png)
+
+## 2. What RIOSE is
+
+RIOSE is an exploratory software prototype for livestock scenario comparison and research data exploration. It combines a deterministic JavaScript engine with a browser workspace, reproducible experiment records, selected Rust/WebAssembly components, and pages that display public observed datasets separately from simulated outputs.
+
+The institutional home is [home.html](home.html). The quantitative workspace is [experiments.html](experiments.html). Older [product.html](product.html) and [simulator.html](simulator.html) URLs are compatibility redirects.
+
+## 3. The problem
+
+Livestock scenario tools can blur assumptions, observed records, and model outputs. That makes it hard to see which inputs changed, how a comparison was produced, and what evidence supports it.
+
+## 4. The current approach
+
+The workspace gives both scenarios the same seed, starting state, herd size, horizon, and unchanged settings, then changes one selected factor. It presents the inputs, outputs, charts, daily results, and limitations together. The engine runs locally in the browser; a comparison can be retained in that browser's local history and exported.
+
+This makes experiments inspectable and repeatable. It does not make their outputs scientifically validated.
+
+## 5. Product walkthrough
+
+Start at [experiments.html](experiments.html). Choose the herd size, seed, and time horizon, set the reference scenario, select the intervention factor, and run the comparison. The results view includes summary metrics, a time-series chart, daily output rows, and expandable input and limitation details.
+
+The workspace also includes one-factor sensitivity exploration and a local run history. History stays in the browser unless the user exports it. The [observed-data pages](adult-data.html) provide a separate way to explore published measurements; those records are not silently used to calibrate or initialize the simulation.
+
+## 6. Visual identity and concept art
+
+The current workspace uses an editorial, chart-focused interface: warm neutral surfaces, restrained green accents, clear labels, and compact experiment controls. Its visual language is meant to keep scenario inputs and outputs legible.
+
+The attached isometric cattle and farm asset sheet is included as a **concept reference**. The current workspace does not render these assets: the farm-scene renderer, map, sprite atlas, 3D models, and visual scene editor were removed. The sheet illustrates a visual exploration, not a current product screen or a shipped simulation feature.
+
+![Concept asset sheet supplied for the README; these illustrations are not rendered by the current workspace](docs/assets/readme/03-visual-concept-asset-sheet.png)
+
+## 7. AMD + ROCm validation
+
+A successful hardware run was recorded for a specific livestock metabolism batch on the ACT III release revision. The record is tied to branch `release/amd-act-iii` and commit [`acb5cdf6e3bc23d7e48026bc736da05427f89907`](https://github.com/GUZZBR1/riose-agro/commit/acb5cdf6e3bc23d7e48026bc736da05427f89907).
+
+| Check | Recorded result |
 | --- | --- |
-| Device / runtime | AMD Instinct MI300X VF · ROCm/HIP 7.14.60850 · PyTorch 2.11.0+rocm7.14.1 |
-| Workload | `riose-livestock-metabolism-batch` · 24 animals · 48 output values |
-| Backend / parity | `amd_rocm` · PASS · maximum absolute difference `0` (tolerance `1e-12`) · no fallback |
+| GPU | AMD Instinct MI300X VF |
+| ROCm/HIP | 7.14.60850 |
+| PyTorch | 2.11.0+rocm7.14.1 |
+| Workload | `riose-livestock-metabolism-batch` |
+| Population and output | 24 animals · 48 output values |
+| Backend | `amd_rocm` |
+| Parity | PASS · maximum absolute difference 0 · absolute and relative tolerances 1e-12 |
 | Verifier | `AMD_PRODUCT_PATH_FUNCTIONAL` |
+| Fallback | None in the successful verifier run |
 
-Evidence: [environment](docs/evidence/amd/01-amd-environment.png) · [validation output](docs/evidence/amd/02-riose-amd-validation.png) · [backend detection](docs/evidence/amd/03-amd-backend-detection.png) · [validation scope and reproduction notes](docs/evidence/amd/AMD_VALIDATION.md). This check does not establish biological validity, whole-farm accuracy, or full-simulator AMD execution.
+These results show execution and numerical parity for the recorded workload, device, and runtime. They do not show performance improvement or validate the entire simulator, its biological assumptions, farm-level outcomes, or every hardware code path. The evidence is from a separate release revision; it must not be read as proof that the current `main` workspace runs this AMD product path.
 
-## License and publication status
+### Notebook evidence
 
-Project code is licensed under [Apache License 2.0](LICENSE). Third-party datasets carry separate terms; see each dataset's `data/**/manifest.json` for its source and license. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) provides selected attribution details and flags the unresolved XGain rights issue. Read the [ACT III owner-publication readiness review](docs/evidence/actiii-owner-publication-readiness.md) before making the repository public; it records an unresolved dataset-rights gate on the current `main` branch.
+**Environment and service startup**
 
-See the [repository layout guide](docs/architecture/repository-layout.md) for directory responsibilities and the reason browser page URLs remain at the root.
+![Notebook environment showing the AMD device, runtime versions, and compute service startup](docs/evidence/amd/01-amd-environment.png)
 
-Completed and failed comparisons can be listed and replayed from the browser's local history. See [the local execution history guide](docs/historico-execucoes.md) for its storage, retention, and compatibility behavior.
+**Successful product-path verifier result**
 
-## Run locally
+![Verifier output showing AMD_PRODUCT_PATH_FUNCTIONAL, amd_rocm, 24 animals, 48 outputs, and parity pass](docs/evidence/amd/02-riose-amd-validation.png)
 
-Requires Node.js 20 or newer. From this directory:
+**Backend detection**
 
-```bash
-npm start
-```
+![Backend detection showing ROCm available and CUDA runtime unavailable](docs/evidence/amd/03-amd-backend-detection.png)
 
-Open the printed local URL and choose `experiments.html`. `product.html` and `simulator.html` remain compatibility redirects. Snapshot review validates a linked file locally and never applies an uploaded file to a simulation. The bundled server binds to loopback; exposing it on another host requires `ALLOW_REMOTE_ACCESS=true` because snapshot validation is unauthenticated.
+See [AMD_VALIDATION.md](docs/evidence/amd/AMD_VALIDATION.md) for the run record and reproduction notes.
 
-The product contains no farm-scene renderer, map, sprites, atlas, 3D models, or graphical physics. Scientific charts and research-page illustrations remain part of the experiment and institutional pages.
+## 8. Technical architecture
 
-The product runs comparisons in a Web Worker; when the local native runner is available it can use Rust and otherwise falls back to JavaScript. To select the optional WASM metabolism kernel in that Worker, open `experiments.html?engine=wasm`. `npm run build:wasm` rebuilds the served module and requires the Rust `wasm32-unknown-unknown` target.
+- `experiments.html` provides the current scenario comparison interface.
+- `src/client/engine.js` and `src/client/feeding-model.js` contain deterministic JavaScript model logic; `src/client/worker.js` runs comparison work away from the main interface.
+- `crates/riose-core/` contains the native Rust implementation and CLI; `wasm/` contains opt-in browser WebAssembly modules.
+- `src/server/server.js` serves the local application and its optional APIs.
+- `src/server/compute_service.py` is a separate compute endpoint. On current `main`, it supports a numeric vector-scaling operation; it does not run the full farm simulation.
+- `data/`, `schemas/`, `scientific/`, `experiments/`, and `docs/evidence/` hold datasets, contracts, model interfaces, reproducible diagnostics, and evidence.
 
-`npm run bench:wasm-scenario-browser` compares full scenario compute and Worker costs in Chromium; `npm run bench:wasm-scenario-browser:firefox` selects Firefox. These computational benchmarks do not measure UI rendering.
+See the [repository layout guide](docs/architecture/repository-layout.md) for more detail.
 
-### Optional scenario explanations
+## 9. Scientific foundation and data boundaries
 
-The farm engine stays local and deterministic. `/api/explain` receives validated scenario settings and aggregate metrics; its fallback requires no provider or API key. To enable an optional language-provider adapter, set `LLM_PROVIDER=openai|groq|huggingface` and its matching server-side key (`OPENAI_API_KEY`, `GROQ_API_KEY`, or `HF_TOKEN`) before `npm start`; select a model with `LLM_MODEL` or the provider-specific `OPENAI_MODEL`, `GROQ_MODEL`, or `HF_MODEL`. Keys stay on the server. With no provider/key, or if a provider fails, the deterministic explanation is used. Explanations cannot modify simulation results or apply actions and are labeled as not measured.
+The general engine uses simplified rules and fixed assumptions. The available BR-CORTE 2023 equation calculates dry-matter intake (CMS) only within its declared domain; average daily gain (GMD) and forage stock are inputs, not outputs predicted by that equation. No scientific dataset has calibrated the complete engine.
 
-Open **ADG e pastejo observados (USDA/CPER)** to explore animal-period ADG and grazing measures for the published yearling steers, or **Dados observados** to explore the separate published calf trial. Both pages show measurements separately from simulated results. Repeated animal IDs remain visible as repeated study periods, not independent animals. The USDA/CPER cohort is not labeled as mature cows; its fit to the approved “adult” product scope still needs independent zootechnical review.
+Observed records are shown as observed data. Engine results are simulated outputs. A comparison against a dataset can be a component diagnostic without constituting whole-model validation, calibration, or a prediction interval.
 
-An additional public USDA-ARS CPER dataset provides 1,283 individual yearling cattle seasons with entry/exit weights (2000–2019). Reproduce the file and unit audit with `npm run audit:usda-cper-ltgi`, then the fixed 2014–2018 engine ADG diagnostic with `npm run audit:engine-adg-cper-ltgi`. On the same 343 held-out steers, the engine's MAE is 0.414 kg/day versus 0.164 for a constant pre-2014 historical baseline; a weighing/shrink protocol change limits the baseline comparison. The CPER-trained ADG scale was also applied without refit to the public USDA-CGREC steers: MAE 0.222 over 291 records and 0.191 in 2015 (n=200), with high error in the small 1994 subset (n=14). These are exploratory component diagnostics: they do not align initial pasture biomass or all management inputs, support causal treatment claims, validate the full simulator, or calibrate production uncertainty.
+Selected public-data diagnostics are deliberately narrow:
 
-The published Nellore feedlot workbook is archived separately under CC BY 4.0 in `data/mendeley-nellore-feedlot/`; it contains individual DMI, weights, drinking events, and weather from a distinct experiment. It is not mixed into the USDA/CPER grazing case. Run `npm run audit:mendeley-nellore` to verify its SHA-256 and report observed versus missing values, or `npm run audit:engine-dmi-mendeley` to compare the frozen default DMI rule against the 219 exact-date weight/DMI pairs. The report includes animal-cluster bootstrap intervals for the fixed-model error metrics; these are not prediction intervals or engine calibration. That narrow out-of-domain check is diagnostic and does not validate the adult grazing case or the full engine.
+- USDA/CPER yearling steer data: on a 343-animal held-out set, the engine's ADG MAE was 0.414 kg/day versus 0.164 kg/day for a constant pre-2014 historical baseline. A weighing/shrink protocol change limits the baseline comparison.
+- USDA-CGREC steers: the CPER-trained ADG scale was transferred without refitting; MAE was 0.222 kg/day across 291 records and 0.191 kg/day in 2015 (n=200). The 1994 subset was small (n=14) and had high error.
+- UFMS/Mendeley Nelore grazing: the frozen no-fit ADG diagnostic covers 390 repeated animal-period rows from 26 males around 20 months old. Reported GMD conflicts with 154 rows; endpoint weights and dates were used. MAE was 0.449 kg/day, with an animal-cluster metric-stability interval of 0.418–0.482.
+- Mendeley Nellore feedlot: a separate out-of-domain DMI diagnostic compares a frozen default rule with 219 exact-date weight/DMI pairs.
+- SDSU Angus cows on hay: a separate out-of-domain DMI check has seven complete-case animal tags and 571 same-day positive-weight pairs.
+- Zenodo mature-cow allometry: the no-fit ADG diagnostic assumes a 70-day interval because exact individual dates and management inputs are absent.
 
-For a separate no-fit ADG component diagnostic on mature cows, `npm run audit:engine-adg-zenodo-cows` compares the frozen pasture output against ADG derived from the public Zenodo allometry cohort. It uses observed starting weight and an assumed 70-day interval, since exact individual dates and management inputs are absent. Keep the result separate from USDA/CPER; it is not full-engine validation or calibration.
+These diagnostics do not support causal treatment claims, calibrate production uncertainty, align all management inputs, or validate the complete simulator. Dataset scope, provenance, and reproduction commands are documented alongside each audit and manifest.
 
-The public UFMS/Mendeley v1 dataset is a separate cohort of 26 male Nelore around 20 months old, not mature cows. `npm run audit:ufms-nelore-grazing` verifies the CC BY 4.0 source; `npm run audit:engine-adg-ufms` runs a frozen no-fit ADG transfer diagnostic on 390 repeated animal-period rows, deriving ADG from endpoint weights and dates because 154 reported GMD values disagree. MAE is 0.449 kg/day (animal-cluster bootstrap metric-stability interval 0.418–0.482); this is not a prediction interval, independent holdout, or validation of the adult pasture scenario.
+## 10. Evidence labels
 
-A second public CC BY source provides adult Angus cows on hay: [`data/sdsu-individual-dmi/`](data/sdsu-individual-dmi/). Its local audit separates group aggregates and the seven complete-case animal tags selected by the authors. Run `npm run audit:sdsu-individual-dmi` to regenerate the DMI derivation and quality report, and `npm run audit:engine-dmi-sdsu` for a fixed-default DMI component diagnostic. The latter uses 571 same-day positive-weight pairs (seven cows) and is out of the approved grazing domain; it is not full-engine validation, and no parameters are fit.
+Use these terms to distinguish evidence types:
 
-The normalized CC0 calf data snapshot is included so the calf page works offline. To regenerate it from Zenodo and verify the source-file MD5 checksums, run:
+- **SIMULATED** — generated by the engine from its rules and scenario inputs.
+- **OBSERVED** — measured or reported by a cited data source.
+- **ASSUMED** — supplied as an input or fixed rule without direct observation in that run.
+- **EXPERIMENTAL** — an optional, prototype, or not-yet-adopted software path.
+- **VALIDATED** — limited to the exact software path, workload, environment, and criterion documented; it does not imply biological validity.
+- **FUTURE** — proposed work, not an available capability.
 
-```bash
-npm run build:observed-data
-```
+## 11. Validation summary
 
-For a local post-decision record, open `outcome-review.html`. The page reads the selected manifest, eligible linked farm snapshot, and archived output locally, then downloads the projection archive and outcome sidecar; no farm record is posted to the server. Archive a comparison with `npm run archive:comparison -- <manifest.json> <comparison-result.json>`. This includes hashes of the exact manifest bytes and `src/client/engine.js` and refuses to overwrite an existing archive. Link a domain snapshot with `npm run link:snapshot -- --snapshot <farm-snapshot.json> --manifest <manifest.json> --output <farm-snapshot-linked.json>`, then validate using `npm run validate:outcome -- <outcome.json> --archive <comparison-result.json> --manifest <manifest.json> --snapshot <farm-snapshot-linked.json>`. A descriptive difference is available only after snapshot, review, consent, access, execution, unit, horizon, quality, and outcome-alignment gates pass; the record never changes the archived projection or simulation parameters. The snapshot linkage verifies lot identity and herd size but does not prove that its fields were mapped into the current numerical engine. See [`docs/registro-desfecho.md`](docs/registro-desfecho.md).
+Software tests and deterministic scenario checks can establish reproducibility, contract behavior, and implementation parity for their tested cases. They are not evidence of biological accuracy. The AMD record above establishes a successful execution and parity result only for its specified release commit and workload.
 
-Install the development dependencies once; the tests and snapshot validator use Ajv to check the JSON Schema:
+The repository's [CI guide](docs/ci.md) lists supported automated checks and toolchains.
 
-```bash
+## 12. Live demo and pages
+
+- [Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) — reachable when this README was prepared.
+- [Experiment workspace](experiments.html) — main scenario comparison page.
+- [Institutional home](home.html) and [manifesto](manifesto.html).
+- [Observed-data pages](adult-data.html), [adult-cow data](adult-cow-data.html), and other source-specific explorers linked from the repository.
+
+## 13. Run locally
+
+Requires Node.js 20 or newer. From the repository root:
+
+~~~bash
 npm install
-```
+npm start
+~~~
 
-Run the deterministic engine and data-contract tests with Node.js:
+Open the local URL printed by the server and select `experiments.html`. The server binds to loopback by default. Snapshot review validates a linked file locally; it does not apply uploaded data to a simulation. Exposing the server to another host requires `ALLOW_REMOTE_ACCESS=true` because snapshot validation is unauthenticated.
 
-```bash
-npm test
-```
+To select the optional WASM metabolism kernel in the comparison Worker, open `experiments.html?engine=wasm`. Rebuild the served module with `npm run build:wasm`; this requires the Rust `wasm32-unknown-unknown` target.
 
-The supported CI toolchains and checks are documented in [docs/ci.md](docs/ci.md).
+## 14. Reproduce the AMD evidence
 
-Run the preset scenario harness and write one `*.result.json` file per scenario:
+The AMD livestock verifier belongs to the release revision named above, not current `main`. In a separate checkout with a compatible ROCm environment and its documented PyTorch build, use:
 
-```bash
-npm run test:scenarios
-```
+~~~bash
+git checkout --detach acb5cdf6e3bc23d7e48026bc736da05427f89907
+python3 src/server/compute_service.py
+# In a second terminal:
+npm start
+# In another terminal:
+npm run verify:amd-livestock
+~~~
 
-Add a JSON file under `tests/scenarios/` to add a case; the runner discovers files without code changes. Each case declares an `engine` seed and animal count, optional `configuration`, `run.hours`, and JSON Pointer assertions over `/state` and `/metrics`. Supported operators are `equals`, `greaterThan`, `lessThan`, and `approximatelyEquals` (optional numeric `tolerance`). Results go to `.test-results/scenarios/`. To use another fixture and result directory, run `node scripts/experiments/run-scenarios.js <scenario-directory> <result-directory>`. Each invalid or failed case receives its own diagnostic result while other files still run. The harness checks reproducible engine behavior only; its assertions are not scientific validation.
+The evidence record explains the workload and parity check. The verifier must report the AMD backend actually used; a CPU fallback is not a successful AMD validation.
 
-Validate a versioned farm snapshot against JSON Schema and cross-field provenance rules:
+## 15. Repository guide
 
-```bash
-npm run validate:snapshot -- schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json
-```
+- `home.html`, `manifesto.html` — institutional project pages.
+- `experiments.html` — experiment workspace.
+- `src/client/` — browser application, deterministic engine, and Worker protocol.
+- `src/server/` — local server and compute service.
+- `crates/riose-core/`, `wasm/` — Rust and WebAssembly components.
+- `scientific/`, `data/`, `schemas/` — model contracts, source data, and validation schemas.
+- `scripts/`, `tests/`, `docs/evidence/` — audits, software checks, and retained evidence.
 
-This example is structurally valid but is an observed study slice, not a farm baseline; simulation eligibility is `not-applicable`, and the missing start weight, individual DMI, and paddock area remain explicit. Add `--require-eligible` to make that state return exit code 2.
+## 16. Current limitations
 
-To create a snapshot copy linked to a comparison manifest, validate the original snapshot and exported manifesto and calculate the hash automatically:
+RIOSE is an illustrative software prototype, not a validated livestock or nutrition model. Its simulated outputs must not guide real animal-management decisions. Assumptions are recorded in the engine and model documentation.
 
-```bash
-npm run link:snapshot -- --snapshot farm-snapshot.json --manifest comparison.json --output farm-snapshot-linked.json
-```
+No scientific dataset has calibrated the full engine. Public comparisons are scoped diagnostics only; several cohorts are young stock or out of the approved grazing domain. The USDA/CPER cohort is yearling steers, not mature cows, and its fit to an adult product scope needs independent zootechnical review. Explanations from fixed rules or an optional language provider are not scientific results and cannot change simulation outputs.
 
-The command validates the manifest with the engine's existing rules, records the exact file SHA-256 without copying scenario fields, and refuses to overwrite the output. It rejects observed-study slices. Then validate the linked copy with `npm run validate:snapshot -- farm-snapshot-linked.json --manifest comparison.json`; the exact bytes must remain available. Linking does not make a snapshot eligible for simulation.
+The separate [rangeland behavior prototype](rangeland-behavior.html) explores video-annotated records from 24 mature cows. It contains no ADG, weight, or DMI and is not integrated into the simulation engine.
 
-## Repository guide
+The [publication-readiness review](docs/evidence/actiii-owner-publication-readiness.md) records an unresolved third-party dataset rights issue. Review source licenses and attribution before redistribution.
 
-- `home.html` and `manifesto.html` contain institutional project information and identity artwork.
-- `src/client/engine.js`, `src/client/feeding-model.js`, and `scientific/` contain the deterministic JavaScript simulation and scientific model contracts.
-- `src/client/worker.js` runs simulation work away from the interface; `src/client/worker-protocol.js` validates its messages.
-- `crates/riose-core/` contains the native Rust implementation and CLI. `wasm/` contains the opt-in browser kernel.
-- `src/server/server.js` serves allowlisted pages and the optional local explanation and snapshot-review APIs.
-- `data/`, `schemas/`, `experiments/`, and `docs/evidence/` retain source observations, contracts, reproducible experiments, and archived results.
-- `scripts/` contains scientific data audits, builds, reproducibility utilities, and computational benchmarks.
-- `tests/` covers simulation determinism, scientific data, scenario replay, Rust/WASM parity, exports, and local server behavior.
+## 17. Team
 
-The farm renderer, art pipeline, and visual scene editor have been removed. The experiment workspace uses the deterministic engine and keeps observed research data separate from simulated outputs. Historical snapshots remain readable; legacy position and movement fields are accepted where needed for compatibility, but are not emitted or used by the simulation.
+This repository does not publish a formal team roster. See the repository's contributor and commit history for recorded contributions.
 
-## Current limitations
+## 18. License
 
-The separate [`rangeland-behavior.html`](rangeland-behavior.html) prototype explores CC BY 4.0 video-annotated behavior records from 24 mature cows. It contains no ADG, weight, or DMI and remains separate from the USDA/CPER analysis and simulation engine.
-
-This is an illustrative software prototype, not a validated livestock or nutrition model. Assumptions are in `src/client/engine.js`; results must not guide real animal-management decisions. No scientific dataset has been used to calibrate the full engine. Public comparisons are scoped diagnostics only: CPER supports observed grazing/ADG exploration, Grass-Cast adds historical group/site-level grazing and forage context, and the Nellore feedlot and Angus hay checks measure one default DMI component in separate, out-of-domain cohorts. None validates the full model. Explanatory text comes from fixed rules or an optional provider and is not a scientific result.
-
-The inspector's activity history records simulated engine transitions and their rule inputs (hour, modeled thirst, and housing). It describes the software's rules, not observed animal behavior.
-
-## Next step
-
-Validate the interaction with users, select a well-defined cattle scenario, replace demonstration equations with documented and calibrated models, then test against independent measurements. Move simulation calculations to Rust/WebAssembly only if profiling shows that the JavaScript engine needs it.
-
-Live demo: https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site
-
-Os exploradores de dados observados estão em [`adult-data.html`](adult-data.html) (USDA/CPER), [`rothamsted-data.html`](rothamsted-data.html), [`cgrec-data.html`](cgrec-data.html) (USDA CGREC 1989–2015) e [`hpgrs-data.html`](hpgrs-data.html) (USDA/ARS HPGRS 1982–2022). CPER, Rothamsted e HPGRS são coortes de animais jovens/yearlings, não de vacas maduras; cada fonte permanece separada e seus limites etários estão documentados. Use `npm run audit:usda-hpgrs-longterm` para conferir integridade e cobertura, `npm run audit:engine-adg-range` para uma checagem descritiva de faixa de ADG e `npm run audit:engine-dmi-mendeley` para a checagem fixa do DMI em Nelore confinado. Esses checks não validam nem calibram o motor completo.
-
-The versioned scenario contract v2 extends the existing comparison manifest while preserving v1 replay. See [the contract and version policy](docs/scenario-contract-v2.md), [the JSON Schema](schemas/scenario-contract.schema.json), and run `npm run example:scenario-contract` for a deterministic round-trip and replay example.
-## Native scenario CLI
-
-The headless Rust runner accepts versioned baseline and housing-comparison
-requests. See [the CLI contract and exit codes](docs/native-scenario-cli.md).
+Project code is licensed under the [Apache License 2.0](LICENSE). Third-party datasets have separate terms; check each dataset's manifest and [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) before reuse or redistribution.
