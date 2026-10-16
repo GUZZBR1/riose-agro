@@ -19,8 +19,8 @@ The current workspace is a browser interface for setting a baseline, changing on
   </thead>
   <tbody>
     <tr>
-      <td><img src="docs/assets/readme/01-experiment-workspace.png" alt="RIOSE experiment workspace with baseline and intervention inputs, sensitivity controls, history, and model limitations" width="100%"></td>
-      <td><img src="docs/assets/readme/02-scenario-results.png" alt="RIOSE scenario comparison results with summary cards, a weight chart, daily output table, and local history" width="100%"></td>
+      <td><img src="docs/assets/readme/01-experiment-workspace-4x5.png" alt="RIOSE experiment workspace with baseline and intervention inputs, sensitivity controls, history, and model limitations" width="100%"></td>
+      <td><img src="docs/assets/readme/02-scenario-results-4x5.png" alt="RIOSE scenario comparison results with summary cards, a weight chart, daily output table, and local history" width="100%"></td>
     </tr>
   </tbody>
 </table>
@@ -28,6 +28,8 @@ The current workspace is a browser interface for setting a baseline, changing on
 ## 2. What RIOSE is
 
 RIOSE is an exploratory software prototype for livestock scenario comparison and research data exploration. It combines a deterministic JavaScript engine with a browser workspace, reproducible experiment records, selected Rust/WebAssembly components, and pages that display public observed datasets separately from simulated outputs.
+
+<p align="center"><img src="docs/assets/readme/04-concept-cow.png" alt="Concept illustration of a Nelore cow; this artwork is not rendered in the current workspace" width="280"><br><sub>Concept art from the project's visual exploration; not an in-app feature.</sub></p>
 
 The institutional home is [home.html](home.html). The quantitative workspace is [experiments.html](experiments.html). Older [product.html](product.html) and [simulator.html](simulator.html) URLs are compatibility redirects.
 
@@ -41,25 +43,33 @@ The workspace gives both scenarios the same seed, starting state, herd size, hor
 
 This makes experiments inspectable and repeatable. It does not make their outputs scientifically validated.
 
+<p align="center"><img src="docs/assets/readme/05-concept-road.png" alt="Isometric concept illustration of a rural road; not part of the current application interface" width="300"><br><sub>Rural road concept art, shown as a visual reference only.</sub></p>
+
 ## 5. Product walkthrough
 
 Start at [experiments.html](experiments.html). Choose the herd size, seed, and time horizon, set the reference scenario, select the intervention factor, and run the comparison. The results view includes summary metrics, a time-series chart, daily output rows, and expandable input and limitation details.
 
 The workspace also includes one-factor sensitivity exploration and a local run history. History stays in the browser unless the user exports it. The [observed-data pages](adult-data.html) provide a separate way to explore published measurements; those records are not silently used to calibrate or initialize the simulation.
 
+<p align="center"><img src="docs/assets/readme/08-concept-pickup.png" alt="Isometric concept illustration of a rural pickup truck; not rendered in the current workspace" width="300"><br><sub>Pickup illustration from the concept art set; it is not a current product feature.</sub></p>
+
 ## 6. Visual identity and concept art
 
 The current workspace uses an editorial, chart-focused interface: warm neutral surfaces, restrained green accents, clear labels, and compact experiment controls. Its visual language is meant to keep scenario inputs and outputs legible.
 
-The attached isometric cattle and farm asset sheet is included as a **concept reference**. The current workspace does not render these assets: the farm-scene renderer, map, sprite atlas, 3D models, and visual scene editor were removed. The sheet illustrates a visual exploration, not a current product screen or a shipped simulation feature.
+The attached [isometric asset sheet](docs/assets/readme/03-visual-concept-asset-sheet.png) is a **concept reference**. The current workspace does not render these illustrations: the farm-scene renderer, map, sprite atlas, 3D models, and visual scene editor were removed. The separated house and barn illustrations below show part of that visual exploration, not current product screens or shipped simulation features.
 
 <table>
   <thead>
-    <tr><th>Visual concept reference</th></tr>
+    <tr>
+      <th>Farmhouse concept</th>
+      <th>Barn and equipment concept</th>
+    </tr>
   </thead>
   <tbody>
     <tr>
-      <td><img src="docs/assets/readme/03-visual-concept-asset-sheet.png" alt="Isometric cattle, pasture, farm structures, and equipment concept sheet; not rendered by the current workspace" width="100%"></td>
+      <td><img src="docs/assets/readme/06-concept-farmhouse.png" alt="Isometric farmhouse concept illustration; not rendered in the current workspace" width="100%"></td>
+      <td><img src="docs/assets/readme/07-concept-barn.png" alt="Isometric barn, tractor, and hay concept illustration; not rendered in the current workspace" width="100%"></td>
     </tr>
   </tbody>
 </table>
