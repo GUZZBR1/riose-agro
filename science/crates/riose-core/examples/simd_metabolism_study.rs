@@ -142,7 +142,7 @@ fn equivalence(kernel: Kernel) -> Value {
         }
     }
     let golden: Value = serde_json::from_str(include_str!(
-        "../../../tests/scenario-goldens/housing-comparison.json"
+        "../../../../tests/scenario-goldens/housing-comparison.json"
     ))
     .unwrap();
     // B3 baseline state projected into the packed kernel ABI, with each intake

@@ -4,11 +4,11 @@ use riose_core::{
 };
 use serde_json::{json, Value};
 
-const BASELINE_GOLDEN: &str = include_str!("../../../tests/scenario-goldens/baseline-pasture.json");
+const BASELINE_GOLDEN: &str = include_str!("../../../../tests/scenario-goldens/baseline-pasture.json");
 const HOUSING_GOLDEN: &str =
-    include_str!("../../../tests/scenario-goldens/housing-comparison.json");
+    include_str!("../../../../tests/scenario-goldens/housing-comparison.json");
 const PARITY_TOLERANCES: &str =
-    include_str!("../../../tests/scenario-goldens/parity-tolerances-v1.json");
+    include_str!("../../../../tests/scenario-goldens/parity-tolerances-v1.json");
 
 #[derive(Default)]
 struct ParityCursor {

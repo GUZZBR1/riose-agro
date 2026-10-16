@@ -10,9 +10,9 @@ const WARMUP_RUNS: usize = 3;
 const MEASURED_RUNS: usize = 20;
 const MINIMAL_REQUEST: &[u8] =
     br#"{"type":"baseline","version":1,"seed":1,"animalCount":1,"configuration":{},"hours":1}"#;
-const BASELINE_SCENARIO: &str = include_str!("../../../tests/scenarios/baseline-pasture.json");
+const BASELINE_SCENARIO: &str = include_str!("../../../../tests/scenarios/baseline-pasture.json");
 const HOUSING_GOLDEN: &str =
-    include_str!("../../../tests/scenario-goldens/housing-comparison.json");
+    include_str!("../../../../tests/scenario-goldens/housing-comparison.json");
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let baseline_fixture: Value = serde_json::from_str(BASELINE_SCENARIO)?;

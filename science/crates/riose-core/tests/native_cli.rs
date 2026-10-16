@@ -8,11 +8,11 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 const BASELINE: &str = r#"{"type":"baseline","version":1,"seed":417,"animalCount":3,"configuration":{"diet":"pasture","housing":"pasture","weather":"normal","supplement":0},"hours":24}"#;
 const HOUSING_GOLDEN: &str =
-    include_str!("../../../tests/scenario-goldens/housing-comparison.json");
+    include_str!("../../../../tests/scenario-goldens/housing-comparison.json");
 const BR_CORTE_PARITY_VECTORS: &str =
-    include_str!("../../../tests/fixtures/br-corte-eq26-parity-v1.json");
+    include_str!("../../../../tests/fixtures/br-corte-eq26-parity-v1.json");
 const CONFIGURED_COMPARISON_PARITY: &str =
-    include_str!("../../../tests/fixtures/configured-comparison-v2-parity.json");
+    include_str!("../../../../tests/fixtures/configured-comparison-v2-parity.json");
 
 static NEXT_TEMP: AtomicUsize = AtomicUsize::new(0);
 
@@ -225,7 +225,7 @@ fn baseline_matches_the_native_official_golden_and_has_a_stable_record() {
     assert!(positions.windows(2).all(|pair| pair[0] < pair[1]));
 
     let golden: Value = serde_json::from_str(include_str!(
-        "../../../tests/scenario-goldens/baseline-pasture.json"
+        "../../../../tests/scenario-goldens/baseline-pasture.json"
     ))
     .unwrap();
     assert_json_exact(

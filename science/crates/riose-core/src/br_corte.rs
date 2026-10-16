@@ -161,7 +161,8 @@ mod tests {
     use super::*;
     use serde_json::Value;
 
-    const JS_VECTORS: &str = include_str!("../../../tests/fixtures/br-corte-eq26-parity-v1.json");
+    const JS_VECTORS: &str =
+        include_str!("../../../../tests/fixtures/br-corte-eq26-parity-v1.json");
 
     #[test]
     fn matches_javascript_reference_vectors_within_cross_runtime_precision() {
