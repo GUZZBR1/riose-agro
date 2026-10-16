@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {FarmEngine} from '../src/client/engine.js';
-import {BR_CORTE_PASTURE_DMI_MODEL} from '../scientific/br_corte_dmi_adapter.js';
-import {defineScientificModel, runRegisteredScientificModel, runScientificModel, SCIENTIFIC_MODEL_INTERFACE_VERSION} from '../scientific/model-contract.js';
+import {FarmEngine} from '../site/client/engine.js';
+import {BR_CORTE_PASTURE_DMI_MODEL} from '../science/runtime/br_corte_dmi_adapter.js';
+import {defineScientificModel, runRegisteredScientificModel, runScientificModel, SCIENTIFIC_MODEL_INTERFACE_VERSION} from '../science/runtime/model-contract.js';
 
 const numericReferences = JSON.parse(readFileSync(new URL('./fixtures/scientific-numeric-reference-v1.json', import.meta.url), 'utf8'));
 const table214 = numericReferences.fixtures.brCorte2023Eq26Table214;

@@ -8,7 +8,7 @@
 
 RIOSE lets you set a baseline, change one management factor, and compare runs that share the same starting conditions and seed. The browser workspace brings inputs, modeled outcomes, charts, daily results, and limitations together, so each experiment is easier to inspect and reproduce. The project also documents an AMD ROCm/PyTorch validation path. Simulations use simplified exploratory models; their results are not validated forecasts or management recommendations.
 
-[Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](docs/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
+[Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](science/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](science/docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
 
 ## Product workspace
 
@@ -84,29 +84,29 @@ This verifies only that workload and environment. It does not establish performa
   </thead>
   <tbody>
     <tr>
-      <td><img src="docs/evidence/amd/01-amd-environment.png" alt="AMD device and runtime environment" width="100%"></td>
-      <td><img src="docs/evidence/amd/02-riose-amd-validation.png" alt="AMD product verifier and parity result" width="100%"></td>
+      <td><img src="science/evidence/amd/01-amd-environment.png" alt="AMD device and runtime environment" width="100%"></td>
+      <td><img src="science/evidence/amd/02-riose-amd-validation.png" alt="AMD product verifier and parity result" width="100%"></td>
     </tr>
     <tr>
-      <td colspan="2" align="center"><strong>03 · Backend detection</strong><br><img src="docs/evidence/amd/03-amd-backend-detection.png" alt="ROCm detected; CUDA runtime unavailable" width="72%"></td>
+      <td colspan="2" align="center"><strong>03 · Backend detection</strong><br><img src="science/evidence/amd/03-amd-backend-detection.png" alt="ROCm detected; CUDA runtime unavailable" width="72%"></td>
     </tr>
   </tbody>
 </table>
 
-See [AMD_VALIDATION.md](docs/evidence/amd/AMD_VALIDATION.md) for run details and reproduction notes.
+See [AMD_VALIDATION.md](science/evidence/amd/AMD_VALIDATION.md) for run details and reproduction notes.
 
 ## Scientific scope and limitations
 
 - The engine uses simplified rules and fixed assumptions; no dataset calibrates the complete simulator.
 - Observed measurements and simulated outputs are kept separate. Public-data checks are component diagnostics, not whole-model validation or causal evidence.
 - BR-CORTE 2023 calculates dry-matter intake only within its declared domain; weight gain and forage stock are inputs, not predictions from that equation.
-- Outputs are illustrative and must not guide real animal-management decisions. Dataset scope and audits are in [docs/evidence](docs/evidence/) and [scientific model notes](docs/modelos/interface-modelos-cientificos.md).
+- Outputs are illustrative and must not guide real animal-management decisions. Dataset scope and audits are in [science/evidence](science/evidence/) and [scientific model notes](science/docs/modelos/interface-modelos-cientificos.md).
 
 Evidence labels distinguish **SIMULATED**, **OBSERVED**, **ASSUMED**, **EXPERIMENTAL**, **VALIDATED** (only for a documented path and criterion), and **FUTURE** work.
 
 ## Repository and local setup
 
-The browser app is in <code>experiments.html</code> and <code>src/client/</code>; the local server and optional compute endpoint are in <code>src/server/</code>. Rust and opt-in WebAssembly components are in <code>crates/riose-core/</code> and <code>wasm/</code>. On current main, the compute endpoint supports numeric vector scaling, not the full farm simulation. See the [repository layout](docs/architecture/repository-layout.md) and [CI guide](docs/ci.md).
+The browser app is in <code>experiments.html</code> and <code>site/client/</code>; the local server and optional compute endpoint are in <code>src/server/</code>. Rust and opt-in WebAssembly components are in <code>science/crates/riose-core/</code> and <code>science/wasm/</code>. On current main, the compute endpoint supports numeric vector scaling, not the full farm simulation. See the [repository layout](docs/architecture/repository-layout.md) and [CI guide](docs/ci.md).
 
 Requires Node.js 20 or newer:
 

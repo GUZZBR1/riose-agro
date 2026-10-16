@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 
 test('fixed engine DMI check on public SDSU hay-fed cohort stays descriptive and unfitted', () => {
   execFileSync('npm', ['run', 'audit:engine-dmi-sdsu'], {encoding: 'utf8'});
-  const report = JSON.parse(readFileSync('docs/evidence/sdsu-engine-dmi-check.json', 'utf8'));
+  const report = JSON.parse(readFileSync('science/evidence/sdsu-engine-dmi-check.json', 'utf8'));
   assert.equal(report.classification, 'fixed_default_dmi_component_diagnostic_out_of_approved_cper_domain_not_full_engine_validation');
   assert.equal(report.source.license, 'CC BY');
   assert.equal(report.source.sourceRowsForSelectedCohortWithDerivedDmiAndWeight, 571);

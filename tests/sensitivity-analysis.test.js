@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {FarmEngine} from '../src/client/engine.js';
-import {analyzeSensitivity} from '../src/client/sensitivity-analysis.js';
+import {FarmEngine} from '../site/client/engine.js';
+import {analyzeSensitivity} from '../site/client/sensitivity-analysis.js';
 
 function baselineSnapshot() {
   const engine = new FarmEngine(417, 4);

@@ -6,10 +6,10 @@ import {createServer} from '../src/server/server.js';
 
 test('public USDA CGREC cow-calf cohort is reproducible, age-aware, and separate from engine validation', () => {
   execFileSync('npm', ['run', 'audit:usda-cgrec-cow-calf'], {stdio: 'ignore'});
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/usda-cgrec-cow-calf-audit.json', import.meta.url), 'utf8'));
-  const data = JSON.parse(readFileSync(new URL('../data/usda-cgrec-cow-calf/cow-calf-observations.json', import.meta.url), 'utf8'));
-  const page = readFileSync(new URL('../usda-cgrec-cow-calf.html', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../src/client/usda-cgrec-cow-calf.js', import.meta.url), 'utf8');
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/usda-cgrec-cow-calf-audit.json', import.meta.url), 'utf8'));
+  const data = JSON.parse(readFileSync(new URL('../science/data/usda-cgrec-cow-calf/cow-calf-observations.json', import.meta.url), 'utf8'));
+  const page = readFileSync(new URL('../site/pages/usda-cgrec-cow-calf.html', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../site/client/usda-cgrec-cow-calf.js', import.meta.url), 'utf8');
 
   assert.equal(report.classification, 'public_usda_cgrec_mature_and_young_cow_grazing_observations_exploratory_not_engine_validation');
   assert.equal(report.source.doi, '10.15482/USDA.ADC/25464097');
@@ -49,10 +49,10 @@ test('server exposes the cow-calf explorer and its attributed, normalized public
     ['/usda-cgrec-cow-calf.html', 'text/html'],
     ['/usda-cgrec-cow-calf.css', 'text/css'],
     ['/usda-cgrec-cow-calf.js', 'text/javascript'],
-    ['/data/usda-cgrec-cow-calf/cow-calf-observations.json', 'application/json'],
-    ['/data/usda-cgrec-cow-calf/manifest.json', 'application/json'],
-    ['/docs/evidence/usda-cgrec-cow-calf-audit.json', 'application/json'],
-    ['/data/usda-cgrec-cow-calf/CentralGrasslandsFireForageNAL.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+    ['/science/data/usda-cgrec-cow-calf/cow-calf-observations.json', 'application/json'],
+    ['/science/data/usda-cgrec-cow-calf/manifest.json', 'application/json'],
+    ['/science/evidence/usda-cgrec-cow-calf-audit.json', 'application/json'],
+    ['/science/data/usda-cgrec-cow-calf/CentralGrasslandsFireForageNAL.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
   ]) {
     const response = await fetch(`${base}${path}`);
     assert.equal(response.status, 200, path);

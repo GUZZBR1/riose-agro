@@ -8,11 +8,11 @@ Statuses: BACKLOG, READY, IN_PROGRESS, BLOCKED, VALIDATING, DONE.
 - Acceptance: Files committed on independent follow-on branch; no engine/model/UI modifications; scientific limitations explicit.
 - Status: DONE (docs-only; runtime tests not run).
 
-## BEH-001 — Timestamped Perea data/readiness audit
+## BEH-001 — Timestamped Perea science/data/readiness audit
 - Depends on: BEH-000.
 - Scope: Reconcile row/animal IDs, duplicate timestamps, contradictory labels, contiguous session windows, timezones, per-class minutes, durations, annotation carry-forward, licensing manifest/checksum. Compare preprocessing bytes to earlier scripts.
 - Acceptance: deterministic machine-readable readiness report and tests; no model fitting; annotate which metrics have sufficient coverage and which do not.
-- Files: `data/perea-rangeland-behavior/`, `scripts/science/`, `tests/`, `docs/evidence/` as appropriate.
+- Files: `science/data/perea-rangeland-behavior/`, `science/scripts/`, `tests/`, `science/evidence/` as appropriate.
 - Status: READY.
 
 ## BEH-002 — Freeze generative benchmark and implement simple policies

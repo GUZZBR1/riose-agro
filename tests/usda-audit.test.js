@@ -4,7 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 
 test('USDA CPER feasibility audit groups periods by animal and does not claim engine validation', () => {
-  const raw = execFileSync('python3', ['scripts/science/source-audits/usda/audit_usda_cper_validation.py'], {encoding: 'utf8'});
+  const raw = execFileSync('python3', ['science/scripts/source-audits/usda/audit_usda_cper_validation.py'], {encoding: 'utf8'});
   const report = JSON.parse(raw);
 
   assert.equal(report.coverage.rowCount, 36);
@@ -33,7 +33,7 @@ test('USDA CPER feasibility audit groups periods by animal and does not claim en
 });
 
 test('default engine ADG range check stays explicitly descriptive and verifies equal housing gain', () => {
-  const raw = execFileSync('node', ['scripts/science/engine-audits/audit_engine_adg_range.js'], {encoding: 'utf8'});
+  const raw = execFileSync('node', ['science/scripts/engine-audits/audit_engine_adg_range.js'], {encoding: 'utf8'});
   const report = JSON.parse(raw);
   const [pasture, barn] = report.defaultEngineRuns;
   assert.equal(report.classification, 'face_validity_range_check_only_not_validation_or_calibration');
@@ -45,12 +45,12 @@ test('default engine ADG range check stays explicitly descriptive and verifies e
   assert.ok(Math.abs(pasture.differenceFromObservedRowMeanKgPerDay + 0.9014334981) < 1e-8);
   assert.match(report.interpretation.join(' '), /cannot estimate prediction error/);
   assert.match(report.interpretation.join(' '), /same gain/);
-  const docs = readFileSync(new URL('../docs/evidence/engine-adg-range-check.json', import.meta.url), 'utf8');
+  const docs = readFileSync(new URL('../science/evidence/engine-adg-range-check.json', import.meta.url), 'utf8');
   assert.match(docs, /not_validation_or_calibration/);
 });
 
 test('USDA HPGRS long-term audit checks public hashes and reports missing identity/outlier limits', () => {
-  const raw = execFileSync('python3', ['scripts/science/source-audits/usda/audit_usda_hpgrs_longterm.py'], {encoding: 'utf8'});
+  const raw = execFileSync('python3', ['science/scripts/source-audits/usda/audit_usda_hpgrs_longterm.py'], {encoding: 'utf8'});
   const report = JSON.parse(raw);
   assert.equal(report.dataset.doi, '10.15482/USDA.ADC/1528521');
   assert.equal(report.dataset.sha256Verified, true);

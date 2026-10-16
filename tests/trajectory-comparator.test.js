@@ -5,7 +5,7 @@ import {
   classifyTrajectoryDivergence,
   compareExactJson,
   compareTrajectoryCheckpoint,
-} from '../src/client/trajectory-comparator.js';
+} from '../site/client/trajectory-comparator.js';
 
 test('exact JSON comparison accepts lexical numeric equivalents without tolerance', () => {
   assert.equal(compareExactJson(0, 0.0).mismatch, null);

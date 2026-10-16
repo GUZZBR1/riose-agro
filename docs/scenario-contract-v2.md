@@ -22,11 +22,11 @@ The integer `version` identifies the serialized contract. Version 1 keeps its ex
 - `expected_outputs`: one or more output groups (`weight`, `cost`, `pasture`, `intake`). These name model outputs; they are not measured values or scientific expectations.
 - `validated`: must remain `false`. The scenario engine is illustrative and has not been scientifically validated.
 
-The JSON Schema is `schemas/scenario-contract.schema.json`. The semantic validator additionally checks the complete engine snapshot and cross-field invariants by adapting v2 to the existing v1 comparison validator. Missing required data fails with a field-specific message. The builder's optional `scenarioId` uses a deterministic seed-and-duration default; callers can provide a stable ID.
+The JSON Schema is `science/schemas/scenario-contract.schema.json`. The semantic validator additionally checks the complete engine snapshot and cross-field invariants by adapting v2 to the existing v1 comparison validator. Missing required data fails with a field-specific message. The builder's optional `scenarioId` uses a deterministic seed-and-duration default; callers can provide a stable ID.
 
 ## Reproducible example
 
-Run `npm run example:scenario-contract` (or `node examples/scenario-contract-v2.js`). It creates a deterministic initial snapshot, serializes and reloads the v2 contract, validates it, and asserts that two replays are identical. Output remains demonstrative; this example does not test or claim biological validity.
+Run `npm run example:scenario-contract` (or `node science/examples/scenario-contract-v2.js`). It creates a deterministic initial snapshot, serializes and reloads the v2 contract, validates it, and asserts that two replays are identical. Output remains demonstrative; this example does not test or claim biological validity.
 
 ## Compatibility boundary
 

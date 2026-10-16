@@ -6,7 +6,7 @@ import {createServer} from '../src/server/server.js';
 
 test('public Grass-Cast audit verifies provenance and keeps aggregate tables separate', () => {
   execFileSync('npm', ['run', 'audit:usda-grasscast'], {stdio: 'ignore'});
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/usda-grasscast-audit.json', import.meta.url), 'utf8'));
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/usda-grasscast-audit.json', import.meta.url), 'utf8'));
   assert.equal(report.classification, 'public_observational_group_and_site_level_context_only_not_engine_validation');
   assert.equal(report.cattleWeightGains.rows, 942);
   assert.equal(report.cattleWeightGains.missingMeanDailyGainRows, 195);
@@ -27,7 +27,7 @@ test('public Grass-Cast audit verifies provenance and keeps aggregate tables sep
 
 test('Grass-Cast group association is reproducible and absorbs year and treatment', () => {
   execFileSync('npm', ['run', 'analyze:usda-grasscast-association'], {stdio: 'ignore'});
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/usda-grasscast-cper-association.json', import.meta.url), 'utf8'));
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/usda-grasscast-cper-association.json', import.meta.url), 'utf8'));
   assert.equal(report.classification, 'public_observational_group_level_association_not_causal_not_engine_validation');
   assert.equal(report.completeCases.n, 136);
   assert.equal(report.completeCases.years, 48);
@@ -48,9 +48,9 @@ test('Grass-Cast explorer and its normalized CPER data are served locally', asyn
     ['/grasscast-data.html', 'text/html'],
     ['/grasscast-data.js', 'text/javascript'],
     ['/grasscast-data.css', 'text/css'],
-    ['/data/usda-grasscast/manifest.json', 'application/json'],
-    ['/data/usda-grasscast/cper-grouped-observations.json', 'application/json'],
-    ['/docs/evidence/usda-grasscast-cper-association.json', 'application/json'],
+    ['/science/data/usda-grasscast/manifest.json', 'application/json'],
+    ['/science/data/usda-grasscast/cper-grouped-observations.json', 'application/json'],
+    ['/science/evidence/usda-grasscast-cper-association.json', 'application/json'],
   ]) {
     const response = await fetch(`${base}${path}`);
     assert.equal(response.status, 200, path);
@@ -58,13 +58,13 @@ test('Grass-Cast explorer and its normalized CPER data are served locally', asyn
   }
   const page = await (await fetch(`${base}/grasscast-data.html`)).text();
   const adult = await (await fetch(`${base}/adult-data.html`)).text();
-  const data = await (await fetch(`${base}/data/usda-grasscast/cper-grouped-observations.json`)).json();
+  const data = await (await fetch(`${base}/science/data/usda-grasscast/cper-grouped-observations.json`)).json();
   assert.match(page, /136 têm ambos os valores numéricos/);
   assert.match(page, /não estima efeito causal/);
   assert.match(page, /adjusted-summary/);
   assert.match(adult, /grasscast-data\.html/);
   assert.equal(data.observations.length, 243);
   assert.equal(data.ndviObservations.length, 55);
-  const association = await (await fetch(`${base}/docs/evidence/usda-grasscast-cper-association.json`)).json();
+  const association = await (await fetch(`${base}/science/evidence/usda-grasscast-cper-association.json`)).json();
   assert.equal(association.completeCases.n, 136);
 });

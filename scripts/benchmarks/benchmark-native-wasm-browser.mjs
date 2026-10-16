@@ -29,32 +29,32 @@ const fingerprintPaths = [
   'package.json',
   'package-lock.json',
   'Cargo.lock',
-  'crates/riose-core/Cargo.toml',
-  'crates/riose-core/src/br_corte.rs',
-  'crates/riose-core/src/contract.rs',
-  'crates/riose-core/src/environment.rs',
-  'crates/riose-core/src/feeding.rs',
-  'crates/riose-core/src/lib.rs',
-  'crates/riose-core/src/runtime.rs',
-  'crates/riose-core/src/simulation.rs',
-  'crates/riose-core/src/snapshot.rs',
-  'crates/riose-core/src/state.rs',
-  'crates/riose-core/src/wasm_scenario.rs',
-  'src/client/product-app.js',
-  'src/client/worker.js',
-  'src/client/engine.js',
-  'src/client/metabolism-wasm.js',
-  'src/client/native-scenario-wasm.js',
-  'src/client/native-scenario-wasm-bench-worker.js',
-  'scripts/build-wasm-scenario.sh',
+  'science/crates/riose-core/Cargo.toml',
+  'science/crates/riose-core/src/br_corte.rs',
+  'science/crates/riose-core/src/contract.rs',
+  'science/crates/riose-core/src/environment.rs',
+  'science/crates/riose-core/src/feeding.rs',
+  'science/crates/riose-core/src/lib.rs',
+  'science/crates/riose-core/src/runtime.rs',
+  'science/crates/riose-core/src/simulation.rs',
+  'science/crates/riose-core/src/snapshot.rs',
+  'science/crates/riose-core/src/state.rs',
+  'science/crates/riose-core/src/wasm_scenario.rs',
+  'site/client/product-app.js',
+  'site/client/worker.js',
+  'site/client/engine.js',
+  'site/client/metabolism-wasm.js',
+  'site/client/native-scenario-wasm.js',
+  'site/client/native-scenario-wasm-bench-worker.js',
+  'science/scripts/build/build-wasm-scenario.sh',
   'scripts/benchmarks/benchmark-native-wasm-browser.mjs',
-  'scripts/experiments/browser-startup.mjs',
+  'science/scripts/experiments/browser-startup.mjs',
   'scripts/benchmarks/benchmark-report.mjs',
   'docs/architecture/benchmark-report.schema.json',
   'tests/scenario-goldens/baseline-pasture.json',
   'tests/scenario-goldens/housing-comparison.json',
-  'wasm/riose_core.wasm',
-  'wasm/riose_scenario_core.wasm',
+  'science/wasm/riose_core.wasm',
+  'science/wasm/riose_scenario_core.wasm',
 ];
 if (!Number.isInteger(repetitions) || repetitions < 3 || !Number.isInteger(warmups) || warmups < 1) {
   throw new Error('NATIVE_WASM_REPETITIONS must be >= 3 and NATIVE_WASM_WARMUPS must be >= 1');
@@ -83,7 +83,7 @@ const requestSource = `
 const deepEqual=(a,b)=>{if(a===b)return true;if(typeof a!==typeof b||a===null||b===null)return false;if(Array.isArray(a)||Array.isArray(b))return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>deepEqual(v,b[i]));if(typeof a==='object'){const ak=Object.keys(a).sort(),bk=Object.keys(b).sort();return ak.length===bk.length&&ak.every((k,i)=>k===bk[i]&&deepEqual(a[k],b[k]));}return false;};
 const scientificOnly=value=>{if(Array.isArray(value))return value.map(scientificOnly);if(!value||typeof value!=='object')return value;return Object.fromEntries(Object.entries(value).filter(([key])=>!['locomotionSeed','locomotionRngState','x','y','targetX','targetY'].includes(key)).map(([key,item])=>[key,scientificOnly(item)]));};
 let workerId=0;
-function createWorker(backend,wasmUrl){const worker=new Worker('/src/client/native-scenario-wasm-bench-worker.js',{type:'module'});const pending=new Map();worker.onmessage=event=>{const entry=pending.get(event.data.id);if(entry){pending.delete(event.data.id);entry.resolve(event.data);}};const call=message=>new Promise((resolve,reject)=>{const id=++workerId;pending.set(id,{resolve,reject});worker.postMessage({...message,id});});return {worker,call,backend,wasmUrl};}
+function createWorker(backend,wasmUrl){const worker=new Worker('/site/client/native-scenario-wasm-bench-worker.js',{type:'module'});const pending=new Map();worker.onmessage=event=>{const entry=pending.get(event.data.id);if(entry){pending.delete(event.data.id);entry.resolve(event.data);}};const call=message=>new Promise((resolve,reject)=>{const id=++workerId;pending.set(id,{resolve,reject});worker.postMessage({...message,id});});return {worker,call,backend,wasmUrl};}
 async function startWorker(backend,wasmUrl){const started=performance.now(),client=createWorker(backend,wasmUrl);const response=await client.call({action:'init',backend,wasmUrl});return {...client,startup:{...response.startup,workerToReadyMs:performance.now()-started}};}
 async function run(client,backend,request){const started=performance.now(),response=await client.call({action:'run',backend,request});return {...response,roundTripMs:performance.now()-started};}
 const baselineGolden=${JSON.stringify(baselineGolden)};
@@ -113,7 +113,7 @@ for(const count of [100,1000,10000]){
   }
 }
 
-const missingWasm=await startWorker('wasm','/wasm/riose_scenario_core_missing.wasm');
+const missingWasm=await startWorker('wasm','/science/wasm/riose_scenario_core_missing.wasm');
 const fallback=await run(missingWasm,'wasm',goldenBaselineRequest);
 const fallbackVerified=fallback.ok&&fallback.backend==='javascript'&&fallback.fallback?.used===true&&deepEqual(fallback.result,jsGoldenBaseline.result);
 const invalidWasm=await startWorker('wasm','data:application/wasm;base64,AAAAAA==');
@@ -207,7 +207,7 @@ try {
       {phase: 'bridgeMarshaling', timed: ['WASM request JSON encode, input allocation/copy, Rust request JSON parse, result JSON serialization, output copy, response JSON decode, and total ABI call.'], notTimed: ['UI rendering; response-envelope assembly is included in the total ABI call but not timed as a separate subphase.']},
       {phase: 'memory', timed: ['WASM linear memory high-water size after each completed scenario.'], notTimed: ['Worker JS heap attribution, page heap, process RSS, GPU memory, and transient peak allocation.']},
     ],
-    results: {browser: browserResult.browser, goldenParity: browserResult.goldenParity, fallback: browserResult.fallback, warmupRuns: warmups, repetitions, decision: parityFailed ? 'NO-GO: scenario parity failed' : endToEndGo ? 'WASM compute and Worker path faster at each population in this run; repeat before adoption' : 'No consistent WASM compute and Worker advantage across all tested populations', aggregateMedianMs: {wasm: wasmMedian, javascript: jsMedian}, medianEndToEndBenefitAtEveryPopulation: endToEndGo, sourceArtifactBytes: (await stat(new URL('../../wasm/riose_scenario_core.wasm', import.meta.url))).size, sourceFingerprint: {algorithm: 'sha256', treeDigest: sourceTreeDigest, files: sourceHashes}},
+    results: {browser: browserResult.browser, goldenParity: browserResult.goldenParity, fallback: browserResult.fallback, warmupRuns: warmups, repetitions, decision: parityFailed ? 'NO-GO: scenario parity failed' : endToEndGo ? 'WASM compute and Worker path faster at each population in this run; repeat before adoption' : 'No consistent WASM compute and Worker advantage across all tested populations', aggregateMedianMs: {wasm: wasmMedian, javascript: jsMedian}, medianEndToEndBenefitAtEveryPopulation: endToEndGo, sourceArtifactBytes: (await stat(new URL('../../science/wasm/riose_scenario_core.wasm', import.meta.url))).size, sourceFingerprint: {algorithm: 'sha256', treeDigest: sourceTreeDigest, files: sourceHashes}},
     limitations: [
       `One Linux x86_64 host and one ${browserEngine} build are measured per report; evidence from other browser releases or devices is not implied.`,
       'The JavaScript engine and Rust WASM core execute in separate dedicated module Workers with equivalent requests and exact output parity. This benchmark measures compute, Worker transport, startup, bridge costs, and WASM memory only; it does not measure product presentation.',

@@ -8,9 +8,9 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/audit_mendeley_pasture_biomass_prediction_readiness.py"
-ARTIFACT = ROOT / "docs/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.json"
-OOF = ROOT / "docs/evidence/mendeley-pasture-biomass-grouped-oof-2026-10.csv"
+SCRIPT = ROOT / "science/scripts/readiness/audit_mendeley_pasture_biomass_prediction_readiness.py"
+ARTIFACT = ROOT / "science/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.json"
+OOF = ROOT / "science/evidence/mendeley-pasture-biomass-grouped-oof-2026-10.csv"
 
 
 spec = importlib.util.spec_from_file_location("biomass_readiness", SCRIPT)
@@ -87,10 +87,19 @@ class MendeleyPastureBiomassPredictionReadinessTests(unittest.TestCase):
             self.report["holdoutReadiness"]["internalGroupedOof"]["status"],
             "INTERNAL_GROUPED_OOF_DIAGNOSTIC_ONLY_NOT_EXTERNAL_VALIDATION",
         )
-        markdown = (ROOT / "docs/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.md").read_text(encoding="utf-8")
+        markdown = (ROOT / "science/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.md").read_text(encoding="utf-8")
         self.assertIn("do not constitute external validation", markdown)
         rebuilt, predictions = biomass_readiness.build_report()
-        self.assertEqual(rebuilt, self.report)
+        # Frozen evidence keeps its original citations; compare current physical
+        # locations while preserving exact equality for metrics and input hashes.
+        expected = json.loads(json.dumps(self.report))
+        for item in expected["inputs"]:
+            self.assertTrue(item["path"].startswith("data/"))
+            item["path"] = str(Path("science") / item["path"])
+        artifact = expected["holdoutReadiness"]["internalGroupedOof"]["predictionsArtifact"]
+        self.assertTrue(artifact["path"].startswith("docs/evidence/"))
+        artifact["path"] = str(Path("science/evidence") / artifact["path"].removeprefix("docs/evidence/"))
+        self.assertEqual(rebuilt, expected)
         generated_csv = predictions.to_csv(index=False, float_format="%.8f", lineterminator="\n").encode("utf-8")
         self.assertEqual(hashlib.sha256(generated_csv).hexdigest(), self.report["holdoutReadiness"]["internalGroupedOof"]["predictionsArtifact"]["sha256"])
         self.assertEqual(OOF.read_bytes(), generated_csv)

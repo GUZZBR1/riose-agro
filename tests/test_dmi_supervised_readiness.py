@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/science/readiness/validate_dmi_supervised_readiness.py"
-REPORT = ROOT / "docs/evidence/dmi-supervised-readiness-2026-10.json"
+SCRIPT = ROOT / "science/scripts/readiness/validate_dmi_supervised_readiness.py"
+REPORT = ROOT / "science/evidence/dmi-supervised-readiness-2026-10.json"
 SPEC = importlib.util.spec_from_file_location("dmi_supervised_readiness", SCRIPT)
 VALIDATOR = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VALIDATOR)
@@ -26,7 +26,7 @@ class SupervisedReadinessReportTests(unittest.TestCase):
         VALIDATOR.validate(self.report)
 
     def test_dryad_yearling_candidate_is_included_but_ineligible_for_model_training(self):
-        matrix_path = ROOT / self.report["reviewedMatrix"]["path"]
+        matrix_path = VALIDATOR.evidence_file(self.report["reviewedMatrix"]["path"], "reviewed matrix")
         matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
         source = next(item for item in matrix["sources"] if item["id"] == "dryad-grazing-yearlings")
         self.assertEqual(source["outcomes"]["dmi"]["status"], "ineligible")
@@ -48,7 +48,7 @@ class SupervisedReadinessReportTests(unittest.TestCase):
         VALIDATOR.validate(self.report)
 
     def test_cattlesat_model_outputs_are_not_promoted_to_observed_dmi_rows(self):
-        matrix_path = ROOT / self.report["reviewedMatrix"]["path"]
+        matrix_path = VALIDATOR.evidence_file(self.report["reviewedMatrix"]["path"], "reviewed matrix")
         matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
         source = next(item for item in matrix["sources"] if item["id"] == "pasture-dmi-triage-cattlesat-2026")
         self.assertEqual(source["outcomes"]["dmi"]["status"], "ineligible")
@@ -56,13 +56,13 @@ class SupervisedReadinessReportTests(unittest.TestCase):
         self.assertIn("Simulated outputs", source["outcomes"]["dmi"]["reason"])
         reference = source["references"]["sourceAssessment"]
         self.assertTrue(reference.endswith("#/sources/18"))
-        triage = json.loads((ROOT / "docs/evidence/public-pasture-dmi-source-triage-2026-10.json").read_text(encoding="utf-8"))
+        triage = json.loads((ROOT / "science/evidence/public-pasture-dmi-source-triage-2026-10.json").read_text(encoding="utf-8"))
         cattlesat = triage["sources"][18]
         self.assertFalse(cattlesat["individualDataRetrieved"])
         self.assertIn("no human or animal subjects", cattlesat["reportedPopulation"])
 
     def test_human_readable_gate_report_matches_the_current_source_count(self):
-        markdown = (ROOT / "docs/evidence/dmi-supervised-readiness-2026-10.md").read_text(encoding="utf-8")
+        markdown = (ROOT / "science/evidence/dmi-supervised-readiness-2026-10.md").read_text(encoding="utf-8")
         self.assertIn("matriz de 28 fontes", markdown)
         self.assertIn("28 ineligíveis ou indisponíveis", markdown)
         candidate = next(item for item in self.report["candidateEvidence"] if item["id"] == "dmi-adg-readiness-matrix")
@@ -102,7 +102,7 @@ class SupervisedReadinessReportTests(unittest.TestCase):
             VALIDATOR.validate(self.report)
 
     def test_candidate_source_link_must_resolve_inside_repository(self):
-        self.report["candidateEvidence"][0]["source"] = "docs/evidence/not-a-real-source.json"
+        self.report["candidateEvidence"][0]["source"] = "science/evidence/not-a-real-source.json"
         with self.assertRaisesRegex(ValueError, "missing source evidence"):
             VALIDATOR.validate(self.report)
 

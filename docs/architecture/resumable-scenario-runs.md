@@ -14,11 +14,11 @@ The runner rejects a resume if a scenario digest, seed, engine build identity, i
 
 ## Overhead measurement
 
-`node --expose-gc scripts/experiments/benchmark-resumable-journal.mjs` runs five synthetic batches of 25 records with zero and 2 ms simulated execution per run:
+`node --expose-gc science/scripts/experiments/benchmark-resumable-journal.mjs` runs five synthetic batches of 25 records with zero and 2 ms simulated execution per run:
 
 | Simulated run duration | Batch median | Approximate journal overhead | Heap after batch |
 | ---: | ---: | ---: | ---: |
 | 0 ms | 40.63 ms | 40.63 ms total, 1.63 ms/run | 6.4 MB |
 | 2 ms | 91.94 ms | 41.94 ms total, 1.68 ms/run | 6.6 MB |
 
-This measurement isolates filesystem and manifest work; actual result size and simulation runtime will change the ratio. Heap is sampled after forced GC where available and excludes peak RSS. Raw report: `docs/evidence/resumable-journal-benchmark-2026-10.json`.
+This measurement isolates filesystem and manifest work; actual result size and simulation runtime will change the ratio. Heap is sampled after forced GC where available and excludes peak RSS. Raw report: `science/evidence/resumable-journal-benchmark-2026-10.json`.

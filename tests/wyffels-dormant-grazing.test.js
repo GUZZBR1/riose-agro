@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
-const root = new URL('../data/plos-wyffels-dormant-grazing/', import.meta.url);
+const root = new URL('../science/data/plos-wyffels-dormant-grazing/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('manifest.json', root), 'utf8'));
-const audit = JSON.parse(await readFile(new URL('../docs/evidence/wyffels-dormant-grazing-audit.json', import.meta.url), 'utf8'));
+const audit = JSON.parse(await readFile(new URL('../science/evidence/wyffels-dormant-grazing-audit.json', import.meta.url), 'utf8'));
 
 function parseCsvLine(line) {
   const cells = [];

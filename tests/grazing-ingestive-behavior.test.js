@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
 const report = JSON.parse(await readFile(
-  new URL('../docs/evidence/grazing-ingestive-behavior-audit.json', import.meta.url),
+  new URL('../science/evidence/grazing-ingestive-behavior-audit.json', import.meta.url),
   'utf8',
 ));
 

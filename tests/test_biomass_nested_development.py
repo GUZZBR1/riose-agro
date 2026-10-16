@@ -13,7 +13,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    "evaluate_biomass_nested_development", ROOT / "scripts/science/evaluations/evaluate_biomass_nested_development.py"
+    "evaluate_biomass_nested_development", ROOT / "science/scripts/evaluations/evaluate_biomass_nested_development.py"
 )
 assert SPEC and SPEC.loader
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -77,12 +77,12 @@ class NestedBiomassDevelopmentTests(unittest.TestCase):
         self.assertEqual(hgb.min_samples_leaf, 15)
 
     def test_external_support_wording_and_protocol_hash_are_corrected(self) -> None:
-        old_protocol_path = ROOT / "experiments/diagnostics/biomass/preregister-mendeley-to-dryad-biomass-2026-10.json"
-        external_report_path = ROOT / "experiments/biomass/dryad-external/evaluation-report.json"
+        old_protocol_path = ROOT / "science/experiments/diagnostics/biomass/preregister-mendeley-to-dryad-biomass-2026-10.json"
+        external_report_path = ROOT / "science/experiments/biomass/dryad-external/evaluation-report.json"
         old_protocol = json.loads(old_protocol_path.read_text(encoding="utf-8"))
         external_report = json.loads(external_report_path.read_text(encoding="utf-8"))
         mendeley = pd.read_parquet(MODULE.MEND).dropna(subset=[MODULE.HEIGHT])
-        dryad = pd.read_parquet(ROOT / "data/dryad-mob-rotational-biomass/processed/dryad-paddock-biomass-height-v1.parquet")
+        dryad = pd.read_parquet(ROOT / "science/data/dryad-mob-rotational-biomass/processed/dryad-paddock-biomass-height-v1.parquet")
         self.assertEqual(int(mendeley[MODULE.HEIGHT].between(2.0, 56.0).sum()), 234)
         self.assertEqual(int(mendeley[MODULE.HEIGHT].between(float(dryad.preGrazingHeightMeanCm.min()), 56.0).sum()), 51)
         self.assertIn("All 234", old_protocol["externalEvaluation"]["supportComposition"])

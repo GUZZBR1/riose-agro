@@ -6,9 +6,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "docs/evidence/dmi-finishing-steers-experiment-v1.json"
-PROTOCOL = ROOT / "experiments/dmi-finishing-steers/protocol-v1.json"
-SOURCE = ROOT / "data/dryad-finishing-steers/Database_09-11-2025.csv"
+REPORT = ROOT / "science/evidence/dmi-finishing-steers-experiment-v1.json"
+PROTOCOL = ROOT / "science/experiments/dmi-finishing-steers/protocol-v1.json"
+SOURCE = ROOT / "science/data/dryad-finishing-steers/Database_09-11-2025.csv"
 
 
 class FinishingSteerExperimentEvidenceTests(unittest.TestCase):

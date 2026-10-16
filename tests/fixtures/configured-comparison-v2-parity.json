@@ -1,7 +1,7 @@
 {
   "format": "riose-configured-comparison-js-reference",
   "version": 2,
-  "sourceImplementation": "src/client/engine.js#compareConfiguredScenarios",
+  "sourceImplementation": "site/client/engine.js#compareConfiguredScenarios",
   "sourceSnapshot": "tests/scenario-goldens/baseline-pasture.json#/output/state",
   "comparisonTolerance": 1e-10,
   "snapshot": {

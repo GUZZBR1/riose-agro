@@ -4,15 +4,15 @@ import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 
 test('CPER-only ADG scale is evaluated unchanged on public external-site CGREC steer data', () => {
-  execFileSync('python3', ['scripts/science/source-audits/usda/audit_usda_cgrec_longterm.py'], {encoding: 'utf8'});
-  const integrity = JSON.parse(readFileSync('docs/evidence/usda-cgrec-longterm-audit.json', 'utf8'));
+  execFileSync('python3', ['science/scripts/source-audits/usda/audit_usda_cgrec_longterm.py'], {encoding: 'utf8'});
+  const integrity = JSON.parse(readFileSync('science/evidence/usda-cgrec-longterm-audit.json', 'utf8'));
   assert.equal(integrity.dataset.sha256_verified, true);
   assert.equal(integrity.dataset.public_md5_verified, true);
   assert.equal(integrity.steer_validation_rows.length, 291);
 
-  execFileSync('node', ['scripts/science/engine-audits/audit_engine_adg_usda_cper_ltgi.js'], {encoding: 'utf8'});
-  execFileSync('node', ['scripts/audit_engine_adg_usda_cgrec_external.js'], {encoding: 'utf8'});
-  const reportPath = 'docs/evidence/engine-adg-usda-cgrec-transport-check.json';
+  execFileSync('node', ['science/scripts/engine-audits/audit_engine_adg_usda_cper_ltgi.js'], {encoding: 'utf8'});
+  execFileSync('node', ['science/scripts/engine-audits/audit_engine_adg_usda_cgrec_external.js'], {encoding: 'utf8'});
+  const reportPath = 'science/evidence/engine-adg-usda-cgrec-transport-check.json';
   const firstRun = readFileSync(reportPath, 'utf8');
   const report = JSON.parse(firstRun);
   assert.equal(report.classification, 'external_site_transport_diagnostic_not_full_validation');
@@ -36,6 +36,6 @@ test('CPER-only ADG scale is evaluated unchanged on public external-site CGREC s
   assert.equal(report.validated, false);
   assert.equal(report.calibratedOnCgrec, false);
 
-  execFileSync('node', ['scripts/audit_engine_adg_usda_cgrec_external.js'], {encoding: 'utf8'});
+  execFileSync('node', ['science/scripts/engine-audits/audit_engine_adg_usda_cgrec_external.js'], {encoding: 'utf8'});
   assert.equal(readFileSync(reportPath, 'utf8'), firstRun);
 });

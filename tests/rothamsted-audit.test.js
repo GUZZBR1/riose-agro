@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 
 test('Rothamsted audit verifies the cohort holdout and does not claim engine validation', () => {
-  const raw = execFileSync('python3', ['scripts/science/source-audits/audit_rothamsted_adg.py'], {encoding: 'utf8'});
+  const raw = execFileSync('python3', ['science/scripts/source-audits/audit_rothamsted_adg.py'], {encoding: 'utf8'});
   const report = JSON.parse(raw);
 
   assert.equal(report.source.doi, '10.23637/rothamsted.00033688');
@@ -32,7 +32,7 @@ test('Rothamsted audit verifies the cohort holdout and does not claim engine val
   assert.ok(Number.isFinite(report.heldOutBaseline.rmseKgPerSteerDay));
   assert.equal(report.fullEngineValidation.evaluated, false);
   assert.match(report.fullEngineValidation.reason, /does not establish end-to-end validation of engine\.js/);
-  assert.equal(report.separateFrozenComponentDiagnostic.reportPath, 'docs/evidence/engine-adg-rothamsted-check.json');
+  assert.equal(report.separateFrozenComponentDiagnostic.reportPath, 'science/evidence/engine-adg-rothamsted-check.json');
   assert.equal(report.descriptiveTreatmentMeans['set-stocked'].animalPeriodRowCount, 1175);
   assert.match(report.descriptiveTreatmentMeans['set-stocked'].warning, /three plots per arm/);
 });

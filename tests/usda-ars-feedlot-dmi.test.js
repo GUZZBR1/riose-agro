@@ -2,12 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
-import {predictDefaultBarnDmiKgPerDay} from '../scripts/science/engine-audits/audit_engine_dmi_usda_ars.js';
+import {predictDefaultBarnDmiKgPerDay} from '../science/scripts/engine-audits/audit_engine_dmi_usda_ars.js';
 
 test('public USDA-ARS feedlot DMI workbook is hashed and audited independently of grazing case', () => {
-  execFileSync('node', ['scripts/science/engine-audits/audit_engine_dmi_usda_ars.js'], {encoding: 'utf8'});
-  const source = JSON.parse(readFileSync('docs/evidence/usda-ars-feedlot-dmi-audit.json', 'utf8'));
-  const model = JSON.parse(readFileSync('docs/evidence/usda-ars-feedlot-engine-dmi-check.json', 'utf8'));
+  execFileSync('node', ['science/scripts/engine-audits/audit_engine_dmi_usda_ars.js'], {encoding: 'utf8'});
+  const source = JSON.parse(readFileSync('science/evidence/usda-ars-feedlot-dmi-audit.json', 'utf8'));
+  const model = JSON.parse(readFileSync('science/evidence/usda-ars-feedlot-engine-dmi-check.json', 'utf8'));
 
   assert.equal(source.source.license, 'CC BY 4.0');
   assert.match(source.source.sha256, /^[a-f0-9]{64}$/);

@@ -10,7 +10,7 @@ The version below belongs to the serialized artifact, not to the biological mode
 
 | Artifact | Supported persisted version(s) | Reader behavior | Writer behavior | Unsupported or malformed input |
 | --- | --- | --- | --- | --- |
-| Farm snapshot (`schemas/farm-snapshot.schema.json`) | `schemaVersion: "0.1.0"` | Validate the declared snapshot schema and semantic invariants. `manifestReference` may point to comparison v1 or v2. | Write the current schema version; do not change existing saved bytes in place. | Reject unknown/missing `schemaVersion`, malformed entities, and unsupported manifest references. |
+| Farm snapshot (`science/schemas/farm-snapshot.schema.json`) | `schemaVersion: "0.1.0"` | Validate the declared snapshot schema and semantic invariants. `manifestReference` may point to comparison v1 or v2. | Write the current schema version; do not change existing saved bytes in place. | Reject unknown/missing `schemaVersion`, malformed entities, and unsupported manifest references. |
 | Comparison manifest (`agroville-comparison`) | v1 and v2 | Dispatch by `type` and `version`. Validate v1 with its original shape; validate v2 with the scenario contract validator. | New scenarios write v2. Existing v1 files remain v1. | Reject unknown type/version and malformed fields; do not guess an engine version. |
 | Adapted v1 scenario contract | v2 in memory, sourced from v1 | `upgradeComparisonManifestToScenarioContract` validates v1 before adapting it. Missing producer identity is recorded as `engine_version: "legacy-unspecified"`. | Do not persist this adaptation over the original v1 file automatically. | `legacy-unspecified` is accepted only for an adapted v1 contract; other unsupported engine identifiers fail closed. |
 | Comparison result archive (`agroville-comparison-result`) | v1 | Validate its own type/version and its manifest reference; verify the exact manifest digest before comparing. | Archive creation writes v1 and records the referenced manifest version/hash. | Reject unknown archive type/version or mismatched reference; do not replay as a different manifest. |
@@ -20,7 +20,7 @@ The version below belongs to the serialized artifact, not to the biological mode
 
 This matrix describes the current persisted readers and writers. Any new version needs a valid fixture and an unsupported/malformed fixture at its reader boundary before it is advertised. There is no automatic migration of stored browser data or contract bytes.
 
-The shared JavaScript reader-boundary fixtures are table-driven in `tests/persisted-contract-compatibility.test.js`; that test covers the farm snapshot, both persisted comparison-manifest versions, comparison-result archive, outcome record and browser run-history envelope. The internal Rust checkpoint is covered at its decoder boundary by `snapshot_decoder_rejects_unknown_versions` and `snapshot_decoder_rejects_duplicate_ids_and_unversioned_components` in `crates/riose-core/src/runtime.rs`. Contract-specific tests remain responsible for deeper field and semantic invariants. The table test checks acceptance of a valid artifact and rejection of an unsupported version without rewriting or adapting the persisted bytes.
+The shared JavaScript reader-boundary fixtures are table-driven in `tests/persisted-contract-compatibility.test.js`; that test covers the farm snapshot, both persisted comparison-manifest versions, comparison-result archive, outcome record and browser run-history envelope. The internal Rust checkpoint is covered at its decoder boundary by `snapshot_decoder_rejects_unknown_versions` and `snapshot_decoder_rejects_duplicate_ids_and_unversioned_components` in `science/crates/riose-core/src/runtime.rs`. Contract-specific tests remain responsible for deeper field and semantic invariants. The table test checks acceptance of a valid artifact and rejection of an unsupported version without rewriting or adapting the persisted bytes.
 
 ## Message categories
 
@@ -58,7 +58,7 @@ An unversioned message is legacy only when the version property is absent and it
 
 ## Memory and lifetime
 
-For each WASM batch, JS packs the current values into a typed array. `src/client/metabolism-wasm.js` copies the used prefix into WASM linear memory, invokes one batch call, and copies the result prefix back into a reusable JS result buffer. Calls are not zero-copy. Pointers allocated by `riose_alloc_f64` are owned by the adapter until `dispose()` or Worker termination. They are valid only with their matching capacity and ABI instance. Do not retain a result view past the next kernel call; the engine consumes it synchronously.
+For each WASM batch, JS packs the current values into a typed array. `site/client/metabolism-wasm.js` copies the used prefix into WASM linear memory, invokes one batch call, and copies the result prefix back into a reusable JS result buffer. Calls are not zero-copy. Pointers allocated by `riose_alloc_f64` are owned by the adapter until `dispose()` or Worker termination. They are valid only with their matching capacity and ABI instance. Do not retain a result view past the next kernel call; the engine consumes it synchronously.
 
 ## Scientific metadata
 

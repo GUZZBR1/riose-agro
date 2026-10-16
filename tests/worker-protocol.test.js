@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {decodeWorkerCommand,normalizeWorkerResponse,WORKER_PROTOCOL_VERSION,WorkerProtocolError} from '../src/client/worker-protocol.js';
+import {decodeWorkerCommand,normalizeWorkerResponse,WORKER_PROTOCOL_VERSION,WorkerProtocolError} from '../site/client/worker-protocol.js';
 
 const protocolError=(run,code)=>assert.throws(run,error=>error instanceof WorkerProtocolError&&error.code===code);
 function protocolSnapshot(){return {hour:6,animals:[{id:1,name:'Aurora',action:'grazing',patch:0,weight:330,initialWeight:330,energy:75,thirst:20}],pastures:[1,2,3,4],intake:{pastureKgDM:10,barnBaseKgDM:0,supplementKgDM:2,dietExtraKgDM:1},config:{diet:'pasture',housing:'pasture',weather:'normal',supplement:0},cost:0,events:[],seed:17,initialSeed:17};}
@@ -38,7 +38,7 @@ test('Worker state responses contain scientific state without view buffers',()=>
 test('module Worker emits versioned snapshots and deterministic errors',async t=>{
   const originalSelf=globalThis.self;t.after(()=>{globalThis.self=originalSelf;});
   const worker={messages:[],postMessage(message){this.messages.push(message);}};globalThis.self=worker;
-  await import(`../src/client/worker.js?protocol-test=${Math.random()}`);
+  await import(`../site/client/worker.js?protocol-test=${Math.random()}`);
   await worker.onmessage({data:{protocolVersion:1,type:'reset',seed:917,count:3}});
   const reset=worker.messages.at(-1);assert.equal(reset.protocolVersion,WORKER_PROTOCOL_VERSION);assert.equal(reset.type,'state');assert.equal(reset.state.animals.length,3);
   assert.equal(Object.hasOwn(reset.state,'locomotionSeed'),false);assert.equal(Object.hasOwn(reset.state.animals[0],'x'),false);

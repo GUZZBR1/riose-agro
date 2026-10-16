@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {FarmEngine,compareConfiguredScenarios,createConfiguredComparisonManifest} from '../src/client/engine.js';
-import {createLotComparisonManifest,createLotScopedSnapshot,addLotComparisonContext} from '../src/client/lot-comparison.js';
-import {normalizeWorkerResponse} from '../src/client/worker-protocol.js';
-import {createRunRecord,runCompatibility} from '../src/client/run-history.js';
+import {FarmEngine,compareConfiguredScenarios,createConfiguredComparisonManifest} from '../site/client/engine.js';
+import {createLotComparisonManifest,createLotScopedSnapshot,addLotComparisonContext} from '../site/client/lot-comparison.js';
+import {normalizeWorkerResponse} from '../site/client/worker-protocol.js';
+import {createRunRecord,runCompatibility} from '../site/client/run-history.js';
 
 const fixture=JSON.parse(readFileSync(new URL('./fixtures/configured-comparison-v2-parity.json',import.meta.url),'utf8'));
 
@@ -13,7 +13,7 @@ async function withWorker(t,fetchImpl,callback){
   const worker={messages:[],postMessage(message){this.messages.push(message);}};
   globalThis.self=worker;globalThis.fetch=fetchImpl;
   t.after(()=>{globalThis.self=oldSelf;globalThis.fetch=oldFetch;});
-  await import(`../src/client/worker.js?native-comparison-test=${Math.random()}`);
+  await import(`../site/client/worker.js?native-comparison-test=${Math.random()}`);
   return callback(worker);
 }
 

@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 
 test('frozen engine adult-cow ADG diagnostic is reproducible, no-fit, and separate from CPER', () => {
   execFileSync('npm', ['run', 'audit:engine-adg-zenodo-cows'], {stdio: 'ignore'});
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/engine-adg-zenodo-cows-check.json', import.meta.url), 'utf8'));
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/engine-adg-zenodo-cows-check.json', import.meta.url), 'utf8'));
   assert.equal(report.classification, 'frozen_no_fit_mature_cow_adg_component_diagnostic_not_validation');
   assert.equal(report.source.datasetDoi, '10.5281/zenodo.3707638');
   assert.equal(report.source.licenseDeclaration, 'CC-BY-4.0');

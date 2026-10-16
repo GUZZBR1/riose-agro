@@ -6,13 +6,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts/science/readiness"))
+sys.path.insert(0, str(ROOT / "science/scripts/readiness"))
 from validate_dmi_baseline_no_go import REPORT, validate  # noqa: E402
 
 
 with REPORT.open(encoding="utf-8") as stream:
     REPORT_DATA = json.load(stream)
-with (ROOT / "docs/evidence/dmi-supervised-readiness-2026-10.json").open(encoding="utf-8") as stream:
+with (ROOT / "science/evidence/dmi-supervised-readiness-2026-10.json").open(encoding="utf-8") as stream:
     READINESS_DATA = json.load(stream)
 
 

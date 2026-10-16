@@ -5,10 +5,18 @@ import {fileURLToPath} from 'node:url';
 import {validateIssue15ReadinessContract, validateOutcomeUncertaintyClassifications} from './uncertainty-readiness-validation.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-const inventoryPath=path.join(root,'docs/evidence/uncertainty-readiness-issue-15.json');
+const inventoryPath=path.join(root,'science/evidence/uncertainty-readiness-issue-15.json');
 const inventory=JSON.parse(await readFile(inventoryPath,'utf8'));
 const errors=[];
 const requireCondition=(condition,message)=>{if(!condition)errors.push(message);};
+
+function resolveEvidenceReference(reference) {
+  const portable = reference.replaceAll('\\', '/');
+  if (portable.startsWith('../../experiments/')) return path.join(root, 'science/experiments', portable.slice('../../experiments/'.length));
+  if (portable.startsWith('../../docs/evidence/')) return path.join(root, 'science/evidence', portable.slice('../../docs/evidence/'.length));
+  if (portable.startsWith('../../docs/')) return path.join(root, 'science/docs', portable.slice('../../docs/'.length));
+  return path.resolve(path.dirname(inventoryPath), reference);
+}
 
 requireCondition(inventory.schemaVersion===1,'schemaVersion must be 1');
 requireCondition(inventory.issue===15,'inventory must identify issue #15');
@@ -32,24 +40,24 @@ for(const outcome of inventory.outcomes??[]){
   requireCondition(outcome.intervalAuthorized===false,`${outcome.id}: interval must not be authorized`);
   requireCondition(Array.isArray(outcome.evidence)&&outcome.evidence.length>0,`${outcome.id}: evidence references are required`);
   for(const ref of outcome.evidence??[]){
-    const resolved=path.resolve(path.dirname(inventoryPath),ref);
-    const isEvidenceFile=resolved.startsWith(path.join(root,'docs/evidence')+path.sep);
-    const isApprovedExperiment=resolved.startsWith(path.join(root,'experiments/diagnostics/adg')+path.sep)
-      || resolved.startsWith(path.join(root,'experiments/diagnostics/biomass')+path.sep)
-      || resolved.startsWith(path.join(root,'experiments/biomass')+path.sep);
-    requireCondition(isEvidenceFile||isApprovedExperiment||resolved===path.join(root,'docs/politica-incerteza.md'),`${outcome.id}: evidence path escapes approved evidence directories: ${ref}`);
+    const resolved=resolveEvidenceReference(ref);
+    const isEvidenceFile=resolved.startsWith(path.join(root,'science/evidence')+path.sep);
+    const isApprovedExperiment=resolved.startsWith(path.join(root,'science/experiments/diagnostics/adg')+path.sep)
+      || resolved.startsWith(path.join(root,'science/experiments/diagnostics/biomass')+path.sep)
+      || resolved.startsWith(path.join(root,'science/experiments/biomass')+path.sep);
+    requireCondition(isEvidenceFile||isApprovedExperiment||resolved===path.join(root,'science/docs/politica-incerteza.md'),`${outcome.id}: evidence path escapes approved evidence directories: ${ref}`);
     requireCondition(existsSync(resolved),`${outcome.id}: evidence file not found: ${ref}`);
   }
 }
 
 for(const ref of inventory.references??[]){
-  const resolved=path.resolve(path.dirname(inventoryPath),ref);
+  const resolved=resolveEvidenceReference(ref);
   requireCondition(existsSync(resolved),`reference file not found: ${ref}`);
 }
 
-const engine=await readFile(path.join(root,'src/client/engine.js'),'utf8');
-const app=await readFile(path.join(root,'src/client/product-app.js'),'utf8');
-const policy=await readFile(path.join(root,'docs/politica-incerteza.md'),'utf8');
+const engine=await readFile(path.join(root,'site/client/engine.js'),'utf8');
+const app=await readFile(path.join(root,'site/client/product-app.js'),'utf8');
+const policy=await readFile(path.join(root,'science/docs/politica-incerteza.md'),'utf8');
 requireCondition(/validated\s*:\s*false/.test(engine),'engine source no longer explicitly marks comparison output unvalidated');
 requireCondition(app.includes('Status: demonstrativo, não validado como previsão ou recomendação'),'experiment interface no longer states the model validation limit');
 requireCondition(policy.includes('Sem calibração suficiente'),'uncertainty policy no longer states the current non-calibrated label');

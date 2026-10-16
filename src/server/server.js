@@ -5,10 +5,10 @@ import {extname, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import {validateFarmSnapshot} from '../client/snapshot-validator.js';
-import {validateFarmSnapshotManifestReference} from '../client/snapshot-manifest-link.js';
+import {validateFarmSnapshot} from '../../site/client/snapshot-validator.js';
+import {validateFarmSnapshotManifestReference} from '../../site/client/snapshot-manifest-link.js';
 import {executeNativeConfiguredComparison, nativeComparisonAvailable, nativeComparisonRunner} from './native-comparison.js';
-import {validateExperimentSpecification} from '../client/population-experiment.js';
+import {validateExperimentSpecification} from '../../site/client/population-experiment.js';
 
 const ROOT = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const MAX_BODY_BYTES = 16 * 1024;
@@ -28,43 +28,46 @@ const PUBLIC_FILES = new Set([
   'assets/research-illustrations/nelore-white.png', 'assets/research-illustrations/nelore-black.png',
   'assets/research-illustrations/nelore-white.webp', 'assets/research-illustrations/nelore-black.webp',
   'index.html', 'engine.js', 'engine-provenance.js', 'environment-model.js', 'feeding-model.js', 'simulation-report.js', 'run-history.js', 'worker.js', 'favicon.svg',
-  'environment-inputs.js', 'lot-metrics.js', 'thermal-index.js', 'lot-selection.js', 'scientific/br_corte_pasture_dmi.js',
+  'environment-inputs.js', 'lot-metrics.js', 'thermal-index.js', 'lot-selection.js', 'science/runtime/br_corte_pasture_dmi.js',
   'snapshot-review.js', 'snapshot-validator.js', 'outcome-review.html', 'outcome-review.css', 'outcome-review.js',
   'adult-data.html', 'adult-data.css', 'adult-data.js', 'adult-data-model.js',
   'adult-cow-data.html', 'adult-cow-data.css', 'adult-cow-data.js', 'adult-cow-data-model.js',
   'montana-cow-data.html', 'montana-cow-data.js',
   'rangeland-behavior.html', 'rangeland-behavior.js',
-  'data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv',
-  'docs/evidence/perea-rangeland-behavior-audit.json',
+  'science/data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv',
+  'science/data/perea-rangeland-behavior/README_V2.txt',
+  'science/evidence/perea-rangeland-behavior-audit.json',
+  'science/docs/revisao-independente-caso.md', 'science/docs/modelos/interface-modelos-cientificos.md',
+  'docs/historico-execucoes.md',
   'usda-cgrec-cow-calf.html', 'usda-cgrec-cow-calf.css', 'usda-cgrec-cow-calf.js',
   'observed-data.html', 'observed-data.css', 'observed-data.js', 'observed-data-model.js',
-  'data/observed-calves-zenodo-7251167.json',
-  'data/mdpi-angus-cow-grazing/weight-change-observations.json',
-  'data/mdpi-angus-cow-grazing/supplement.zip',
-  'docs/evidence/mdpi-angus-cow-grazing-audit.json',
-  'docs/evidence/mdpi-angus-gps-adg-association.json',
+  'science/data/observed-calves-zenodo-7251167.json',
+  'science/data/mdpi-angus-cow-grazing/weight-change-observations.json',
+  'science/data/mdpi-angus-cow-grazing/supplement.zip',
+  'science/evidence/mdpi-angus-cow-grazing-audit.json',
+  'science/evidence/mdpi-angus-gps-adg-association.json',
   'rothamsted-data.html', 'rothamsted-data.css', 'rothamsted-data.js',
   'cgrec-data.html', 'cgrec-data.js', 'hpgrs-data.html', 'hpgrs-data.js',
   'grasscast-data.html', 'grasscast-data.js', 'grasscast-data.css',
-  'data/usda-cper/period.csv', 'data/usda-cper/daily.csv',
-  'docs/evidence/usda-cper-association.json',
-  'docs/evidence/usda-grasscast-cper-association.json',
-  'docs/evidence/zenodo-grazing-allometry-association.json',
-  'docs/evidence/engine-adg-usda-cper-ltgi-check.json',
-  'docs/evidence/engine-adg-usda-cgrec-transport-check.json',
-  'docs/evidence/engine-adg-zenodo-cows-check.json',
-  'docs/evidence/usda-cgrec-cow-calf-audit.json',
-  'data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', 'data/usda-cgrec-longterm/manifest.json',
-  'data/usda-cgrec-cow-calf/cow-calf-observations.json', 'data/usda-cgrec-cow-calf/manifest.json',
-  'data/usda-cgrec-cow-calf/CentralGrasslandsFireForageNAL.xlsx',
-  'data/usda-grasscast/manifest.json', 'data/usda-grasscast/cper-grouped-observations.json',
-  'data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', 'data/usda-hpgrs-1982-2022/EastUnit_LTGI_DataDictionary.csv', 'data/usda-hpgrs-1982-2022/manifest.json',
-  'data/zenodo-grazing-allometry/Zenodo_Data_Allometry.txt', 'data/zenodo-grazing-allometry/manifest.json',
-  'data/rothamsted/Cattle_LWt_collated_2018-2025.csv', 'data/rothamsted/2018-2025_Pasture_DM_herbage_mass.csv',
-  'schemas/farm-snapshot.schema.json', 'schemas/outcome-record.schema.json',
-  'scenario-storage.js', 'metabolism-wasm.js', 'wasm/riose_core.wasm', 'wasm/riose_scenario_core.wasm',
+  'science/data/usda-cper/period.csv', 'science/data/usda-cper/daily.csv',
+  'science/evidence/usda-cper-association.json',
+  'science/evidence/usda-grasscast-cper-association.json',
+  'science/evidence/zenodo-grazing-allometry-association.json',
+  'science/evidence/engine-adg-usda-cper-ltgi-check.json',
+  'science/evidence/engine-adg-usda-cgrec-transport-check.json',
+  'science/evidence/engine-adg-zenodo-cows-check.json',
+  'science/evidence/usda-cgrec-cow-calf-audit.json',
+  'science/data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', 'science/data/usda-cgrec-longterm/manifest.json',
+  'science/data/usda-cgrec-cow-calf/cow-calf-observations.json', 'science/data/usda-cgrec-cow-calf/manifest.json',
+  'science/data/usda-cgrec-cow-calf/CentralGrasslandsFireForageNAL.xlsx',
+  'science/data/usda-grasscast/manifest.json', 'science/data/usda-grasscast/cper-grouped-observations.json',
+  'science/data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', 'science/data/usda-hpgrs-1982-2022/EastUnit_LTGI_DataDictionary.csv', 'science/data/usda-hpgrs-1982-2022/manifest.json',
+  'science/data/zenodo-grazing-allometry/Zenodo_Data_Allometry.txt', 'science/data/zenodo-grazing-allometry/manifest.json',
+  'science/data/rothamsted/Cattle_LWt_collated_2018-2025.csv', 'science/data/rothamsted/2018-2025_Pasture_DM_herbage_mass.csv',
+  'science/schemas/farm-snapshot.schema.json', 'science/schemas/outcome-record.schema.json',
+  'scenario-storage.js', 'metabolism-wasm.js', 'science/wasm/riose_core.wasm', 'science/wasm/riose_scenario_core.wasm',
 ]);
-const CLIENT_FILES = new Set(readdirSync(resolve(ROOT, 'src/client')));
+const CLIENT_FILES = new Set(readdirSync(resolve(ROOT, 'site/client')));
 const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -218,12 +221,12 @@ async function readJsonWithLimit(request, maxBytes) {
   }
 }
 
-const schemaPath = resolve(ROOT, 'schemas/farm-snapshot.schema.json');
+const schemaPath = resolve(ROOT, 'science/schemas/farm-snapshot.schema.json');
 const snapshotSchema = JSON.parse(readFileSync(schemaPath, 'utf8'));
 const ajv = new Ajv2020({allErrors: true, strict: true, strictRequired: false});
 addFormats(ajv);
 const validateSnapshotSchema = ajv.compile(snapshotSchema);
-const configuredComparisonSchema = JSON.parse(readFileSync(resolve(ROOT, 'schemas/configured-comparison-request-v2.schema.json'), 'utf8'));
+const configuredComparisonSchema = JSON.parse(readFileSync(resolve(ROOT, 'science/schemas/configured-comparison-request-v2.schema.json'), 'utf8'));
 const validateConfiguredComparisonRequest = new Ajv2020({allErrors: true, strict: false, strictRequired: false}).compile(configuredComparisonSchema);
 
 export function validateSnapshotReviewRequest(input) {
@@ -316,17 +319,43 @@ async function serveStatic(pathname, response, env = process.env) {
   try { decoded = decodeURIComponent(pathname); } catch { return sendJson(response, 400, {error: 'invalid_path'}); }
   const relative = decoded === '/' ? 'home.html' : decoded.replace(/^\/+/, '');
   if (relative.startsWith('tools/') && env.NODE_ENV === 'production') return sendJson(response, 404, {error: 'not_found'});
-  const isProjectAsset = relative.startsWith('assets/') && !PUBLIC_FILES.has(relative) && !relative.split('/').some(part => part === '.' || part === '..');
-  const clientPath = relative.startsWith('src/client/') ? relative.slice('src/client/'.length) : '';
-  const isClientFile = clientPath !== ''
-    && clientPath.split('/').every(part => part !== '' && part !== '.' && part !== '..');
-  const isLegacyClientFile = CLIENT_FILES.has(relative) && PUBLIC_FILES.has(relative);
-  if (!PUBLIC_FILES.has(relative) && !isProjectAsset && !isClientFile) return sendJson(response, 404, {error: 'not_found'});
-  const path = isProjectAsset ? resolve(ROOT, 'public', relative)
-    : isLegacyClientFile ? resolve(ROOT, 'src/client', relative)
-      : resolve(ROOT, relative);
-  const allowedRoot = isProjectAsset ? resolve(ROOT, 'public') : ROOT;
-  if (path !== allowedRoot && !path.startsWith(allowedRoot + sep)) return sendJson(response, 404, {error: 'not_found'});
+  const pageNames = new Set([
+    'adult-cow-data.html', 'adult-data.html', 'cgrec-data.html', 'experiments.html', 'grasscast-data.html',
+    'home.html', 'hpgrs-data.html', 'index.html', 'manifesto.html', 'montana-cow-data.html', 'observed-data.html',
+    'outcome-review.html', 'product.html', 'rangeland-behavior.html', 'rothamsted-data.html', 'simulator.html',
+    'usda-cgrec-cow-calf.html',
+  ]);
+  if (decoded === '/' || pageNames.has(relative)) {
+    const target = relative === 'index.html' || decoded === '/' ? 'home.html' : relative;
+    response.writeHead(308, {location: `site/pages/${target}`});
+    response.end();
+    return;
+  }
+  const isSafeRelative = relative.replace(/\/+$/, '').split('/').every(part => part !== '' && part !== '.' && part !== '..');
+  let file = relative;
+  if (relative === 'site/pages' || relative === 'site/pages/') file = 'site/pages/index.html';
+  else if (relative.startsWith('site/pages/')) file = relative;
+  else if (['favicon.svg', 'riose-mark.svg', 'header-interaction.js', 'manifesto.css', 'manifesto.js', 'product.css'].includes(relative)) {
+    file = `site/assets/${relative}`;
+  }
+  else if (relative.startsWith('assets/')) file = `site/${relative}`;
+  else if (relative.startsWith('src/client/')) file = `site/client/${relative.slice('src/client/'.length)}`;
+  else if (relative.startsWith('data/')) file = `science/${relative}`;
+  else if (relative.startsWith('schemas/')) file = `science/${relative}`;
+  else if (relative.startsWith('docs/evidence/')) file = `science/evidence/${relative.slice('docs/evidence/'.length)}`;
+  else if (relative.startsWith('wasm/')) file = `science/${relative}`;
+  else if (CLIENT_FILES.has(relative)) file = `site/client/${relative}`;
+  const clientPath = file.startsWith('site/client/') ? file.slice('site/client/'.length) : '';
+  const isClientFile = clientPath !== '' && clientPath.split('/').every(part => part !== '' && part !== '.' && part !== '..')
+    && CLIENT_FILES.has(clientPath);
+  const isSitePage = file.startsWith('site/pages/') && file.endsWith('.html') && isSafeRelative;
+  const isProjectAsset = file.startsWith('site/assets/') && isSafeRelative;
+  if (!PUBLIC_FILES.has(relative) && !PUBLIC_FILES.has(file) && !isProjectAsset && !isClientFile && !isSitePage) {
+    return sendJson(response, 404, {error: 'not_found'});
+  }
+  const path = resolve(ROOT, file);
+  const allowedRoot = resolve(ROOT);
+  if (path === allowedRoot || !path.startsWith(allowedRoot + sep)) return sendJson(response, 404, {error: 'not_found'});
   try {
     const body = await readFile(path);
     response.writeHead(200, {'content-type': MIME_TYPES[extname(path)] ?? 'application/octet-stream', 'x-content-type-options': 'nosniff'});

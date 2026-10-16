@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
-import {compareConfiguredScenarios} from '../src/client/engine.js';
+import {compareConfiguredScenarios} from '../site/client/engine.js';
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/configured-comparison-v2-parity.json', import.meta.url), 'utf8'));
-const schema = JSON.parse(readFileSync(new URL('../schemas/configured-comparison-request-v2.schema.json', import.meta.url), 'utf8'));
+const schema = JSON.parse(readFileSync(new URL('../science/schemas/configured-comparison-request-v2.schema.json', import.meta.url), 'utf8'));
 
 function assertEquivalent(actual, expected, tolerance, path = '$') {
   if (typeof expected === 'number') {
@@ -41,7 +41,7 @@ test('configured comparison v2 schema requires a strict complete request', () =>
 });
 
 test('frozen JS reference vectors cover all one-factor configured comparison arms', () => {
-  assert.equal(fixture.sourceImplementation, 'src/client/engine.js#compareConfiguredScenarios');
+  assert.equal(fixture.sourceImplementation, 'site/client/engine.js#compareConfiguredScenarios');
   assert.deepEqual(fixture.cases.map(({factor}) => factor), ['diet', 'housing', 'weather', 'supplement']);
   for (const vector of fixture.cases) {
     const actual = compareConfiguredScenarios(fixture.snapshot, {

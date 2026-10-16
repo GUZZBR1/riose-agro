@@ -21,7 +21,7 @@ Dependencies: P2-001
 Implementation scope: Strict natural language intent parser/validator, supported amendments, paired deterministic runner, checkpoint/history projection, Worker protocol.
 Acceptance criteria: Reject out-of-domain inputs; stable IDs, same snapshot and seed; aggregates match existing comparison; observations are bounded and provenance retained.
 Required tests: parser validation, amendment, worker protocol, aggregate parity, compact history tests
-Evidence: `tests/product-population.test.js`; `src/client/population-experiment.js`; `src/client/worker-protocol.js`
+Evidence: `tests/product-population.test.js`; `site/client/population-experiment.js`; `site/client/worker-protocol.js`
 Status: DONE
 
 ## P2-003
@@ -32,7 +32,7 @@ Dependencies: P2-002
 Implementation scope: Replace redirect with empty prompt state, suggestions, conversation, review/confirm, grid, timeline, inspector, aggregates, provenance, history and export; preserve old Experiments UI.
 Acceptance criteria: Explicit review before execution; real Worker results only; stable cell IDs; mobile/keyboard/reduced motion; follow-up invalidates results until confirmed again.
 Required tests: browser E2E and `tests/app.test.js`
-Evidence: `docs/evidence/product-v2-initial.png`, `docs/evidence/product-v2-workspace.png`, `docs/evidence/product-v2-mobile.png`
+Evidence: `science/evidence/product-v2-initial.png`, `science/evidence/product-v2-workspace.png`, `science/evidence/product-v2-mobile.png`
 Status: DONE
 
 ## P2-004
@@ -54,7 +54,7 @@ Dependencies: P2-003, P2-004
 Implementation scope: Full tests/parity; browser flow/screenshots; performance sample; fix findings.
 Acceptance criteria: all listed regression tests pass; initial/results/mobile inspected; no fabricated output; diff clean of generated artifacts.
 Required tests: `npm test`; `npm run test:parity`; Playwright flow
-Evidence: `progress.md` and screenshots under `../../docs/evidence/`
+Evidence: `progress.md` and screenshots under `../../science/evidence/`
 Status: DONE
 
 ## P2-006

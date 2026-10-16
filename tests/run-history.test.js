@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {FarmEngine,compare,createComparisonManifest} from '../src/client/engine.js';
-import {COMPARISON_ENGINE_VERSION,createRunRecord,getRun,listRuns,recordRun,runCompatibility,RUN_HISTORY_KEY,MAX_RUN_HISTORY_BYTES,getRunHistoryStats,exportRunHistory,clearRunHistory} from '../src/client/run-history.js';
+import {FarmEngine,compare,createComparisonManifest} from '../site/client/engine.js';
+import {COMPARISON_ENGINE_VERSION,createRunRecord,getRun,listRuns,recordRun,runCompatibility,RUN_HISTORY_KEY,MAX_RUN_HISTORY_BYTES,getRunHistoryStats,exportRunHistory,clearRunHistory} from '../site/client/run-history.js';
 
 class MemoryStorage{
   constructor(values=new Map()){this.values=values;}

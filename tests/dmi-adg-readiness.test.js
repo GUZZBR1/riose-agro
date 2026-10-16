@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {existsSync} from 'node:fs';
 
-const report = JSON.parse(await readFile(new URL('../docs/evidence/dmi-adg-readiness-v1.json', import.meta.url), 'utf8'));
+const report = JSON.parse(await readFile(new URL('../science/evidence/dmi-adg-readiness-v1.json', import.meta.url), 'utf8'));
 
 test('DMI/ADG readiness matrix keeps ordered source references and component outcomes explicit', () => {
   assert.equal(report.schemaVersion, 'riose.dmi-adg-readiness/v1');
@@ -19,7 +19,15 @@ test('DMI/ADG readiness matrix keeps ordered source references and component out
       if (source.access !== 'available_local') assert.equal(outcome.trainable, false);
     }
     for (const reference of Object.values(source.references)) {
-      if (reference) assert.equal(existsSync(new URL(`../${reference}`, import.meta.url)), true, `${source.id}: ${reference}`);
+      if (reference) {
+        const legacyDirectory = reference.split('/')[0];
+        const canonicalReference = reference.startsWith('data/') ? `science/${reference}`
+          : reference.startsWith('docs/evidence/') ? `science/evidence/${reference.slice('docs/evidence/'.length)}`
+            : reference.startsWith('docs/') ? `science/docs/${reference.slice('docs/'.length)}`
+              : ['experiments', 'requirements', 'examples', 'artifacts', 'schemas', 'wasm'].includes(legacyDirectory) ? `science/${reference}`
+                : reference;
+        assert.equal(existsSync(new URL(`../${canonicalReference}`, import.meta.url)), true, `${source.id}: ${reference}`);
+      }
     }
   }
 

@@ -4,8 +4,8 @@ import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 
 test('public SDSU supplement audit derives individual DMI without treating it as CPER validation', () => {
-  execFileSync('python3', ['scripts/science/source-audits/audit_sdsu_individual_dmi.py'], {encoding: 'utf8'});
-  const report = JSON.parse(readFileSync('docs/evidence/sdsu-individual-dmi-audit.json', 'utf8'));
+  execFileSync('python3', ['science/scripts/source-audits/audit_sdsu_individual_dmi.py'], {encoding: 'utf8'});
+  const report = JSON.parse(readFileSync('science/evidence/sdsu-individual-dmi-audit.json', 'utf8'));
   assert.equal(report.source.article_doi, '10.3389/fvets.2025.1625448');
   assert.equal(report.source.license, 'CC BY');
   assert.equal(report.coverage.intake_rows, 1480);
@@ -26,7 +26,7 @@ test('public SDSU supplement audit derives individual DMI without treating it as
   assert.match(report.scope.use, /seven tags selected by the authors/);
   assert.equal(report.scope.not_valid_for.includes('validation of the USDA/CPER grazing ADG case'), true);
 
-  const rows = readFileSync('data/sdsu-individual-dmi/individual-dmi-derived.csv', 'utf8').trim().split('\n');
+  const rows = readFileSync('science/data/sdsu-individual-dmi/individual-dmi-derived.csv', 'utf8').trim().split('\n');
   assert.equal(rows.length, 1481);
   assert.match(rows[0], /feed_type_raw,feed_period_normalized/);
   assert.equal(rows.slice(1).filter((row) => row.split(',')[4] === 'aggregate_total' || row.split(',')[4] === 'aggregate_unknown').filter((row) => row.split(',')[8].trim() !== '' || row.split(',')[12].trim() !== '').length, 0);

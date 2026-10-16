@@ -6,10 +6,10 @@ import {spawnSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {createServer, validateSnapshotReviewRequest} from '../src/server/server.js';
-import {FarmEngine, createComparisonManifest} from '../src/client/engine.js';
-import {linkFarmSnapshotToManifest} from '../src/client/snapshot-manifest-link.js';
+import {FarmEngine, createComparisonManifest} from '../site/client/engine.js';
+import {linkFarmSnapshotToManifest} from '../site/client/snapshot-manifest-link.js';
 
-const snapshotExample = JSON.parse(readFileSync(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+const snapshotExample = JSON.parse(readFileSync(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
 
 test('snapshot review distinguishes a valid observed slice from simulation eligibility', () => {
   const report = validateSnapshotReviewRequest({snapshot: snapshotExample});
@@ -93,9 +93,9 @@ test('snapshot review endpoint validates locally alongside current experiment wo
   const page = await fetch(`${root}/`);
   assert.equal(page.status, 200);
   assert.match(await page.text(), /href="product\.html"/);
-  const reviewScript = await fetch(`${root}/src/client/snapshot-review.js`);
+  const reviewScript = await fetch(`${root}/site/client/snapshot-review.js`);
   assert.equal(reviewScript.status, 200);
-  const schema = await fetch(`${root}/schemas/farm-snapshot.schema.json`);
+  const schema = await fetch(`${root}/science/schemas/farm-snapshot.schema.json`);
   assert.equal(schema.status, 200);
   const invalidContentType = await fetch(`${root}/api/validate-snapshot`, {method: 'POST', body: JSON.stringify({snapshot: snapshotExample})});
   assert.equal(invalidContentType.status, 415);
@@ -133,15 +133,15 @@ test('outcome record page is served as a local-only scientific review flow', asy
   const home = await fetch(`${root}/`);
   assert.match(await home.text(), /href="product\.html"/);
 
-  const script = await fetch(`${root}/src/client/outcome-review.js`);
+  const script = await fetch(`${root}/site/client/outcome-review.js`);
   assert.equal(script.status, 200);
   const scriptText = await script.text();
   assert.doesNotMatch(scriptText, /\/api\//);
   assert.doesNotMatch(scriptText, /localStorage|sessionStorage/);
   assert.match(scriptText, /archive\.comparison\?\.validated !== false/);
-  assert.equal((await fetch(`${root}/src/client/outcome-review.css`)).status, 200);
-  assert.equal((await fetch(`${root}/src/client/snapshot-validator.js`)).status, 200);
-  assert.equal((await fetch(`${root}/schemas/outcome-record.schema.json`)).status, 200);
+  assert.equal((await fetch(`${root}/site/client/outcome-review.css`)).status, 200);
+  assert.equal((await fetch(`${root}/site/client/snapshot-validator.js`)).status, 200);
+  assert.equal((await fetch(`${root}/science/schemas/outcome-record.schema.json`)).status, 200);
 });
 
 test('snapshot review rejects malformed payloads and oversize uploads', async t => {

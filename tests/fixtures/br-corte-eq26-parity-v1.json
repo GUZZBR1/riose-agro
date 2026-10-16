@@ -1,7 +1,7 @@
 {
   "format": "riose-br-corte-eq26-js-reference-vectors",
   "version": 1,
-  "sourceImplementation": "scientific/br_corte_pasture_dmi.js",
+  "sourceImplementation": "science/runtime/br_corte_pasture_dmi.js",
   "equation": "br-corte-2023-eq-2.6",
   "comparisonToleranceKgDMPerDay": 1e-12,
   "vectors": [

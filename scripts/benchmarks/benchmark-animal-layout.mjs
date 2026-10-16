@@ -1,9 +1,9 @@
 import {execFileSync} from 'node:child_process';
 import {readFile,writeFile} from 'node:fs/promises';
 import {performance} from 'node:perf_hooks';
-import {FarmEngine,ASSUMPTIONS} from '../../src/client/engine.js';
-import {calculateFeeding} from '../../src/client/feeding-model.js';
-import {getWeatherRules} from '../../src/client/environment-model.js';
+import {FarmEngine,ASSUMPTIONS} from '../../site/client/engine.js';
+import {calculateFeeding} from '../../site/client/feeding-model.js';
+import {getWeatherRules} from '../../site/client/environment-model.js';
 import {assertBenchmarkReport,benchmarkReport,measurement,summarizeSamples} from './benchmark-report.mjs';
 import {evaluateAnimalLayoutDecision} from './animal-layout-decision.mjs';
 import {normalizeProfileUrl,sampleAllocations} from './benchmark-allocation-sampling.mjs';
@@ -17,7 +17,7 @@ const warmups=8;
 const allocationSamplingIntervalBytes=4096;
 if(!Number.isInteger(repetitions)||repetitions<3)throw new Error('ANIMAL_LAYOUT_REPETITIONS must be an integer of at least 3');
 if(typeof globalThis.gc!=='function')throw new Error('Run this memory/allocation benchmark with node --expose-gc.');
-const resultPath=process.env.ANIMAL_LAYOUT_OUTPUT??'docs/evidence/animal-layout-study-2026-10.json';
+const resultPath=process.env.ANIMAL_LAYOUT_OUTPUT??'science/evidence/animal-layout-study-2026-10.json';
 const maintenance=ASSUMPTIONS.maintenanceKgDM;
 const gainFactor=ASSUMPTIONS.gainFactor;
 

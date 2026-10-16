@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.science.evaluations.verify_scientific_ml_baseline import verify
+from science.scripts.evaluations.verify_scientific_ml_baseline import verify
 
 
 class FrozenScientificMlBaselineTest(unittest.TestCase):

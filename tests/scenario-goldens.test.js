@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
-import {replayScenarioContract, validateScenarioContract} from '../src/client/scenario-contract.js';
-import {executeScenario} from '../scripts/experiments/run-scenarios.js';
+import {replayScenarioContract, validateScenarioContract} from '../site/client/scenario-contract.js';
+import {executeScenario} from '../science/scripts/experiments/run-scenarios.js';
 import {generateScenarioGolden, generateScenarioGoldenBytes, serializeScenarioGolden} from '../scripts/validation/generate-scenario-goldens.js';
 
 const goldenDirectory = fileURLToPath(new URL('./scenario-goldens/', import.meta.url));

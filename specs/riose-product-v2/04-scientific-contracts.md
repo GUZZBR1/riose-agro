@@ -10,7 +10,7 @@ FarmEngine JS and Rust states include `weight`, `initialWeight`, `energy`, `thir
 For a displayed animal indicator `x`, `delta = x_intervention - x_baseline` for the same engine animal ID, checkpoint day, and initial snapshot. The current weight-difference filters classify `delta > 0.01 kg` positive, `delta < -0.01 kg` negative, and `abs(delta) <= 0.01 kg` neutral; this display tolerance avoids presenting sub-hundredth-kg floating-point differences as meaningful. Values are rounded only for display. Aggregate deltas use the paired row values for the same day. Never compare unrelated IDs or seeds.
 
 ## Evidence gates
-- BR-CORTE 2023 Eq. 2.6 computes DMI from weight, supplement, and supplied ADG within declared domain; it does not predict ADG. Contract/schema: `scientific/model-contract.js`, `scientific/br_corte_pasture_dmi.js`, `schemas/br-corte-pasture-dmi-request-v1.schema.json`.
+- BR-CORTE 2023 Eq. 2.6 computes DMI from weight, supplement, and supplied ADG within declared domain; it does not predict ADG. Contract/schema: `science/runtime/model-contract.js`, `science/runtime/br_corte_pasture_dmi.js`, `science/schemas/br-corte-pasture-dmi-request-v1.schema.json`.
 - USDA/CPER yearling observed cohort remains distinct from mature cows.
 - Perea grouped-by-animal classification is a bounded classification diagnostic, not behavior generation evidence.
 - Biomass sampling estimates do not equal required engine paddock stock; transport reports restrict generalization.
@@ -18,4 +18,4 @@ For a displayed animal indicator `x`, `delta = x_intervention - x_baseline` for 
 - No predictive uncertainty or confidence is shown without calibrated method and evidence.
 - Generative Agents, Social Simulacra, Grounded Theory Based Agents and livestock ABM papers are architecture references, not validation of this engine or bovine behavior. The repository literature review and Product audit list the checked work and scope boundaries. No LLM acts hourly.
 
-See [Product audit](../../docs/architecture/product-conversational-simulation-audit-2026-10-15.md), [scientific module evaluation](../../docs/evidence/scientific-module-evaluations-2026-10-13.md), and model/data registries. Do not auto-connect a model merely because it is present.
+See [Product audit](../../docs/architecture/product-conversational-simulation-audit-2026-10-15.md), [scientific module evaluation](../../science/evidence/scientific-module-evaluations-2026-10-13.md), and model/data registries. Do not auto-connect a model merely because it is present.

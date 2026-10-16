@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
-import {FarmEngine} from '../../src/client/engine.js';
-import {ColumnHistoryEngine} from '../experiments/column-history-engine.mjs';
+import {FarmEngine} from '../../site/client/engine.js';
+import {ColumnHistoryEngine} from '../../science/scripts/experiments/column-history-engine.mjs';
 
 const [variant, countText, hoursText, repetitionsText] = process.argv.slice(2);
 const Engine = variant === 'typedColumns' ? ColumnHistoryEngine : FarmEngine;

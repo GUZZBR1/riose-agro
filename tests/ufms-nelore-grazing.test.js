@@ -4,7 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 
 test('UFMS Nelore v1 audit preserves coverage and flags ADG incompatibility', () => {
-  const report = JSON.parse(execFileSync('python3', ['scripts/science/source-audits/audit_ufms_nelore_grazing.py'], {encoding: 'utf8'}));
+  const report = JSON.parse(execFileSync('python3', ['science/scripts/source-audits/audit_ufms_nelore_grazing.py'], {encoding: 'utf8'}));
   assert.equal(report.source.doi, '10.17632/3wdjvxmvsp.1');
   assert.equal(report.source.articleDoi, '10.1016/j.dib.2024.110520');
   assert.equal(report.source.license, 'CC BY 4.0');
@@ -22,9 +22,9 @@ test('UFMS Nelore v1 audit preserves coverage and flags ADG incompatibility', ()
 });
 
 test('UFMS frozen ADG transfer diagnostic is reproducible, animal-clustered, and kept separate from adult validation', () => {
-  const path = 'docs/evidence/engine-adg-ufms-check.json';
+  const path = 'science/evidence/engine-adg-ufms-check.json';
   const before = JSON.parse(readFileSync(path, 'utf8'));
-  execFileSync('node', ['scripts/science/engine-audits/audit_engine_adg_ufms.js'], {encoding: 'utf8'});
+  execFileSync('node', ['science/scripts/engine-audits/audit_engine_adg_ufms.js'], {encoding: 'utf8'});
   const report = JSON.parse(readFileSync(path, 'utf8'));
   assert.deepEqual(report.overall, before.overall);
   assert.deepEqual(report.byInterval, before.byInterval);

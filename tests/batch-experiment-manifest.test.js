@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {createBatchExperimentManifest, createExperimentResultRecord, digestExperimentManifest, digestScenario, parseExperimentResultJsonl, serializeExperimentResultJsonl, sha256Digest, validateBatchExperimentManifest, verifyExperimentResults} from '../scripts/experiments/batch-manifest.js';
-import {FarmEngine, createComparisonManifest, validateComparisonManifest} from '../src/client/engine.js';
-import {validateFarmSnapshot} from '../src/client/snapshot-validator.js';
-import {createScenarioContract} from '../src/client/scenario-contract.js';
-import {HARNESS_FORMAT, validateScenarioIdentity} from '../scripts/experiments/scenario-dispatch.js';
+import {createBatchExperimentManifest, createExperimentResultRecord, digestExperimentManifest, digestScenario, parseExperimentResultJsonl, serializeExperimentResultJsonl, sha256Digest, validateBatchExperimentManifest, verifyExperimentResults} from '../science/scripts/experiments/batch-manifest.js';
+import {FarmEngine, createComparisonManifest, validateComparisonManifest} from '../site/client/engine.js';
+import {validateFarmSnapshot} from '../site/client/snapshot-validator.js';
+import {createScenarioContract} from '../site/client/scenario-contract.js';
+import {HARNESS_FORMAT, validateScenarioIdentity} from '../science/scripts/experiments/scenario-dispatch.js';
 
 const validRun = (overrides = {}) => {
   const scenario = {type: 'agroville-comparison', version: 1, scenarioId: 'pasture-baseline', durationDays: 14};
@@ -76,9 +76,9 @@ test('legacy comparison manifest and farm snapshot schemas remain readable and u
   const snapshot = new FarmEngine(42, 2).snapshot();
   const oldManifest = createComparisonManifest(snapshot, 7);
   assert.equal(validateComparisonManifest(oldManifest), true);
-  const oldSchema = JSON.parse(await readFile(new URL('../schemas/scenario-contract.schema.json', import.meta.url), 'utf8'));
-  const newSchema = JSON.parse(await readFile(new URL('../schemas/batch-experiment-manifest-v1.schema.json', import.meta.url), 'utf8'));
-  const oldSnapshot = JSON.parse(await readFile(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+  const oldSchema = JSON.parse(await readFile(new URL('../science/schemas/scenario-contract.schema.json', import.meta.url), 'utf8'));
+  const newSchema = JSON.parse(await readFile(new URL('../science/schemas/batch-experiment-manifest-v1.schema.json', import.meta.url), 'utf8'));
+  const oldSnapshot = JSON.parse(await readFile(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
   assert.equal(oldSchema.properties.version.const, 2);
   assert.equal(newSchema.properties.version.const, 1);
   assert.equal(oldManifest.type, 'agroville-comparison');

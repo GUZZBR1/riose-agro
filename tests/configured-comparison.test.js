@@ -9,8 +9,8 @@ import {
   replayComparisonManifest,
   replayConfiguredComparisonManifest,
   validateConfiguredComparisonManifest
-} from '../src/client/engine.js';
-import {createDemoLotContext,createDemoLotManifestEnvelope,isolateDemoLotSnapshot,resolveDemoLot,validateDemoLotManifestEnvelope} from '../src/client/lot-selection.js';
+} from '../site/client/engine.js';
+import {createDemoLotContext,createDemoLotManifestEnvelope,isolateDemoLotSnapshot,resolveDemoLot,validateDemoLotManifestEnvelope} from '../site/client/lot-selection.js';
 
 const pairs = [
   ['diet', {diet: 'pasture'}, {diet: 'balanced'}],

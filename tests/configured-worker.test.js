@@ -1,14 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createConfiguredComparisonManifest} from '../src/client/engine.js';
-import {normalizeWorkerResponse} from '../src/client/worker-protocol.js';
+import {createConfiguredComparisonManifest} from '../site/client/engine.js';
+import {normalizeWorkerResponse} from '../site/client/worker-protocol.js';
 
 test('module Worker executes and replays configured scenario comparisons',async t=>{
   const previousSelf=globalThis.self;
   t.after(()=>{globalThis.self=previousSelf;});
   const worker={messages:[],postMessage(message){this.messages.push(message);}};
   globalThis.self=worker;
-  await import(`../src/client/worker.js?configured-comparison-test=${Math.random()}`);
+  await import(`../site/client/worker.js?configured-comparison-test=${Math.random()}`);
   await worker.onmessage({data:{protocolVersion:1,type:'reset',seed:719,count:4}});
   const snapshot=worker.messages.at(-1).state;
   const referenceConfig={...snapshot.config,diet:'pasture'};

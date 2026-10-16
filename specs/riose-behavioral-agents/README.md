@@ -26,4 +26,4 @@
 - [Session handoff](handoff.md)
 
 ## Scope of initial PR
-Specification + reproducible development instructions only. It does **not** assert scientific performance, complete tests, deploy trained models or modify production simulation outcomes. Next action: BEH-001 data/readiness audit with programmatic tests, then BEH-002 frozen baselines.
+Specification + reproducible development instructions only. It does **not** assert scientific performance, complete tests, deploy trained models or modify production simulation outcomes. Next action: BEH-001 science/data/readiness audit with programmatic tests, then BEH-002 frozen baselines.

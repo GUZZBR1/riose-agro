@@ -8,20 +8,20 @@ import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import {FarmEngine, createComparisonManifest} from '../src/client/engine.js';
-import {createScenarioContract} from '../src/client/scenario-contract.js';
-import {createComparisonArchive, sha256Bytes} from '../src/client/comparison-archive.js';
+import {FarmEngine, createComparisonManifest} from '../site/client/engine.js';
+import {createScenarioContract} from '../site/client/scenario-contract.js';
+import {createComparisonArchive, sha256Bytes} from '../site/client/comparison-archive.js';
 import {readEngineSourceBundle} from '../scripts/engine-source-hash.js';
-import {validateOutcomeRecord} from '../src/client/outcome-record.js';
-import {linkFarmSnapshotToManifest} from '../src/client/snapshot-manifest-link.js';
+import {validateOutcomeRecord} from '../site/client/outcome-record.js';
+import {linkFarmSnapshotToManifest} from '../site/client/snapshot-manifest-link.js';
 
-const schema = JSON.parse(readFileSync(new URL('../schemas/outcome-record.schema.json', import.meta.url), 'utf8'));
+const schema = JSON.parse(readFileSync(new URL('../science/schemas/outcome-record.schema.json', import.meta.url), 'utf8'));
 const ajv = new Ajv2020({allErrors: true, strict: true, strictRequired: false});
 addFormats(ajv);
 const validateSchema = ajv.compile(schema);
 
 function fixture(manifestVersion = 1) {
-  const sourceSnapshot = JSON.parse(readFileSync(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+  const sourceSnapshot = JSON.parse(readFileSync(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
   sourceSnapshot.snapshotKind = 'demonstrative';
   sourceSnapshot.caseDefinition.reviewStatus = 'approved';
   sourceSnapshot.caseDefinition.requiredFields = ['population.species'];

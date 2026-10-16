@@ -4,11 +4,11 @@ import {readFileSync} from 'node:fs';
 import {createServer} from '../src/server/server.js';
 
 test('Montana cow explorer derives period ADG from the article-reported 84-day grazing period', async t => {
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/mdpi-angus-cow-grazing-audit.json', import.meta.url), 'utf8'));
-  const rows = JSON.parse(readFileSync(new URL('../data/mdpi-angus-cow-grazing/weight-change-observations.json', import.meta.url), 'utf8'));
-  const page = readFileSync(new URL('../montana-cow-data.html', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../src/client/montana-cow-data.js', import.meta.url), 'utf8');
-  const gpsAssociation = JSON.parse(readFileSync(new URL('../docs/evidence/mdpi-angus-gps-adg-association.json', import.meta.url), 'utf8'));
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/mdpi-angus-cow-grazing-audit.json', import.meta.url), 'utf8'));
+  const rows = JSON.parse(readFileSync(new URL('../science/data/mdpi-angus-cow-grazing/weight-change-observations.json', import.meta.url), 'utf8'));
+  const page = readFileSync(new URL('../site/pages/montana-cow-data.html', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../site/client/montana-cow-data.js', import.meta.url), 'utf8');
+  const gpsAssociation = JSON.parse(readFileSync(new URL('../science/evidence/mdpi-angus-gps-adg-association.json', import.meta.url), 'utf8'));
   assert.equal(rows.length, 408);
   assert.equal(new Set(rows.map(row => row.animalId)).size, 241);
   assert.equal(rows.filter(row => row.weightChangeKg === null).length, 5);
@@ -51,10 +51,10 @@ test('Montana cow explorer derives period ADG from the article-reported 84-day g
   const htmlResponse = await fetch(`${base}/montana-cow-data.html`);
   assert.equal(htmlResponse.status, 200);
   assert.match(htmlResponse.headers.get('content-type'), /text\/html/);
-  const dataResponse = await fetch(`${base}/data/mdpi-angus-cow-grazing/weight-change-observations.json`);
+  const dataResponse = await fetch(`${base}/science/data/mdpi-angus-cow-grazing/weight-change-observations.json`);
   assert.equal(dataResponse.status, 200);
   assert.equal((await dataResponse.json()).length, 408);
-  const analysisResponse = await fetch(`${base}/docs/evidence/mdpi-angus-gps-adg-association.json`);
+  const analysisResponse = await fetch(`${base}/science/evidence/mdpi-angus-gps-adg-association.json`);
   assert.equal(analysisResponse.status, 200);
   assert.equal((await analysisResponse.json()).join.cowDays, 1657);
 });

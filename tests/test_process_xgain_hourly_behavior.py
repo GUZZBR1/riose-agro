@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.science.data_pipelines.process_xgain_hourly_behavior import process
+from science.scripts.data_pipelines.process_xgain_hourly_behavior import process
 
 
 class XGainHourlyBehaviorProcessingTest(unittest.TestCase):

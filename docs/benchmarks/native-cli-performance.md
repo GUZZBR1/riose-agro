@@ -16,7 +16,7 @@ Observed measurements for issue #85. These are environment-specific timing sampl
 
 ## Method
 
-The harness is [`native_cli_performance.rs`](../../crates/riose-core/examples/native_cli_performance.rs) and runs after the release build in the Rust CI job. It performs three warm-up runs and records 20 samples per measurement. It reports median, minimum, and maximum without thresholds.
+The harness is [`native_cli_performance.rs`](../../science/crates/riose-core/examples/native_cli_performance.rs) and runs after the release build in the Rust CI job. It performs three warm-up runs and records 20 samples per measurement. It reports median, minimum, and maximum without thresholds.
 
 **CLI startup / end-to-end process invocation** launches `riose-run --input -`, writes a minimal valid one-animal, one-hour baseline request to stdin, redirects stdout and stderr to null, then measures from immediately before process spawn until exit. This includes process startup, stdin delivery, JSON parsing and validation, the minimal scenario, result serialization, and stdout write. It is intentionally an end-to-end invocation measurement; it is not a pure process-loader measurement.
 

@@ -5,8 +5,8 @@ import {readFileSync} from 'node:fs';
 
 test('Dryad finishing-steer data are checksum-verified and the DMI check remains feedlot-only', () => {
   execFileSync('npm', ['run', 'audit:dryad-finishing-steers'], {stdio: 'ignore'});
-  const source = JSON.parse(readFileSync(new URL('../docs/evidence/dryad-finishing-steers-audit.json', import.meta.url), 'utf8'));
-  const check = JSON.parse(readFileSync(new URL('../docs/evidence/engine-dmi-dryad-finishing-check.json', import.meta.url), 'utf8'));
+  const source = JSON.parse(readFileSync(new URL('../science/evidence/dryad-finishing-steers-audit.json', import.meta.url), 'utf8'));
+  const check = JSON.parse(readFileSync(new URL('../science/evidence/engine-dmi-dryad-finishing-check.json', import.meta.url), 'utf8'));
   assert.equal(source.source.datasetDoi, '10.5061/dryad.qnk98sfsn');
   assert.equal(source.source.license, 'CC0-1.0');
   assert.equal(source.source.sha256VerifiedAgainstDryad, true);

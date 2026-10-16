@@ -1,6 +1,6 @@
 ## Publication gate note — XGain data
 
-The current `main` tree also contains `data/raw/zenodo-15600573/WP5_T5.7_IoT sensor data_v1_EV ILVO_dataset.zip` and derived data under `data/xgain-cattle-behavior/`. Its manifest records conflicting terms: the Zenodo record declares CC BY 4.0, while the archive README says CC BY-NC. This notice does not resolve that conflict or grant permission to redistribute the files. Keep the repository private until an authoritative license resolution is recorded or the data is removed from every ref that will be published and the applicable history is reviewed.
+The current `main` tree also contains `science/data/raw/zenodo-15600573/WP5_T5.7_IoT sensor data_v1_EV ILVO_dataset.zip` and derived data under `science/data/xgain-cattle-behavior/`. Its manifest records conflicting terms: the Zenodo record declares CC BY 4.0, while the archive README says CC BY-NC. This notice does not resolve that conflict or grant permission to redistribute the files. Keep the repository private until an authoritative license resolution is recorded or the data is removed from every ref that will be published and the applicable history is reviewed.
 
 The root [LICENSE](LICENSE) applies to project code and does not override third-party dataset terms.
 
@@ -8,7 +8,7 @@ The root [LICENSE](LICENSE) applies to project code and does not override third-
 
 # Third-party data notices
 
-These notices provide selected attribution details for third-party datasets redistributed with this project. For complete source and license metadata, see each dataset's `data/**/manifest.json`. Dataset licenses do not apply to the project source code or other assets.
+These notices provide selected attribution details for third-party datasets redistributed with this project. For complete source and license metadata, see each dataset's `science/data/**/manifest.json`. Dataset licenses do not apply to the project source code or other assets.
 
 ## A dataset on the ingestive behaviour of grazing ruminants collated from the literature
 

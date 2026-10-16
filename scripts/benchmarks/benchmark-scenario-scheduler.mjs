@@ -4,8 +4,8 @@ import {mkdtemp, mkdir, readFile, rm, writeFile} from 'node:fs/promises';
 import {tmpdir, availableParallelism} from 'node:os';
 import {join} from 'node:path';
 import {performance} from 'node:perf_hooks';
-import {runScenarioDirectoryResumable} from '../experiments/run-scenarios.js';
-import {ScenarioWorkerPool} from '../experiments/scenario-worker-pool.js';
+import {runScenarioDirectoryResumable} from '../../science/scripts/experiments/run-scenarios.js';
+import {ScenarioWorkerPool} from '../../science/scripts/experiments/scenario-worker-pool.js';
 import {benchmarkReport, measurement, summarizeSamples} from './benchmark-report.mjs';
 
 const repetitions = Number(process.env.RIOSE_SCHEDULER_REPETITIONS ?? 4);

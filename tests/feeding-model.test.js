@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {FarmEngine} from '../src/client/engine.js';
-import {calculateFeeding} from '../src/client/feeding-model.js';
+import {FarmEngine} from '../site/client/engine.js';
+import {calculateFeeding} from '../site/client/feeding-model.js';
 
 const assumptions = {
   baseDemandKgDM: 8,

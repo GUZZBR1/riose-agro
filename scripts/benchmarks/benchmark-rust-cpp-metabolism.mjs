@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
 
-const manifest = 'experiments/cpp-metabolism/Cargo.toml';
+const manifest = 'science/experiments/cpp-metabolism/Cargo.toml';
 const clean = spawnSync('cargo', ['clean', '--manifest-path', manifest], { encoding: 'utf8' });
 if (clean.status !== 0) {
   process.stderr.write(clean.stderr || clean.stdout);
@@ -15,8 +15,8 @@ if (build.status !== 0) {
 }
 const buildMs = performance.now() - start;
 const executable = process.platform === 'win32'
-  ? 'experiments/cpp-metabolism/target/release/cpp-metabolism-benchmark.exe'
-  : 'experiments/cpp-metabolism/target/release/cpp-metabolism-benchmark';
+  ? 'science/experiments/cpp-metabolism/target/release/cpp-metabolism-benchmark.exe'
+  : 'science/experiments/cpp-metabolism/target/release/cpp-metabolism-benchmark';
 const run = spawnSync(executable, { encoding: 'utf8', env: { ...process.env, RIOSE_CPP_BUILD_MS: String(buildMs) } });
 if (run.status !== 0) {
   process.stderr.write(run.stderr || run.stdout || run.error?.message || 'benchmark executable failed');

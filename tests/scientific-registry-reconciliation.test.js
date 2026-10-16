@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {FarmEngine, createComparisonManifest, replayComparisonManifest} from '../src/client/engine.js';
-import {resolveFieldEvidence} from '../scientific/evidence-resolver.js';
+import {FarmEngine, createComparisonManifest, replayComparisonManifest} from '../site/client/engine.js';
+import {resolveFieldEvidence} from '../science/runtime/evidence-resolver.js';
 
 test('selected evidence adapter maps persisted states without promotion and retains source context', () => {
   const snapshot = {

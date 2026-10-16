@@ -8,13 +8,13 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import {validateFarmSnapshot} from '../src/client/snapshot-validator.js';
-import {linkFarmSnapshotToManifest, validateFarmSnapshotManifestReference} from '../src/client/snapshot-manifest-link.js';
-import {FarmEngine, createComparisonManifest} from '../src/client/engine.js';
-import {createScenarioContract} from '../src/client/scenario-contract.js';
+import {validateFarmSnapshot} from '../site/client/snapshot-validator.js';
+import {linkFarmSnapshotToManifest, validateFarmSnapshotManifestReference} from '../site/client/snapshot-manifest-link.js';
+import {FarmEngine, createComparisonManifest} from '../site/client/engine.js';
+import {createScenarioContract} from '../site/client/scenario-contract.js';
 
-const example = JSON.parse(readFileSync(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
-const schema = JSON.parse(readFileSync(new URL('../schemas/farm-snapshot.schema.json', import.meta.url), 'utf8'));
+const example = JSON.parse(readFileSync(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+const schema = JSON.parse(readFileSync(new URL('../science/schemas/farm-snapshot.schema.json', import.meta.url), 'utf8'));
 const ajv = new Ajv2020({allErrors: true, strict: true, strictRequired: false});
 addFormats(ajv);
 const validateSchema = ajv.compile(schema);
@@ -132,7 +132,7 @@ test('numeric environmental inputs are optional, provenance checked and backward
 });
 
 test('snapshot CLI reports valid but ineligible examples and can enforce eligibility', () => {
-  const samplePath = new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url);
+  const samplePath = new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url);
   const scriptPath = new URL('../scripts/validation/validate-farm-snapshot.js', import.meta.url);
   const reportRun = spawnSync(process.execPath, [fileURLToPath(scriptPath), fileURLToPath(samplePath)], {encoding: 'utf8'});
   assert.equal(reportRun.status, 0, reportRun.stderr);

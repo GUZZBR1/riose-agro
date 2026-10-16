@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {loadScientificCorpus, searchScientificSources} from '../scripts/science/scientific-retrieval.js';
+import {loadScientificCorpus, searchScientificSources} from '../science/scripts/scientific-retrieval.js';
 
 const corpus = [
-  {source_id: 'data/a/manifest.json', path: 'data/a/manifest.json', content: '{\n  "title": "Pasture intake study",\n  "doi": "10.1234/example"\n}'},
-  {source_id: 'docs/evidence/b.json', path: 'docs/evidence/b.json', content: '{\n  "question": "Pasture growth and animal intake",\n  "limits": "observational"\n}'},
+  {source_id: 'science/data/a/manifest.json', path: 'science/data/a/manifest.json', content: '{\n  "title": "Pasture intake study",\n  "doi": "10.1234/example"\n}'},
+  {source_id: 'science/evidence/b.json', path: 'science/evidence/b.json', content: '{\n  "question": "Pasture growth and animal intake",\n  "limits": "observational"\n}'},
   {source_id: 'docs/c.md', path: 'docs/c.md', content: '# Cattle\n\nPasture intake and forage growth were measured.'},
 ];
 
@@ -48,8 +48,8 @@ test('repository corpus reuses scientific evidence metadata and returns verifiab
   const documents = loadScientificCorpus();
   const result = searchScientificSources('10.15482/USDA.ADC/1524788', documents, {topK: 1})[0];
 
-  assert.ok(documents.some(document => document.source_id === 'data/usda-cper/manifest.json'));
-  assert.equal(result.source_id, 'data/usda-cper/manifest.json');
+  assert.ok(documents.some(document => document.source_id === 'science/data/usda-cper/manifest.json'));
+  assert.equal(result.source_id, 'science/data/usda-cper/manifest.json');
   assert.equal(result.location.path, result.source_id);
   const fileLines = readFileSync(new URL(`../${result.location.path}`, import.meta.url), 'utf8').replace(/\r\n?/g, '\n').split('\n');
   const locatedText = fileLines.slice(result.location.start_line - 1, result.location.end_line).join('\n');

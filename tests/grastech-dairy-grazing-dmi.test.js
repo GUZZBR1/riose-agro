@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 
 test('public GrASTech DMI diagnostic is checksum-verified, grouped, and explicitly not validation', () => {
   execFileSync('npm', ['run', 'audit:grastech-dairy-dmi'], {encoding: 'utf8'});
-  const report = JSON.parse(readFileSync('docs/evidence/grastech-dairy-grazing-dmi-engine-check.json', 'utf8'));
+  const report = JSON.parse(readFileSync('science/evidence/grastech-dairy-grazing-dmi-engine-check.json', 'utf8'));
 
   assert.equal(report.classification, 'fixed_default_engine_dmi_component_diagnostic_out_of_approved_cper_domain_not_full_validation');
   assert.equal(report.source.license, 'Etalab Open License 2.0');

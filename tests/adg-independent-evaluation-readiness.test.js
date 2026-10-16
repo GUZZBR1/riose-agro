@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
-const readiness = JSON.parse(readFileSync('docs/evidence/adg-independent-evaluation-readiness-2026-10.json', 'utf8'));
-const evaluation = JSON.parse(readFileSync('docs/evidence/engine-adg-usda-cgrec-transport-check.json', 'utf8'));
-const integrity = JSON.parse(readFileSync('docs/evidence/usda-cgrec-longterm-audit.json', 'utf8'));
+const readiness = JSON.parse(readFileSync('science/evidence/adg-independent-evaluation-readiness-2026-10.json', 'utf8'));
+const evaluation = JSON.parse(readFileSync('science/evidence/engine-adg-usda-cgrec-transport-check.json', 'utf8'));
+const integrity = JSON.parse(readFileSync('science/evidence/usda-cgrec-longterm-audit.json', 'utf8'));
 
 test('ADG readiness points to the existing independent-site evaluation without recasting it as DMI validation', () => {
   assert.equal(readiness.status, 'existing_external_site_adg_component_evaluation_sufficient_for_current_readiness');
