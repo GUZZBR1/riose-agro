@@ -205,8 +205,9 @@ html.home-scroll-ready body:has(.hero-lockup) .site-header:not(.is-locked) .head
   .name-definition .definition-note { margin-top: 5px; }
   .hero { min-height: 700px; min-height: 100svh; }
   .hero-lockup { top: 20%; gap: 8px; }
-  .hero-wordmark { font-size: clamp(108px, 35vw, 150px); letter-spacing: -.1em; }
+  .hero-wordmark { font-size: clamp(76px, 25vw, 120px); letter-spacing: -.1em; }
   .hero-monogram { width: 22px; margin-bottom: .12em; font-size: 12px; }
+  .hero-cow { width: clamp(44px, 14vw, 60px); height: clamp(38px, 12vw, 50px); }
   .hero-footer { inset: auto 20px 4.4%; align-items: end; gap: 10px; }
   .hero-copy { max-width: 46%; }
   .hero-copy p { max-width: 145px; margin-bottom: 11px; font-size: 14px; }
