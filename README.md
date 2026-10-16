@@ -1,7 +1,7 @@
 # RIOSE
 
 <p align="center">
-  <img src="docs/assets/readme/10-riose-cover.png" alt="RIOSE wordmark above a Nelore cow and pasture illustration" width="560">
+  <img src="docs/assets/readme/12-riose-cover-wide.png" alt="RIOSE wordmark and subtitle beside a Nelore cow on a pasture illustration" width="100%">
 </p>
 
 **An exploratory livestock simulation and experiment workspace, with a separately scoped AMD ROCm validation record.**
