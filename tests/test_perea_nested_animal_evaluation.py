@@ -5,7 +5,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "experiments/behavior/perea-nested-animal/run_perea_nested_evaluation.py"
+SCRIPT = ROOT / "science/experiments/behavior/perea-nested-animal/run_perea_nested_evaluation.py"
 spec = importlib.util.spec_from_file_location("perea_nested_evaluation", SCRIPT)
 perea = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(perea)

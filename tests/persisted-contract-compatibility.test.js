@@ -2,17 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
-import {FarmEngine, createComparisonManifest} from '../src/client/engine.js';
-import {createScenarioContract, validateReproducibilityManifest} from '../src/client/scenario-contract.js';
-import {validateFarmSnapshot} from '../src/client/snapshot-validator.js';
-import {createComparisonArchive} from '../src/client/comparison-archive.js';
-import {validateOutcomeRecord} from '../src/client/outcome-record.js';
-import {linkFarmSnapshotToManifest} from '../src/client/snapshot-manifest-link.js';
-import {createRunRecord, listRuns, runCompatibility, RUN_HISTORY_KEY} from '../src/client/run-history.js';
+import {FarmEngine, createComparisonManifest} from '../site/client/engine.js';
+import {createScenarioContract, validateReproducibilityManifest} from '../site/client/scenario-contract.js';
+import {validateFarmSnapshot} from '../site/client/snapshot-validator.js';
+import {createComparisonArchive} from '../site/client/comparison-archive.js';
+import {validateOutcomeRecord} from '../site/client/outcome-record.js';
+import {linkFarmSnapshotToManifest} from '../site/client/snapshot-manifest-link.js';
+import {createRunRecord, listRuns, runCompatibility, RUN_HISTORY_KEY} from '../site/client/run-history.js';
 import {readEngineSourceBundle} from '../scripts/engine-source-hash.js';
 
 const sha256 = value => createHash('sha256').update(value).digest('hex');
-const sourceSnapshot = JSON.parse(readFileSync(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+const sourceSnapshot = JSON.parse(readFileSync(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
 
 function outcomeFixture() {
   const engineSnapshot = new FarmEngine(81, 1).snapshot();

@@ -2,15 +2,15 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFile} from 'node:fs/promises';
 import test from 'node:test';
-import {FarmEngine,compare} from '../src/client/engine.js';
-import {loadWasmMetabolism,updateMetabolismJS} from '../src/client/metabolism-wasm.js';
+import {FarmEngine,compare} from '../site/client/engine.js';
+import {loadWasmMetabolism,updateMetabolismJS} from '../site/client/metabolism-wasm.js';
 import {createServer} from '../src/server/server.js';
 
-const wasmBytes=await readFile(new URL('../wasm/riose_core.wasm',import.meta.url));
+const wasmBytes=await readFile(new URL('../science/wasm/riose_core.wasm',import.meta.url));
 const baselineCommit='913b36b9fe5c0877c7b857af3e0488cedcfd0e03';
 const baselineSource=execFileSync('git',['show',`${baselineCommit}:engine.js`],{encoding:'utf8'});
 const {FarmEngine:BaselineFarmEngine}=await import(`data:text/javascript;base64,${Buffer.from(baselineSource).toString('base64')}`);
-const wasmKernel=await loadWasmMetabolism(new URL('http://local.test/wasm/riose_core.wasm'),async()=>
+const wasmKernel=await loadWasmMetabolism(new URL('http://local.test/science/wasm/riose_core.wasm'),async()=>
   new Response(wasmBytes,{headers:{'content-type':'application/wasm'}}));
 function scientificOnly(value){
   if(Array.isArray(value))return value.map(scientificOnly);
@@ -293,7 +293,7 @@ test('WASM batch accepts a 100000 animal numeric workload independent of FarmEng
 });
 
 test('real WASM allocation growth and reuse match JavaScript through 100000 animals and after disposal',async t=>{
-  const kernel=await loadWasmMetabolism(new URL('http://local.test/wasm/riose_core.wasm'),async()=>
+  const kernel=await loadWasmMetabolism(new URL('http://local.test/science/wasm/riose_core.wasm'),async()=>
     new Response(wasmBytes,{headers:{'content-type':'application/wasm'}}));
   t.after(()=>kernel.dispose());
 
@@ -323,11 +323,11 @@ test('local server serves the compiled WASM module with its binary MIME type',as
   const server=createServer();
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   t.after(()=>new Promise(resolve=>server.close(resolve)));
-  const response=await fetch(`http://127.0.0.1:${server.address().port}/wasm/riose_core.wasm`);
+  const response=await fetch(`http://127.0.0.1:${server.address().port}/science/wasm/riose_core.wasm`);
   assert.equal(response.status,200);
   assert.equal(response.headers.get('content-type'),'application/wasm');
   assert.deepEqual(Buffer.from(await response.arrayBuffer()).subarray(0,4),Buffer.from([0,97,115,109]));
-  for(const path of ['/src/client/worker.js?engine=wasm','/src/client/metabolism-wasm.js','/src/client/scenario-storage.js']){
+  for(const path of ['/site/client/worker.js?engine=wasm','/site/client/metabolism-wasm.js','/site/client/scenario-storage.js']){
     const asset=await fetch(`http://127.0.0.1:${server.address().port}${path}`);
     assert.equal(asset.status,200,`${path} should be available to the browser Worker`);
   }
@@ -340,7 +340,7 @@ test('Worker runs the JavaScript default and falls back for unavailable or inval
     globalThis.self=harness;
     if(fetchImpl)globalThis.fetch=fetchImpl;
     WebAssembly.instantiateStreaming=instantiateImpl;
-    const url=new URL(`../src/client/worker.js?engine=${engine}&run=${Math.random()}`,import.meta.url);
+    const url=new URL(`../site/client/worker.js?engine=${engine}&run=${Math.random()}`,import.meta.url);
     await import(url.href);
     for(const data of [
       {type:'reset',seed:917,count:40},

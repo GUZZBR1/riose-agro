@@ -7,7 +7,7 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "experiments/behavior/perea-threshold-persistence-development/evaluate_perea_threshold_persistence.py"
+SCRIPT = ROOT / "science/experiments/behavior/perea-threshold-persistence-development/evaluate_perea_threshold_persistence.py"
 SPEC = importlib.util.spec_from_file_location("perea_threshold_persistence", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)

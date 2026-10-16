@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
-import {FarmEngine, createComparisonManifest, replayComparisonManifest, validateComparisonManifest} from '../src/client/engine.js';
+import {FarmEngine, createComparisonManifest, replayComparisonManifest, validateComparisonManifest} from '../site/client/engine.js';
 import {
   createScenarioContract,
   replayScenarioContract,
@@ -11,9 +11,9 @@ import {
   validateReproducibilityManifest,
   upgradeComparisonManifestToScenarioContract,
   validateScenarioContract,
-} from '../src/client/scenario-contract.js';
+} from '../site/client/scenario-contract.js';
 
-const schema = JSON.parse(await readFile(new URL('../schemas/scenario-contract.schema.json', import.meta.url), 'utf8'));
+const schema = JSON.parse(await readFile(new URL('../science/schemas/scenario-contract.schema.json', import.meta.url), 'utf8'));
 const validateSchema = new Ajv2020({allErrors: true, strict: false}).compile(schema);
 
 function fixture(seed = 2741) {
@@ -140,7 +140,7 @@ test('baseline animal IDs must be real nonempty strings or finite numbers', () =
 
 test('checked-in example runs twice with identical outputs', async () => {
   const {spawnSync} = await import('node:child_process');
-  const script = fileURLToPath(new URL('../examples/scenario-contract-v2.js', import.meta.url));
+  const script = fileURLToPath(new URL('../science/examples/scenario-contract-v2.js', import.meta.url));
   const first = spawnSync(process.execPath, [script], {encoding: 'utf8'});
   const second = spawnSync(process.execPath, [script], {encoding: 'utf8'});
 

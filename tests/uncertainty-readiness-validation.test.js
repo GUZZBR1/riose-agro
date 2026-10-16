@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {existsSync} from 'node:fs';
 import {readFile} from 'node:fs/promises';
 import {validateIssue15ReadinessContract, validateOutcomeUncertaintyClassifications} from '../scripts/validation/uncertainty-readiness-validation.mjs';
 
-const fixture = JSON.parse(await readFile(new URL('../docs/evidence/uncertainty-readiness-issue-15.json', import.meta.url), 'utf8'));
-const dryadEligibility = JSON.parse(await readFile(new URL('../docs/evidence/issue-15-dryad-yearling-eligibility.json', import.meta.url), 'utf8'));
-const dryadManifest = JSON.parse(await readFile(new URL('../data/dryad-grazing-yearlings/manifest.json', import.meta.url), 'utf8'));
-const dryadAudit = JSON.parse(await readFile(new URL('../docs/evidence/dryad-grazing-yearlings-audit.json', import.meta.url), 'utf8'));
+const fixture = JSON.parse(await readFile(new URL('../science/evidence/uncertainty-readiness-issue-15.json', import.meta.url), 'utf8'));
+const dryadEligibility = JSON.parse(await readFile(new URL('../science/evidence/issue-15-dryad-yearling-eligibility.json', import.meta.url), 'utf8'));
+const dryadManifest = JSON.parse(await readFile(new URL('../science/data/dryad-grazing-yearlings/manifest.json', import.meta.url), 'utf8'));
+const dryadAudit = JSON.parse(await readFile(new URL('../science/evidence/dryad-grazing-yearlings-audit.json', import.meta.url), 'utf8'));
 
 test('issue 15 fixture classifies every uncertainty source for every outcome', () => {
   assert.deepEqual(
@@ -23,6 +24,7 @@ test('issue 15 links source-specific ADG and biomass results without authorizing
   const adg = fixture.outcomes.find(outcome => outcome.id === 'weight-and-average-daily-gain');
   const biomass = fixture.outcomes.find(outcome => outcome.id === 'pasture-stock');
   assert.ok(adg.evidence.includes('../../experiments/diagnostics/adg/cper-internal-cv-2026-10.json'));
+  assert.ok(adg.evidence.some(reference => reference.startsWith('../../experiments/') && existsSync(new URL(`../science/${reference.slice('../../'.length)}`, import.meta.url))));
   assert.match(adg.keyLimitations.join(' '), /five year blocks/);
   assert.ok(biomass.evidence.includes('../../experiments/biomass/dryad-external/evaluation-report.json'));
   assert.match(biomass.keyLimitations.join(' '), /confounded/);

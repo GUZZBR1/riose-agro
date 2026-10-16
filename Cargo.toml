@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/riose-core"]
+members = ["science/crates/riose-core"]
 resolver = "2"
 
 [workspace.package]

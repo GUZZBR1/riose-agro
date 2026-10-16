@@ -41,7 +41,7 @@ independent validation of Riose predictions. This scalar request has no random
 state, so its success record omits `seed` rather than inventing one.
 
 The configured comparison uses request version 2 and the schema at
-[`configured-comparison-request-v2.schema.json`](../schemas/configured-comparison-request-v2.schema.json):
+[`configured-comparison-request-v2.schema.json`](../science/schemas/configured-comparison-request-v2.schema.json):
 
 ```json
 {"type":"configured-comparison","version":2,"snapshot":<FarmSnapshot>,"days":2,"referenceConfig":{"diet":"pasture","housing":"pasture","weather":"normal","supplement":0},"scenarioConfig":{"diet":"balanced","housing":"pasture","weather":"normal","supplement":0}}

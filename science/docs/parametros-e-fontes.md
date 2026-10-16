@@ -1,0 +1,44 @@
+# Parâmetros, fontes e licenças
+
+Revisão documental: 11/10/2026.
+
+## Estado dos valores no motor
+
+Os números abaixo são hipóteses internas do protótipo. Nenhuma tabela, artigo ou base de dados externa foi importada para `engine.js`, e nenhuma constante biológica foi calibrada a partir das fontes desta página. A publicação de fontes serve para orientar uma futura escolha e validação de parâmetros; não é evidência de que os valores atuais sejam corretos.
+
+| Valor/cálculo no motor | Unidade de cálculo usada | Hipótese atual e faixa implementada | Fonte do valor atual / população | Limitação e licença |
+|---|---|---|---|---|
+| `baseDemandKgDM = 8`, escalado por peso/360 e multiplicador de calor `0.8` | kg MS/cabeça/dia antes da divisão horária | 8 na referência 360 kg; para os pesos demo de 330–400 kg: 7,33–8,89 (normal/chuva) ou 5,87–7,11 (calor), antes do limite do pasto | Código local; não há fonte externa nem população calibrada | Faixas calculadas do código, não faixas biológicas publicadas. Não é equação de exigência ou ingestão validada; no pasto a retirada é limitada pelo estoque, no confinamento é contabilizada como alimento-base. |
+| `maintenanceKgDM = 5.3` e `gainFactor = 0.22` | kg MS/cabeça/dia na referência; fator aplicado a cada passo horário | 5,3 a 360 kg; 4,86–5,89 para 330–400 kg. `gainFactor` é constante 0,22 | Código local; população não estabelecida | Faixa de manutenção calculada pelo peso demo, sem faixa publicada adotada. Não modela energia metabolizável, composição da dieta ou eficiência validada; peso resultante é demonstrativo. |
+| Ingestão energética `supplement × 1.2` e extra de dieta `× 1.35` | fatores adimensionais | Constantes 1,2 e 1,35 | Código local | Sem faixa externa nem interpretação nutricional validada; não alteram o livro de kg MS. |
+| Extra balanceado `1.8` / concentrado `3.2` | kg MS/cabeça/dia | Constantes 1,8 ou 3,2 por rótulo de dieta | Código local; nenhum ingrediente ou formulação | Sem faixa externa, análise de MS/nutrientes ou correspondência a dieta real. |
+| `dailyPastureGrowthKgDM = 35`; clima chuva `×1.3`, calor `×0.65`; teto `2400` | kg MS/piquete/dia; fator; kg MS/piquete | 35 normal, 45,5 chuva, 22,75 calor; teto 2.400 | Código local; espécie, solo, local e estação não definidos | Faixas são operações internas sobre valor arbitrário, não produção medida. Quatro piquetes sem área, composição, estrutura ou perdas; não é produção por hectare nem condição agronômica. |
+| `initialPastureKgDM = 1800` | kg MS/piquete | Constante 1.800 por piquete | Código local; sem amostragem | Sem faixa medida; não representa massa de forragem ou disponibilidade utilizável. |
+| Suplemento configurável `0–4`; `supplementPrice=1.8` | kg MS/cabeça/dia; R$/kg MS assumido | UI: 0–4 em passos de 0,5; preço constante 1,8 | Código local; região/science/data/insumo ausentes | Faixa de controle da UI, não recomendação. Preço não é cotação; custo não representa produto real. |
+| `balancedPrice=1.6`, `concentratePrice=2.1`; base de confinamento `0.65` | R$/kg MS assumido | Constantes 1,6 / 2,1 / 0,65 | Código local; sem ingredientes, região ou data | Sem faixa ou fonte de mercado; valores ilustrativos; custo exclui mão de obra, sanidade, instalações, frete e desperdício. |
+| População do demo: 24 animais padrão, pesos iniciais 330–400 kg; quatro piquetes | cabeças, kg de peso vivo, número | 24 por padrão; 330–400 kg; 4 piquetes | Código local; não corresponde a amostra de campo | Faixa de população de demonstração; não define sexo, idade, raça, fase ou condição corporal. |
+| Sede: incremento 5/h ou 9/h no calor, gatilho `>65`, retorno a `12`; descanso 21h–06h | índice interno, hora | Constantes 5 ou 9 por hora; gatilho 65, retorno 12; janela horária fixa | Código local | Faixa e regras não têm equivalência a medidas fisiológicas ou observações comportamentais. |
+| `stress`: 5 / 12 / 28 | índice sem unidade | Valores fixos 5, 12 ou 28 | Código local | Sem faixa empírica; não mede estresse animal. |
+| Comparação de 30 dias | dias | Fluxo da UI usa 30; motor aceita 1–365 | Código/UI local | Faixa técnica aceita pelo motor, não período experimental escolhido por fonte científica. |
+
+**Nota sobre as faixas:** os intervalos numéricos acima descrevem somente valores constantes, limites de interface e resultados de aplicar as fórmulas atuais ao lote virtual. Para todos os parâmetros biológicos, a faixa publicada aplicável, população e fonte de calibração são **não estabelecidas**. Não há estudo ou dado primário vinculado aos valores atuais.
+
+Os valores da coluna “unidade” descrevem como o código os calcula, não garantem que representem corretamente uma unidade zootécnica de campo. Em especial, `maintenanceKgDM` é um termo de MS subtraído da ingestão; não equivale a exigência energética de manutenção.
+
+## Fontes primárias consultadas para orientar a próxima etapa
+
+| Fonte | Evidência relevante para desenho do caso | Uso permitido nesta documentação | Limite de aplicação ao MVP |
+|---|---|---|---|
+| Barioni et al., Embrapa Cerrados, *Tabelas para Estimativa de Ingestão de Matéria Seca de Bovinos de Corte em Crescimento em Pastejo* (Comunicado Técnico 142, 2007). [Registro Infoteca-e](https://www.infoteca.cnptia.embrapa.br/handle/doc/569918) · [PDF](https://www.infoteca.cnptia.embrapa.br/bitstream/doc/569918/1/comtec142.pdf) | A publicação explica que IMS depende de peso, estádio fisiológico e qualidade do alimento; é direcionada a bovinos em crescimento em pastejo. | Referência contextual para especificar categoria, condições e limites antes de selecionar uma equação. | Não adotamos suas tabelas nem importamos seus valores; não são universais e não validam o `baseDemandKgDM`. O repositório indica CC BY-NC-ND 4.0; não reproduzimos nem adaptamos as tabelas. |
+| Martins et al., *Pesquisa Agropecuária Brasileira* 48(10), 2013, DOI [10.1590/S1678-3921.pab2013.v48.17678](https://doi.org/10.1590/S1678-3921.pab2013.v48.17678). [Página do artigo](https://apct.sede.embrapa.br/pab/pt_BR/article/view/17678) | Experimento com cultivares específicas de `Urochloa humidicola`, lotação contínua, períodos seco/águas e mensuração de massa/estrutura/valor nutritivo/consumo/desempenho. | Exemplo de por que forrageira, estação, estrutura do dossel e protocolo de medição precisam fazer parte de um caso delimitado. | Não é dado importado, não corresponde ao pasto sem espécie/área do MVP, e não calibra as constantes atuais. Consultar os termos do artigo antes de reutilizar tabelas. |
+| National Academies of Sciences, Engineering, and Medicine, *Nutrient Requirements of Beef Cattle*, 8ª edição revisada (2016), DOI [10.17226/19014](https://doi.org/10.17226/19014). [Livro](https://nap.nationalacademies.org/read/19014) | Referência de requisitos nutricionais para bovinos de corte e base conceitual para aplicações de modelos mecanísticos. | Leitura metodológica a considerar ao escolher um modelo nutricional e definir entradas. | Não foi codificado nem usado para estimar os números atuais; publicação protegida por direitos autorais, sem conteúdo reproduzido neste repositório. |
+| Embrapa Gado de Corte, [capacidade de suporte de pastagem](https://cloud.cnpgc.embrapa.br/sac/2016/06/15/como-se-calcula-a-capacidade-de-suporte-de-uma-pastagem/) | A explicação expressa a capacidade com produção de forragem e área, e leva em conta perdas e uso seletivo. | Referência conceitual para registrar área, produção e perdas se o produto vier a representar lotação/capacidade de suporte. | Não calculamos capacidade de suporte; os kg MS por piquete não têm denominador de área nem medições. |
+
+## Dados e licença
+
+- **Dados importados/calibração/validação:** nenhum.
+- **Licença de dados usada pelo motor:** não se aplica aos valores arbitrários internos; não foram copiados valores dessas publicações para o motor.
+- **Fontes contextuais:** consultadas para descrever dependências de população e manejo. Atribuição e link não concedem direitos de redistribuição; verificar licença/termos de cada fonte antes de extrair ou publicar dados.
+- **Próximo conjunto de dados:** só escolher após a definição do caso em [`caso-zootecnico-demonstrativo.md`](caso-zootecnico-demonstrativo.md), registrando instituição, versão/data, população, protocolo, unidades, licença/permissão, qualidade e separação explícita entre calibração e validação.
+
+Enquanto não houver dados apropriados e validação independente, todas as saídas permanecem **demonstrativas** e não devem orientar dieta, lotação ou manejo real. A documentação atual atende a issue [#2](https://github.com/santleme/riose-agro/issues/2) ao registrar que não há fonte/faixa/população empírica associada aos valores internos e ao manter explícito seu status demonstrativo. O escopo observacional foi definido na #1; uma avaliação independente compatível para cada output permanece uma questão separada documentada na #6 e na #15.

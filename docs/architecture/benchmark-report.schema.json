@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://riose-agro.local/schemas/benchmark-report-v2.json",
+  "$id": "https://riose-agro.local/science/schemas/benchmark-report-v2.json",
   "title": "Riose benchmark report",
   "type": "object",
   "required": ["schemaVersion", "benchmark", "runtime", "hardware", "workload", "configuration", "limits", "phases", "timingBoundaries", "results", "limitations"],

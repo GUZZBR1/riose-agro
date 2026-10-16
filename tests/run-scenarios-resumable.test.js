@@ -4,10 +4,10 @@ import os from 'node:os';
 import {mkdtemp, readFile, writeFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {digestResultRecordBytes, sha256Digest} from '../scripts/experiments/batch-manifest.js';
-import {executeScenario, parseExecutorResourceLimits, runScenarioDirectoryResumable} from '../scripts/experiments/run-scenarios.js';
-import {ScenarioWorkerPool} from '../scripts/experiments/scenario-worker-pool.js';
-import {ENGINE_SOURCE_FILES} from '../src/client/engine-provenance.js';
+import {digestResultRecordBytes, sha256Digest} from '../science/scripts/experiments/batch-manifest.js';
+import {executeScenario, parseExecutorResourceLimits, runScenarioDirectoryResumable} from '../science/scripts/experiments/run-scenarios.js';
+import {ScenarioWorkerPool} from '../science/scripts/experiments/scenario-worker-pool.js';
+import {ENGINE_SOURCE_FILES} from '../site/client/engine-provenance.js';
 
 test('automatic executor limits reject malformed, negative and non-finite cost or RSS values', () => {
   assert.deepEqual(parseExecutorResourceLimits({}), {maxCostUsd: 0, maxRssBytes: Infinity});
@@ -47,7 +47,7 @@ test('scenario directory runner resumes verified records and reruns a corrupt pe
   const resultJournalPath = join(results, 'batch-results.jsonl');
   const manifestBefore = JSON.parse(await readFile(manifestPath, 'utf8'));
   const engineSources = Object.fromEntries(await Promise.all(ENGINE_SOURCE_FILES.map(async name => [
-    name, await readFile(new URL(`../src/client/${name}`, import.meta.url), 'utf8'),
+    name, await readFile(new URL(`../site/client/${name}`, import.meta.url), 'utf8'),
   ])));
   assert.equal(manifestBefore.runs[0].scenarioFormat, 'riose-scenario-harness');
   assert.equal(manifestBefore.runs[0].scenarioVersion, 1);

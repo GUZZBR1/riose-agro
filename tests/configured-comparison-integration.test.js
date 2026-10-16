@@ -5,19 +5,19 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import {
   FarmEngine,compareConfiguredScenarios,createConfiguredComparisonManifest,
   replayConfiguredComparisonManifest,validateConfiguredComparisonManifest
-} from '../src/client/engine.js';
-import {createComparisonArchive} from '../src/client/comparison-archive.js';
+} from '../site/client/engine.js';
+import {createComparisonArchive} from '../site/client/comparison-archive.js';
 import {readEngineSourceBundle} from '../scripts/engine-source-hash.js';
-import {createRunRecord,runCompatibility} from '../src/client/run-history.js';
-import {validateReproducibilityManifest,replayScenarioContract} from '../src/client/scenario-contract.js';
-import {decodeWorkerCommand,normalizeWorkerResponse} from '../src/client/worker-protocol.js';
-import {createDemoLotContext,createDemoLotManifestEnvelope,isolateDemoLotSnapshot,resolveDemoLot,validateDemoLotManifestEnvelope} from '../src/client/lot-selection.js';
+import {createRunRecord,runCompatibility} from '../site/client/run-history.js';
+import {validateReproducibilityManifest,replayScenarioContract} from '../site/client/scenario-contract.js';
+import {decodeWorkerCommand,normalizeWorkerResponse} from '../site/client/worker-protocol.js';
+import {createDemoLotContext,createDemoLotManifestEnvelope,isolateDemoLotSnapshot,resolveDemoLot,validateDemoLotManifestEnvelope} from '../site/client/lot-selection.js';
 
-const schema=JSON.parse(readFileSync(new URL('../schemas/configured-comparison-manifest-v1.schema.json',import.meta.url),'utf8'));
+const schema=JSON.parse(readFileSync(new URL('../science/schemas/configured-comparison-manifest-v1.schema.json',import.meta.url),'utf8'));
 const ajv=new Ajv2020({allErrors:true,strict:false});
 ajv.addSchema(schema);
 const validateSchema=ajv.compile(schema);
-const envelopeSchema=JSON.parse(readFileSync(new URL('../schemas/demo-lot-comparison-envelope-v1.schema.json',import.meta.url),'utf8'));
+const envelopeSchema=JSON.parse(readFileSync(new URL('../science/schemas/demo-lot-comparison-envelope-v1.schema.json',import.meta.url),'utf8'));
 const validateEnvelopeSchema=ajv.compile(envelopeSchema);
 const snapshot=new FarmEngine(981,4).snapshot();
 const referenceConfig={...snapshot.config,diet:'pasture'};

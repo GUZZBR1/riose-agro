@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {BR_CORTE_PASTURE_DMI_MODEL} from '../scientific/br_corte_dmi_adapter.js';
-import {BR_CORTE_PASTURE_DMI_IMPLEMENTATION_SOURCE} from '../scientific/br_corte_pasture_dmi.js';
-import {defineScientificModel, registerScientificModel, resolveScientificModel, runRegisteredScientificModel, runScientificModel} from '../scientific/model-contract.js';
-import {FarmEngine, compare, createComparisonManifest} from '../src/client/engine.js';
-import {renderSimulationReport} from '../src/client/simulation-report.js';
-import {createRunRecord, getRun, recordRun, runCompatibility} from '../src/client/run-history.js';
+import {BR_CORTE_PASTURE_DMI_MODEL} from '../science/runtime/br_corte_dmi_adapter.js';
+import {BR_CORTE_PASTURE_DMI_IMPLEMENTATION_SOURCE} from '../science/runtime/br_corte_pasture_dmi.js';
+import {defineScientificModel, registerScientificModel, resolveScientificModel, runRegisteredScientificModel, runScientificModel} from '../science/runtime/model-contract.js';
+import {FarmEngine, compare, createComparisonManifest} from '../site/client/engine.js';
+import {renderSimulationReport} from '../site/client/simulation-report.js';
+import {createRunRecord, getRun, recordRun, runCompatibility} from '../site/client/run-history.js';
 
 test('resolves an exact registered scientific model ID and version', () => {
   assert.equal(resolveScientificModel(BR_CORTE_PASTURE_DMI_MODEL.id, '2023'), BR_CORTE_PASTURE_DMI_MODEL);

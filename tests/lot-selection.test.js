@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {resolveLotSelection, formatLotArea, resolveDemoLot, isolateDemoLotSnapshot, createDemoLotContext, validateDemoLotContext, DEMO_LOT_MODEL} from '../src/client/lot-selection.js';
-import {FarmEngine} from '../src/client/engine.js';
+import {resolveLotSelection, formatLotArea, resolveDemoLot, isolateDemoLotSnapshot, createDemoLotContext, validateDemoLotContext, DEMO_LOT_MODEL} from '../site/client/lot-selection.js';
+import {FarmEngine} from '../site/client/engine.js';
 
-const example = JSON.parse(await readFile(new URL('../schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
+const example = JSON.parse(await readFile(new URL('../science/schemas/examples/usda-cper-2019-paddock-19n-eartag-242.json', import.meta.url), 'utf8'));
 
 test('visual paddock resolves only explicit snapshot links and preserves full entity IDs', () => {
   const snapshot = structuredClone(example);

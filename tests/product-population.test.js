@@ -1,16 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {FarmEngine,compareConfiguredScenarios} from '../src/client/engine.js';
-import {amendmentFromPrompt,expandActivityHistory,interpretExperimentPrompt,runPopulationComparison,validateExperimentSpecification} from '../src/client/population-experiment.js';
-import {decodeWorkerCommand,normalizeWorkerResponse,WORKER_PROTOCOL_VERSION} from '../src/client/worker-protocol.js';
+import {FarmEngine,compareConfiguredScenarios} from '../site/client/engine.js';
+import {amendmentFromPrompt,expandActivityHistory,interpretExperimentPrompt,runPopulationComparison,validateExperimentSpecification} from '../site/client/population-experiment.js';
+import {decodeWorkerCommand,normalizeWorkerResponse,WORKER_PROTOCOL_VERSION} from '../site/client/worker-protocol.js';
 
 const prompt='Tenho 200 bovinos Nelore a pasto, durante 30 dias, em condições de calor. Quero saber o que acontece se aumentar a suplementação de 0,5 para 1,5 kg por animal.';
 
 test('Product V2 keeps the legacy Experiments stylesheet isolated',()=>{
-  const page=readFileSync(new URL('../experiments.html',import.meta.url),'utf8');
-  const styles=readFileSync(new URL('../src/client/experiments.css',import.meta.url),'utf8');
-  assert.match(page,/href="src\/client\/experiments\.css"/);
+  const page=readFileSync(new URL('../site/pages/experiments.html',import.meta.url),'utf8');
+  const styles=readFileSync(new URL('../site/client/experiments.css',import.meta.url),'utf8');
+  assert.match(page,/href="\.\.\/client\/experiments\.css"/);
   assert.match(styles,/\.experiment-shell/);
   assert.match(styles,/\.workspace\s*\{/);
 });

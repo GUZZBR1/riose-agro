@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {loadNativeScenarioWasm} from '../src/client/native-scenario-wasm.js';
+import {loadNativeScenarioWasm} from '../site/client/native-scenario-wasm.js';
 
-const wasmBytes = await readFile(new URL('../wasm/riose_scenario_core.wasm', import.meta.url));
+const wasmBytes = await readFile(new URL('../science/wasm/riose_scenario_core.wasm', import.meta.url));
 const baselineGolden = JSON.parse(await readFile(
   new URL('./scenario-goldens/baseline-pasture.json', import.meta.url), 'utf8'));
 const housingGolden = JSON.parse(await readFile(
@@ -82,7 +82,7 @@ test('worker falls back to JavaScript when the scenario WASM is unavailable', as
     globalThis.fetch = originalFetch;
   });
 
-  await import(`../src/client/native-scenario-wasm-bench-worker.js?fallback-test=${Date.now()}`);
+  await import(`../site/client/native-scenario-wasm-bench-worker.js?fallback-test=${Date.now()}`);
   await globalThis.self.onmessage({data: {id: 1, action: 'init'}});
   assert.equal(replies[0].ok, false);
   await globalThis.self.onmessage({data: {
@@ -114,7 +114,7 @@ test('worker falls back to JavaScript when the scenario WASM is invalid', async 
     globalThis.fetch = originalFetch;
   });
 
-  await import(`../src/client/native-scenario-wasm-bench-worker.js?invalid-fallback-test=${Date.now()}`);
+  await import(`../site/client/native-scenario-wasm-bench-worker.js?invalid-fallback-test=${Date.now()}`);
   await globalThis.self.onmessage({data: {id: 1, action: 'init'}});
   assert.equal(replies[0].ok, false);
   assert.match(replies[0].startup.reason, /could not be instantiated/);
@@ -156,7 +156,7 @@ test('worker falls back to JavaScript when the scenario WASM ABI is incompatible
     WebAssembly.instantiateStreaming = originalInstantiateStreaming;
   });
 
-  await import(`../src/client/native-scenario-wasm-bench-worker.js?abi-fallback-test=${Date.now()}`);
+  await import(`../site/client/native-scenario-wasm-bench-worker.js?abi-fallback-test=${Date.now()}`);
   await globalThis.self.onmessage({data: {id: 1, action: 'init'}});
   assert.equal(replies[0].ok, false);
   assert.match(replies[0].startup.reason, /exports do not match/);

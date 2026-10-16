@@ -25,7 +25,7 @@ try{
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(`${root}/product.html`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.locator('#analysis-area').isVisible(),false,'initial state must not show uncomputed analysis');
-  await page.screenshot({path:'docs/evidence/product-v2-initial.png',fullPage:true});
+  await page.screenshot({path:'science/evidence/product-v2-initial.png',fullPage:true});
   const prompt='Compare a pasture herd of 200 Nelore cattle over 30 days in hot weather, changing supplementation from 0.5 to 1.5 kg DM per animal per day.';
   await page.locator('#prompt-input').fill(prompt);
   await page.locator('#prompt-form button[type="submit"]').click();
@@ -44,7 +44,7 @@ try{
   assert.equal(await page.locator('#analysis-area').isVisible(),true);
   assert.match(await page.locator('#workspace-meta').innerText(),/200 engine animals · 30 days/);
   assert.match(await page.locator('#legend-low-label').innerText(),/kg/);
-  await page.screenshot({path:'docs/evidence/product-v2-workspace.png',fullPage:true});
+  await page.screenshot({path:'science/evidence/product-v2-workspace.png',fullPage:true});
   await page.locator('.animal-cell').nth(1).click();
   assert.match(await page.locator('#animal-inspector').innerText(),/Animal 2/);
   const downloadPromise=page.waitForEvent('download');
@@ -70,7 +70,7 @@ try{
   await page.setViewportSize({width:390,height:844});
   await page.goto(`${root}/product.html`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'mobile page must not overflow horizontally');
-  await page.screenshot({path:'docs/evidence/product-v2-mobile.png',fullPage:true});
+  await page.screenshot({path:'science/evidence/product-v2-mobile.png',fullPage:true});
   assert.deepEqual(errors,[],'browser console should be free of errors');
   console.log('Product E2E PASS: prompt → review → explicit paired run → 200 animal grid → inspection/export → revision/re-run → local replay → mobile layout.');
 }finally{

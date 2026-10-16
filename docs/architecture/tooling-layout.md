@@ -6,16 +6,16 @@ The repository groups command-line tools by responsibility. `package.json` remai
 | --- | --- |
 | `scripts/build/` | WASM builds and other runtime build steps. |
 | `scripts/validation/` | Scientific registry, snapshots, outcomes, uncertainty readiness, parity and scenario goldens. |
-| `scripts/experiments/` | Scenario runs, batch manifests, resumable journals, replicate summaries and experiment-format tools. |
+| `science/scripts/experiments/` | Scenario runs, batch manifests, resumable journals, replicate summaries and experiment-format tools. |
 | `scripts/benchmarks/` | Simulation, browser compute, memory, Rust/WASM and scientific benchmarks, report validation and native SIMD studies. |
-| `scripts/science/engine-audits/` | Fixed-configuration engine comparisons against named external cohorts. |
-| `scripts/science/source-audits/` | Public-source checks, checksums, coverage and cohort analyses. USDA tools are grouped under `usda/`. |
-| `scripts/science/evaluations/` | Model and cohort evaluation harnesses and baseline maintenance. |
-| `scripts/science/data_pipelines/` | Scientific data acquisition, normalization and processing. |
-| `scripts/science/readiness/` | Evidence-based data and model readiness gates. |
+| `science/scripts/engine-audits/` | Fixed-configuration engine comparisons against named external cohorts. |
+| `science/scripts/source-audits/` | Public-source checks, checksums, coverage and cohort analyses. USDA tools are grouped under `usda/`. |
+| `science/scripts/evaluations/` | Model and cohort evaluation harnesses and baseline maintenance. |
+| `science/scripts/data_pipelines/` | Scientific data acquisition, normalization and processing. |
+| `science/scripts/readiness/` | Evidence-based data and model readiness gates. |
 | `scripts/` | Remaining commands whose stable source paths are pinned by research manifests or not yet grouped. |
-| `experiments/` | Protocols, source snapshots, evaluation outputs and research records. |
+| `science/experiments/` | Protocols, source snapshots, evaluation outputs and research records. |
 
 The renderer, art processing pipeline, visual scene schemas, scenario editor and graphics benchmarks were removed. The remaining browser benchmark compares scientific JavaScript and Rust/WASM execution in Workers; it reports no product presentation phase. Data provenance can make a script path observable, so only move pinned scripts together with all manifests, imports, tests and documentation that reference them.
 
-The unpinned Python environments live under requirements/: data-audit and optional format-parquet. Data-processing and research-ML remain at the root because frozen baseline hashes, paths, and a hash-pinned source command depend on them.
+The unpinned Python environments live under science/requirements/: data-audit and optional format-parquet. Data-processing and research-ML remain at the root because frozen baseline hashes, paths, and a hash-pinned source command depend on them.

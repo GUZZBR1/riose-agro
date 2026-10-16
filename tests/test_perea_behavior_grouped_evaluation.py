@@ -7,15 +7,15 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "docs/evidence/perea-behavior-grouped-evaluation.json"
-PREDICTIONS = ROOT / "docs/evidence/perea-behavior-grouped-oof-predictions.csv"
+REPORT = ROOT / "science/evidence/perea-behavior-grouped-evaluation.json"
+PREDICTIONS = ROOT / "science/evidence/perea-behavior-grouped-oof-predictions.csv"
 
 
 class PereaGroupedBehaviorEvaluationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         subprocess.run(
-            [sys.executable, "scripts/evaluate_perea_behavior_grouped.py"],
+            [sys.executable, "science/scripts/evaluations/evaluate_perea_behavior_grouped.py"],
             cwd=ROOT,
             check=True,
             capture_output=True,

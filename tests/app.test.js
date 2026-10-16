@@ -26,10 +26,10 @@ test('conversational product and experiment dashboard are served without farm gr
   assert.match(html, /SENSIBILIDADE/);
   assert.match(html, /HISTÓRICO/);
   assert.doesNotMatch(html, /<canvas|isométr|mapa da fazenda/i);
-  for (const path of ['/product.css', '/src/client/product-app.js', '/src/client/experiments-app.js', '/src/client/engine.js', '/src/client/worker.js', '/src/client/population-experiment.js', '/src/client/simulation-report.js']) {
+  for (const path of ['/product.css', '/site/client/product-app.js', '/site/client/experiments-app.js', '/site/client/engine.js', '/site/client/worker.js', '/site/client/population-experiment.js', '/site/client/simulation-report.js']) {
     assert.equal((await fetch(`${root}${path}`)).status, 200, `${path} should be served`);
   }
-  for (const path of ['/src/client/farm-scene.js', '/src/client/farm-scene.css', '/assets/farm-scene/scene.json', '/assets/farm-scene/vendor/pixi.min.mjs', '/assets/riose-cow-cutout.png']) {
+  for (const path of ['/site/client/farm-scene.js', '/site/client/farm-scene.css', '/assets/farm-scene/scene.json', '/assets/farm-scene/vendor/pixi.min.mjs', '/assets/riose-cow-cutout.png']) {
     assert.equal((await fetch(`${root}${path}`)).status, 404, `${path} should no longer be served`);
   }
 });

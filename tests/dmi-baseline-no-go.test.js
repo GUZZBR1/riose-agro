@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {readFile} from 'node:fs/promises';
 
-const reportPath = new URL('../docs/evidence/dmi-baseline-no-go-2026-10.json', import.meta.url);
+const reportPath = new URL('../science/evidence/dmi-baseline-no-go-2026-10.json', import.meta.url);
 const report = JSON.parse(await readFile(reportPath, 'utf8'));
 
 test('DMI baseline gate stops before fitting when eligible labels are absent', () => {
-  const result = spawnSync('python3', ['scripts/science/readiness/validate_dmi_baseline_no_go.py'], {
+  const result = spawnSync('python3', ['science/scripts/readiness/validate_dmi_baseline_no_go.py'], {
     cwd: new URL('..', import.meta.url),
     encoding: 'utf8',
   });

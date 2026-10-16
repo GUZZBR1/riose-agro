@@ -2,15 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
-import {BR_CORTE_PASTURE_DMI, analyzePastureDmiSensitivity, predictPastureDmi, simulateNelorePastureScenario} from '../scientific/br_corte_pasture_dmi.js';
+import {BR_CORTE_PASTURE_DMI, analyzePastureDmiSensitivity, predictPastureDmi, simulateNelorePastureScenario} from '../science/runtime/br_corte_pasture_dmi.js';
 
 const numericReferences = JSON.parse(readFileSync(new URL('./fixtures/scientific-numeric-reference-v1.json', import.meta.url), 'utf8'));
 const parityVectors = JSON.parse(readFileSync(new URL('./fixtures/br-corte-eq26-parity-v1.json', import.meta.url), 'utf8'));
-const nativeRequestSchema = JSON.parse(readFileSync(new URL('../schemas/br-corte-pasture-dmi-request-v1.schema.json', import.meta.url), 'utf8'));
+const nativeRequestSchema = JSON.parse(readFileSync(new URL('../science/schemas/br-corte-pasture-dmi-request-v1.schema.json', import.meta.url), 'utf8'));
 const table214 = numericReferences.fixtures.brCorte2023Eq26Table214;
 
 test('shared BR-CORTE JavaScript reference vectors preserve scalar outputs and units', () => {
-  assert.equal(parityVectors.sourceImplementation, 'scientific/br_corte_pasture_dmi.js');
+  assert.equal(parityVectors.sourceImplementation, 'science/runtime/br_corte_pasture_dmi.js');
   for (const vector of parityVectors.vectors) {
     const actual = predictPastureDmi(vector.inputs);
     for (const field of ['totalDmiKgDMPerDay', 'residualForageDmiKgDMPerDay']) {

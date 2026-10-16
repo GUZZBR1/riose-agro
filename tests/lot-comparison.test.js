@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {FarmEngine} from '../src/client/engine.js';
-import {loadWasmMetabolism,updateMetabolismJS} from '../src/client/metabolism-wasm.js';
-import {createLotComparisonManifest,createLotScopedSnapshot,compareLotConfiguredScenarios,replayLotComparisonManifest,validateLotComparisonManifest,LOT_COMPARISON_MANIFEST_TYPE} from '../src/client/lot-comparison.js';
-import {createRunRecord,recordRun,getRun,runCompatibility,RUN_HISTORY_KEY} from '../src/client/run-history.js';
+import {FarmEngine} from '../site/client/engine.js';
+import {loadWasmMetabolism,updateMetabolismJS} from '../site/client/metabolism-wasm.js';
+import {createLotComparisonManifest,createLotScopedSnapshot,compareLotConfiguredScenarios,replayLotComparisonManifest,validateLotComparisonManifest,LOT_COMPARISON_MANIFEST_TYPE} from '../site/client/lot-comparison.js';
+import {createRunRecord,recordRun,getRun,runCompatibility,RUN_HISTORY_KEY} from '../site/client/run-history.js';
 
 const makeManifest=(snapshot,patchIndex=1)=>createLotComparisonManifest(snapshot,{
   patchIndex,domainZoneId:`paddock-${patchIndex+1}`,periodDays:3,
@@ -64,7 +64,7 @@ test('lot comparison preserves manifest, executor and deterministic replay in lo
 });
 
 test('supported native WASM and JavaScript kernels have exact lot comparison parity',async t=>{
-  const bytes=await readFile(new URL('../wasm/riose_core.wasm',import.meta.url));
+  const bytes=await readFile(new URL('../science/wasm/riose_core.wasm',import.meta.url));
   const wasm=await loadWasmMetabolism(new URL('http://lot.test/riose_core.wasm'),async()=>new Response(bytes,{headers:{'content-type':'application/wasm'}}));
   t.after(()=>wasm.dispose());
   const manifest=makeManifest(new FarmEngine(2026,16).snapshot(),1);

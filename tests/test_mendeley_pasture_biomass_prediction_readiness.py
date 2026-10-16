@@ -8,9 +8,9 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/audit_mendeley_pasture_biomass_prediction_readiness.py"
-ARTIFACT = ROOT / "docs/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.json"
-OOF = ROOT / "docs/evidence/mendeley-pasture-biomass-grouped-oof-2026-10.csv"
+SCRIPT = ROOT / "science/scripts/readiness/audit_mendeley_pasture_biomass_prediction_readiness.py"
+ARTIFACT = ROOT / "science/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.json"
+OOF = ROOT / "science/evidence/mendeley-pasture-biomass-grouped-oof-2026-10.csv"
 
 
 spec = importlib.util.spec_from_file_location("biomass_readiness", SCRIPT)
@@ -87,7 +87,7 @@ class MendeleyPastureBiomassPredictionReadinessTests(unittest.TestCase):
             self.report["holdoutReadiness"]["internalGroupedOof"]["status"],
             "INTERNAL_GROUPED_OOF_DIAGNOSTIC_ONLY_NOT_EXTERNAL_VALIDATION",
         )
-        markdown = (ROOT / "docs/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.md").read_text(encoding="utf-8")
+        markdown = (ROOT / "science/evidence/mendeley-pasture-biomass-prediction-readiness-2026-10.md").read_text(encoding="utf-8")
         self.assertIn("do not constitute external validation", markdown)
         rebuilt, predictions = biomass_readiness.build_report()
         self.assertEqual(rebuilt, self.report)

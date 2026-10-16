@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {FarmEngine, compare, createComparisonManifest} from '../src/client/engine.js';
-import {renderSimulationReport} from '../src/client/simulation-report.js';
+import {FarmEngine, compare, createComparisonManifest} from '../site/client/engine.js';
+import {renderSimulationReport} from '../site/client/simulation-report.js';
 import {createServer} from '../src/server/server.js';
-import {BR_CORTE_PASTURE_DMI_MODEL} from '../scientific/br_corte_dmi_adapter.js';
-import {runRegisteredScientificModel} from '../scientific/model-contract.js';
+import {BR_CORTE_PASTURE_DMI_MODEL} from '../science/runtime/br_corte_dmi_adapter.js';
+import {runRegisteredScientificModel} from '../science/runtime/model-contract.js';
 
 test('renders a deterministic report using the engine result and manifest',()=>{
   const snapshot=new FarmEngine(42,2).snapshot();
@@ -84,8 +84,8 @@ test('explains invalid report inputs',()=>{
 });
 
 test('experiment dashboard offers the portable Markdown report export', async () => {
-  const app = await readFile(new URL('../src/client/experiments-app.js', import.meta.url), 'utf8');
-  const html = await readFile(new URL('../experiments.html', import.meta.url), 'utf8');
+  const app = await readFile(new URL('../site/client/experiments-app.js', import.meta.url), 'utf8');
+  const html = await readFile(new URL('../site/pages/experiments.html', import.meta.url), 'utf8');
   assert.match(html, /id="export-report"[^>]*>Baixar relatório/);
   assert.match(app, /renderSimulationReport\(latest\.result,latest\.manifest\)/);
   assert.match(app, /riose-relatorio\.md/);
@@ -96,10 +96,10 @@ test('local app server exposes imported browser modules',async t=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   t.after(()=>new Promise(resolve=>server.close(resolve)));
 
-  const response=await fetch(`http://127.0.0.1:${server.address().port}/src/client/simulation-report.js`);
+  const response=await fetch(`http://127.0.0.1:${server.address().port}/site/client/simulation-report.js`);
   assert.equal(response.status,200);
   assert.match(await response.text(),/export function renderSimulationReport/);
-  const historyResponse=await fetch(`http://127.0.0.1:${server.address().port}/src/client/run-history.js`);
+  const historyResponse=await fetch(`http://127.0.0.1:${server.address().port}/site/client/run-history.js`);
   assert.equal(historyResponse.status,200);
   assert.match(await historyResponse.text(),/export function recordRun/);
 });

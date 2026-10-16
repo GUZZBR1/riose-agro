@@ -54,7 +54,7 @@ The scalar BR-CORTE variant is
 `{"type":"br-corte-pasture-dmi","version":1,"bodyWeightKg":300,"adgKgPerDay":0.5,"supplementKgDMPerDay":1.6}`.
 Its inclusive request ranges are 133–474 kg body weight, −0.18–1.34 kg/day
 assumed ADG, and 0–5.32 kg DM/day supplement. It returns the same scalar fields
-as `predictPastureDmi` in `scientific/br_corte_pasture_dmi.js` and identifies
+as `predictPastureDmi` in `science/runtime/br_corte_pasture_dmi.js` and identifies
 the source, units, production system, validation ranges, and Riose limitation.
 The scalar request has no seed because the equation is deterministic.
 The response has `{version, engine, result}`. `engine` contains `engineVersion`,
@@ -87,7 +87,7 @@ events contain `hour`, `text`, and optional `animalId`. Metrics contain
 `weight`, `gain`, `cost`, `pasture`, `pastureByPaddock`, `intake`, and `stress`;
 metric intake adds `totalKgDM` to the four snapshot intake fields. The concrete
 JS-generated compatibility fixture is
-[`farm-engine-snapshot.json`](../crates/riose-core/tests/fixtures/farm-engine-snapshot.json).
+[`farm-engine-snapshot.json`](../science/crates/riose-core/tests/fixtures/farm-engine-snapshot.json).
 
 Baseline execution, a single housing comparison (pasture versus barn), and a
 configured one-factor comparison are supported. Housing comparison changes

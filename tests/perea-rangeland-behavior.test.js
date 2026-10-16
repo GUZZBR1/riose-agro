@@ -5,14 +5,14 @@ import {readFileSync} from 'node:fs';
 import {createServer} from '../src/server/server.js';
 
 test('Perea public mature-cow behavior explorer preserves source rows and reports repeated timestamps', async t => {
-  execFileSync('python3', ['scripts/science/source-audits/audit_perea_rangeland_behavior.py'], {encoding: 'utf8'});
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/perea-rangeland-behavior-audit.json', import.meta.url), 'utf8'));
-  const page = readFileSync(new URL('../rangeland-behavior.html', import.meta.url), 'utf8');
-  const adultPage = readFileSync(new URL('../adult-data.html', import.meta.url), 'utf8');
-  const reviewBrief = readFileSync(new URL('../docs/revisao-independente-caso.md', import.meta.url), 'utf8');
-  const uncertaintyPolicy = readFileSync(new URL('../docs/politica-incerteza.md', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../src/client/rangeland-behavior.js', import.meta.url), 'utf8');
-  const csv = readFileSync(new URL('../data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv', import.meta.url), 'utf8').trim().split(/\r?\n/);
+  execFileSync('python3', ['science/scripts/source-audits/audit_perea_rangeland_behavior.py'], {encoding: 'utf8'});
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/perea-rangeland-behavior-audit.json', import.meta.url), 'utf8'));
+  const page = readFileSync(new URL('../site/pages/rangeland-behavior.html', import.meta.url), 'utf8');
+  const adultPage = readFileSync(new URL('../site/pages/adult-data.html', import.meta.url), 'utf8');
+  const reviewBrief = readFileSync(new URL('../science/docs/revisao-independente-caso.md', import.meta.url), 'utf8');
+  const uncertaintyPolicy = readFileSync(new URL('../science/docs/politica-incerteza.md', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../site/client/rangeland-behavior.js', import.meta.url), 'utf8');
+  const csv = readFileSync(new URL('../science/data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv', import.meta.url), 'utf8').trim().split(/\r?\n/);
 
   assert.equal(report.source.doi, '10.6084/m9.figshare.28801181.v2');
   assert.equal(report.source.license, 'CC BY 4.0');
@@ -42,10 +42,10 @@ test('Perea public mature-cow behavior explorer preserves source rows and report
   const base = `http://127.0.0.1:${server.address().port}`;
   const html = await fetch(`${base}/rangeland-behavior.html`);
   assert.equal(html.status, 200);
-  const data = await fetch(`${base}/data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv`);
+  const data = await fetch(`${base}/science/data/perea-rangeland-behavior/cattle_behavior_data_time_V2.csv`);
   assert.equal(data.status, 200);
   assert.equal((await data.text()).trim().split(/\r?\n/).length - 1, 9222);
-  const audit = await fetch(`${base}/docs/evidence/perea-rangeland-behavior-audit.json`);
+  const audit = await fetch(`${base}/science/evidence/perea-rangeland-behavior-audit.json`);
   assert.equal(audit.status, 200);
   assert.equal((await audit.json()).audit.recordsAtRepeatedAnimalTimestamps, 304);
 });

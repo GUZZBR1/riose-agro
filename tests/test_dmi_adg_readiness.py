@@ -5,9 +5,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/science/readiness/build_dmi_adg_readiness.py"
+SCRIPT = ROOT / "science/scripts/readiness/build_dmi_adg_readiness.py"
 FIXTURE = ROOT / "tests/fixtures/dmi-readiness/mixed-sources.json"
-REPORT = ROOT / "docs/evidence/dmi-adg-readiness-v1.json"
+REPORT = ROOT / "science/evidence/dmi-adg-readiness-v1.json"
 SPEC = importlib.util.spec_from_file_location("dmi_adg_readiness", SCRIPT)
 READINESS = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(READINESS)
@@ -172,7 +172,7 @@ class ReadinessFixtureTests(unittest.TestCase):
         self.assertAlmostEqual(perea["metrics"]["nestedObservationWeightedAccuracy"], 0.813686850591186)
         self.assertNotIn("equalAnimalMacroF1", perea["metrics"])
         prior = perea["previousStaticGroupedOof"]
-        self.assertEqual(prior["sourceReport"], "docs/evidence/perea-behavior-grouped-evaluation.json")
+        self.assertEqual(prior["sourceReport"], "science/evidence/perea-behavior-grouped-evaluation.json")
         self.assertEqual(prior["rows"], 8864)
         self.assertAlmostEqual(prior["equalAnimalMacroF1"], 0.6642230410345241)
         self.assertIn("not metrics for the nested-selected model", prior["interpretation"])

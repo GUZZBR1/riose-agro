@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {filterAdultCperRows, parseAdultCperCsv, parseCgrecCsv, parseHpgrsCsv, parseRothamstedCattleCsv, parseRothamstedHerbageCsv, summarizeAdultCperRows} from '../src/client/adult-data-model.js';
+import {filterAdultCperRows, parseAdultCperCsv, parseCgrecCsv, parseHpgrsCsv, parseRothamstedCattleCsv, parseRothamstedHerbageCsv, summarizeAdultCperRows} from '../site/client/adult-data-model.js';
 import {createServer} from '../src/server/server.js';
 
-const csv = readFileSync(new URL('../data/usda-cper/period.csv', import.meta.url), 'utf8');
+const csv = readFileSync(new URL('../science/data/usda-cper/period.csv', import.meta.url), 'utf8');
 
 test('USDA adult explorer parses every animal-period row with observed ADG and grazing measures', async () => {
   const rows = parseAdultCperCsv(csv);
@@ -27,17 +27,17 @@ test('USDA adult explorer parses every animal-period row with observed ADG and g
   assert.equal(new Set(paddock15E.map(row => row.eartag)).size, 5);
   assert.equal(filterAdultCperRows(rows, {period: '1', paddock: '15E'}).length, 0);
 
-  const dailyText = readFileSync(new URL('../data/usda-cper/daily.csv', import.meta.url), 'utf8');
-  const {parseDailyCperCsv} = await import('../src/client/adult-data-model.js');
+  const dailyText = readFileSync(new URL('../science/data/usda-cper/daily.csv', import.meta.url), 'utf8');
+  const {parseDailyCperCsv} = await import('../site/client/adult-data-model.js');
   const daily = parseDailyCperCsv(dailyText);
   assert.equal(daily.length, 644);
   assert.ok(daily.every(row => Number.isFinite(row.turnAngle)));
   assert.equal(daily[0].turnAngle, 49.29458395);
-  const page = readFileSync(new URL('../adult-data.html', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../src/client/adult-data.js', import.meta.url), 'utf8');
-  const association = JSON.parse(readFileSync(new URL('../docs/evidence/usda-cper-association.json', import.meta.url), 'utf8'));
-  const caseSpec = readFileSync(new URL('../docs/caso-zootecnico-demonstrativo.md', import.meta.url), 'utf8');
-  const reviewBrief = readFileSync(new URL('../docs/revisao-independente-caso.md', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../site/pages/adult-data.html', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../site/client/adult-data.js', import.meta.url), 'utf8');
+  const association = JSON.parse(readFileSync(new URL('../science/evidence/usda-cper-association.json', import.meta.url), 'utf8'));
+  const caseSpec = readFileSync(new URL('../science/docs/caso-zootecnico-demonstrativo.md', import.meta.url), 'utf8');
+  const reviewBrief = readFileSync(new URL('../science/docs/revisao-independente-caso.md', import.meta.url), 'utf8');
   assert.match(page, /Ângulo médio de giro/);
   assert.match(page, /MeanTA/);
   assert.match(page, /Associação observada neste estudo/);
@@ -46,7 +46,7 @@ test('USDA adult explorer parses every animal-period row with observed ADG and g
   assert.match(page, /id="period-filter"/);
   assert.match(page, /id="paddock-filter"/);
   assert.match(page, /a equivalência da categoria <em>yearling<\/em>.*aguarda parecer zootécnico independente/);
-  assert.match(page, /href="docs\/revisao-independente-caso\.md"/);
+  assert.match(page, /href="\.\.\/\.\.\/science\/docs\/revisao-independente-caso\.md"/);
   assert.match(page, /efeitos aditivos de período e piquete/);
   assert.match(page, /totais de registros animal-período\/animais únicos/);
   assert.match(script, /turnAngle/);
@@ -76,22 +76,22 @@ test('USDA adult explorer parses every animal-period row with observed ADG and g
 });
 
 test('adult observed-data explorer is linked from project pages and served with its local dataset', () => {
-  for (const path of ['../adult-data.html', '../src/client/adult-data.js', '../src/client/adult-data.css', '../src/client/adult-data-model.js']) {
+  for (const path of ['../adult-data.html', '../site/client/adult-data.js', '../site/client/adult-data.css', '../site/client/adult-data-model.js']) {
     assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 0);
   }
-  const home = readFileSync(new URL('../home.html', import.meta.url), 'utf8');
-  const calves = readFileSync(new URL('../observed-data.html', import.meta.url), 'utf8');
+  const home = readFileSync(new URL('../site/pages/home.html', import.meta.url), 'utf8');
+  const calves = readFileSync(new URL('../site/pages/observed-data.html', import.meta.url), 'utf8');
   assert.match(home, /adult-data\.html/);
   assert.match(calves, /adult-data\.html/);
-  const experiments = readFileSync(new URL('../experiments.html', import.meta.url), 'utf8');
+  const experiments = readFileSync(new URL('../site/pages/experiments.html', import.meta.url), 'utf8');
   assert.match(experiments, /adult-data\.html/);
-  const adultPage = readFileSync(new URL('../adult-data.html', import.meta.url), 'utf8');
+  const adultPage = readFileSync(new URL('../site/pages/adult-data.html', import.meta.url), 'utf8');
   assert.match(adultPage, /novilhos de um ano/);
   assert.match(adultPage, /yearlings/);
 });
 
 test('USDA CGREC parser preserves observed animal-season IDs, missing ADG, and converts pounds to kg', () => {
-  const bytes = readFileSync(new URL('../data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', import.meta.url));
+  const bytes = readFileSync(new URL('../science/data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', import.meta.url));
   const rows = parseCgrecCsv(bytes.toString('latin1'));
   assert.equal(rows.length, 4705);
   assert.equal(rows.filter(row => Number.isFinite(row.adgKg)).length, 4610);
@@ -104,13 +104,13 @@ test('USDA CGREC parser preserves observed animal-season IDs, missing ADG, and c
   assert.deepEqual(duplicateTag.map(row => row.recordId), ['1666', '1667']);
   assert.notEqual(duplicateTag[0].initialWeightKg, duplicateTag[1].initialWeightKg);
   assert.ok(Number.isNaN(rows.find(row => !Number.isFinite(row.adgKg)).adgKg));
-  const page = readFileSync(new URL('../cgrec-data.html', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../site/pages/cgrec-data.html', import.meta.url), 'utf8');
   assert.match(page, /diferenças brutas entre manejos como estimativa causal/);
   assert.match(page, /manifesto local com checksums/);
 });
 
 test('USDA HPGRS parser preserves missing tags and derives ADG from kg gain and days', () => {
-  const text = readFileSync(new URL('../data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', import.meta.url), 'utf8');
+  const text = readFileSync(new URL('../science/data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', import.meta.url), 'utf8');
   const rows = parseHpgrsCsv(text);
   assert.equal(rows.length, 1018);
   assert.equal(new Set(rows.map(row => row.year)).size, 38);
@@ -119,7 +119,7 @@ test('USDA HPGRS parser preserves missing tags and derives ADG from kg gain and 
   assert.equal(rows[0].treatment, 'CH');
   assert.equal(rows[0].stockingRateAuDaysHa, 39.6);
   assert.ok(Math.abs(rows[0].adgKgPerDay - 69.916 / 117) < 1e-12);
-  const page = readFileSync(new URL('../hpgrs-data.html', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../site/pages/hpgrs-data.html', import.meta.url), 'utf8');
   assert.match(page, /BOVINOS DE UM ANO/);
   assert.match(page, /não representa vacas adultas/);
   assert.match(page, /brinco está ausente em 495 linhas/);
@@ -127,8 +127,8 @@ test('USDA HPGRS parser preserves missing tags and derives ADG from kg gain and 
 });
 
 test('Rothamsted explorer parses public animal-period and plot-level forage files separately', () => {
-  const cattleText = readFileSync(new URL('../data/rothamsted/Cattle_LWt_collated_2018-2025.csv', import.meta.url), 'utf8');
-  const forageText = readFileSync(new URL('../data/rothamsted/2018-2025_Pasture_DM_herbage_mass.csv', import.meta.url), 'utf8');
+  const cattleText = readFileSync(new URL('../science/data/rothamsted/Cattle_LWt_collated_2018-2025.csv', import.meta.url), 'utf8');
+  const forageText = readFileSync(new URL('../science/data/rothamsted/2018-2025_Pasture_DM_herbage_mass.csv', import.meta.url), 'utf8');
   const cattle = parseRothamstedCattleCsv(cattleText);
   const forage = parseRothamstedHerbageCsv(forageText);
 
@@ -145,8 +145,8 @@ test('Rothamsted explorer parses public animal-period and plot-level forage file
   assert.ok(Number.isNaN(incompleteCattle[0].adg));
   assert.ok(Number.isNaN(incompleteForage[0].biomass));
 
-  const page = readFileSync(new URL('../rothamsted-data.html', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../src/client/rothamsted-data.js', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../site/pages/rothamsted-data.html', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../site/client/rothamsted-data.js', import.meta.url), 'utf8');
   assert.match(page, /CC BY 4\.0/);
   assert.match(page, /a coorte não representa vacas adultas maduras/);
   assert.match(page, /USDA \/ CPER/);
@@ -163,23 +163,23 @@ test('the local app server serves the adult explorers and their approved public 
   for (const [path, contentType] of [
     ['/adult-data.html', 'text/html'], ['/adult-data.css', 'text/css'], ['/observed-data.css', 'text/css'],
     ['/observed-data.html', 'text/html'], ['/observed-data.js', 'text/javascript'],
-    ['/observed-data-model.js', 'text/javascript'], ['/data/observed-calves-zenodo-7251167.json', 'application/json'],
+    ['/observed-data-model.js', 'text/javascript'], ['/science/data/observed-calves-zenodo-7251167.json', 'application/json'],
     ['/favicon.svg', 'image/svg\\+xml'],
     ['/rothamsted-data.html', 'text/html'],
     ['/adult-data-model.js', 'text/javascript'], ['/rothamsted-data.js', 'text/javascript'],
     ['/cgrec-data.html', 'text/html'], ['/cgrec-data.js', 'text/javascript'],
     ['/hpgrs-data.html', 'text/html'], ['/hpgrs-data.js', 'text/javascript'],
-    ['/data/usda-cper/daily.csv', 'text/csv'],
-    ['/docs/evidence/usda-cper-association.json', 'application/json'],
-    ['/docs/evidence/engine-adg-usda-cper-ltgi-check.json', 'application/json'],
-    ['/docs/evidence/engine-adg-usda-cgrec-transport-check.json', 'application/json'],
-    ['/docs/evidence/engine-adg-zenodo-cows-check.json', 'application/json'],
-    ['/data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', 'text/csv'],
-    ['/data/usda-cgrec-longterm/manifest.json', 'application/json'],
-    ['/data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', 'text/csv'],
-    ['/data/usda-hpgrs-1982-2022/EastUnit_LTGI_DataDictionary.csv', 'text/csv'],
-    ['/data/usda-hpgrs-1982-2022/manifest.json', 'application/json'],
-    ['/data/rothamsted/Cattle_LWt_collated_2018-2025.csv', 'text/csv'],
+    ['/science/data/usda-cper/daily.csv', 'text/csv'],
+    ['/science/evidence/usda-cper-association.json', 'application/json'],
+    ['/science/evidence/engine-adg-usda-cper-ltgi-check.json', 'application/json'],
+    ['/science/evidence/engine-adg-usda-cgrec-transport-check.json', 'application/json'],
+    ['/science/evidence/engine-adg-zenodo-cows-check.json', 'application/json'],
+    ['/science/data/usda-cgrec-longterm/Streeter-ND_1989-2015_compiled.csv', 'text/csv'],
+    ['/science/data/usda-cgrec-longterm/manifest.json', 'application/json'],
+    ['/science/data/usda-hpgrs-1982-2022/EastUnit_LTGI.csv', 'text/csv'],
+    ['/science/data/usda-hpgrs-1982-2022/EastUnit_LTGI_DataDictionary.csv', 'text/csv'],
+    ['/science/data/usda-hpgrs-1982-2022/manifest.json', 'application/json'],
+    ['/science/data/rothamsted/Cattle_LWt_collated_2018-2025.csv', 'text/csv'],
   ]) {
     const response = await fetch(`${base}${path}`);
     assert.equal(response.status, 200, path);

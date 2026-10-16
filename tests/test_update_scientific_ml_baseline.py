@@ -195,7 +195,7 @@ class UpdateScientificMlBaselineTest(unittest.TestCase):
 
     def test_non_allowlisted_report_fails(self):
         with self.assertRaisesRegex(BaselineChangeRequiresReview, "not allowlisted"):
-            update_baseline(self.root, "docs/evidence/another-report.json")
+            update_baseline(self.root, "science/evidence/another-report.json")
 
     def test_deterministic_rerun_produces_no_diff(self):
         self.write_report(self.provenance_refresh())

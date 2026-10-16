@@ -82,8 +82,8 @@ def main() -> None:
     cpu = command(["bash", "-lc", "grep -m1 'model name' /proc/cpuinfo | cut -d: -f2-"]).strip()
     rustc = command(["rustc", "--version"]).strip()
     source_files = [
-        "crates/riose-core/src/simulation.rs",
-        "crates/riose-core/examples/history_ring_matrix.rs",
+        "science/crates/riose-core/src/simulation.rs",
+        "science/crates/riose-core/examples/history_ring_matrix.rs",
         "scripts/benchmarks/benchmark-history-ring-matrix.py",
     ]
     with tempfile.TemporaryDirectory(prefix="riose-history-matrix-") as temp:

@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {compareObservedGroups, summarizeObservedData} from '../src/client/observed-data-model.js';
+import {compareObservedGroups, summarizeObservedData} from '../site/client/observed-data-model.js';
 
-const data = JSON.parse(readFileSync(new URL('../data/observed-calves-zenodo-7251167.json', import.meta.url), 'utf8'));
+const data = JSON.parse(readFileSync(new URL('../science/data/observed-calves-zenodo-7251167.json', import.meta.url), 'utf8'));
 
 test('observed trial snapshot retains source, license, and animal-level weights', () => {
   assert.equal(data.source.doi, '10.5281/zenodo.7251167');

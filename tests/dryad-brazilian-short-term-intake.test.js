@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 test('Dryad Brazilian short-term intake source stays metadata-only until file bytes can be verified', () => {
-  const report = JSON.parse(readFileSync(new URL('../docs/evidence/dryad-brazilian-short-term-intake-access.json', import.meta.url), 'utf8'));
+  const report = JSON.parse(readFileSync(new URL('../science/evidence/dryad-brazilian-short-term-intake-access.json', import.meta.url), 'utf8'));
   assert.equal(report.classification, 'public_dataset_metadata_verified_file_bytes_inaccessible_not_used');
   assert.equal(report.source.license, 'CC0-1.0');
   assert.equal(report.source.metadataApiStatus, 200);

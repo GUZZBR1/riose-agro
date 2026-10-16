@@ -13,7 +13,7 @@ Este contrato em rascunho cria um sidecar local para registrar medições poster
 
    O CLI se recusa a substituir um arquivo de resultado já existente.
 3. Ligar um snapshot de fazenda elegível aos bytes exatos do manifesto com `npm run link:snapshot`. O snapshot precisa declarar um caso aprovado e conter um lote com o mesmo número de animais da projeção.
-4. Criar um registro conforme [`schemas/outcome-record.schema.json`](../schemas/outcome-record.schema.json), preenchendo observações para as métricas/entidades disponíveis e apontando para os arquivos exatos.
+4. Criar um registro conforme [`science/schemas/outcome-record.schema.json`](../science/schemas/outcome-record.schema.json), preenchendo observações para as métricas/entidades disponíveis e apontando para os arquivos exatos.
 5. Validar os vínculos e as condições de comparabilidade:
 
    ```sh
@@ -24,7 +24,7 @@ Este contrato em rascunho cria um sidecar local para registrar medições poster
 
 ## Conteúdo e proteções
 
-- Cada observação guarda valor ou ausência explícita, unidade, data/período, método, fonte/título/versão/localizador, qualidade e entidade (de preferência um ID pseudônimo estável).
+- Cada observação guarda valor ou ausência explícita, unidade, science/data/período, método, fonte/título/versão/localizador, qualidade e entidade (de preferência um ID pseudônimo estável).
 - O registro inclui se a decisão foi executada, estado e base do consentimento, estado/base de acesso, política de retenção e revisão humana.
 - O vínculo verifica SHA-256 dos bytes exatos do manifesto, do arquivo de projeção e do snapshot elegível que aponta para o mesmo manifesto. O arquivo de projeção também identifica SHA-256 do `engine.js` usado na captura. O lote selecionado precisa existir no snapshot e conter o mesmo número de animais da projeção.
 - A diferença `observado - projetado` só é exibida como **descritiva** quando o horizonte, a métrica/unidade, a qualidade medida/derivada, o cenário realmente executado, uma janela totalmente posterior à decisão, o consentimento, a revisão humana e o alinhamento do desfecho forem aprovados. O contrato bloqueia níveis animal/fazenda porque as saídas atuais são agregadas por lote.
