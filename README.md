@@ -121,7 +121,7 @@ Project pages: [home](home.html) · [manifesto](manifesto.html) · [observed dat
 
 ## License and data
 
-Project code is under the [Apache License 2.0](LICENSE). Third-party datasets have separate terms; review their manifests and [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) before reuse or redistribution.
+Project code is under the [MIT License](LICENSE). Third-party datasets have separate terms; review their manifests and [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) before reuse or redistribution.
 
 ## RIOSE
 
