@@ -1,5 +1,9 @@
 # RIOSE
 
+<p align="center">
+  <img src="docs/assets/readme/10-riose-cover.png" alt="RIOSE wordmark above a Nelore cow and pasture illustration" width="560">
+</p>
+
 **An exploratory livestock simulation and experiment workspace, with a separately scoped AMD ROCm validation record.**
 
 RIOSE compares livestock scenarios in a browser. Results are deterministic demonstrations from simplified rules, not validated forecasts or management recommendations.
@@ -118,3 +122,9 @@ Project pages: [home](home.html) · [manifesto](manifesto.html) · [observed dat
 ## License and data
 
 Project code is under the [Apache License 2.0](LICENSE). Third-party datasets have separate terms; review their manifests and [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) before reuse or redistribution.
+
+## RIOSE
+
+<p align="center">
+  <img src="docs/assets/readme/11-riose-landscape.png" alt="RIOSE wordmark and the subtitle Simulating decisions in the physical world over a sunset landscape with cattle" width="100%">
+</p>
