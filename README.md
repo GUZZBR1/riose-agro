@@ -10,9 +10,20 @@ RIOSE lets users configure and compare livestock scenarios in a browser. Its out
 
 The current workspace is a browser interface for setting a baseline, changing one selected factor, and reviewing the two simulated runs. The screenshots below were captured from the repository's current `experiments.html` page.
 
-![RIOSE experiment workspace with baseline and intervention inputs, sensitivity controls, history, and model limitations](docs/assets/readme/01-experiment-workspace.png)
-
-![RIOSE scenario comparison results with summary cards, a weight chart, daily output table, and local history](docs/assets/readme/02-scenario-results.png)
+<table>
+  <thead>
+    <tr>
+      <th>Experiment workspace</th>
+      <th>Scenario comparison</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="docs/assets/readme/01-experiment-workspace.png" alt="RIOSE experiment workspace with baseline and intervention inputs, sensitivity controls, history, and model limitations" width="100%"></td>
+      <td><img src="docs/assets/readme/02-scenario-results.png" alt="RIOSE scenario comparison results with summary cards, a weight chart, daily output table, and local history" width="100%"></td>
+    </tr>
+  </tbody>
+</table>
 
 ## 2. What RIOSE is
 
@@ -42,7 +53,16 @@ The current workspace uses an editorial, chart-focused interface: warm neutral s
 
 The attached isometric cattle and farm asset sheet is included as a **concept reference**. The current workspace does not render these assets: the farm-scene renderer, map, sprite atlas, 3D models, and visual scene editor were removed. The sheet illustrates a visual exploration, not a current product screen or a shipped simulation feature.
 
-![Concept asset sheet supplied for the README; these illustrations are not rendered by the current workspace](docs/assets/readme/03-visual-concept-asset-sheet.png)
+<table>
+  <thead>
+    <tr><th>Visual concept reference</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="docs/assets/readme/03-visual-concept-asset-sheet.png" alt="Isometric cattle, pasture, farm structures, and equipment concept sheet; not rendered by the current workspace" width="100%"></td>
+    </tr>
+  </tbody>
+</table>
 
 ## 7. AMD + ROCm validation
 
@@ -64,17 +84,28 @@ These results show execution and numerical parity for the recorded workload, dev
 
 ### Notebook evidence
 
-**Environment and service startup**
+<table>
+  <thead>
+    <tr>
+      <th>01 · AMD environment</th>
+      <th>02 · Product validation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="docs/evidence/amd/01-amd-environment.png" alt="Notebook environment showing the AMD device, runtime versions, and compute service startup" width="100%"></td>
+      <td><img src="docs/evidence/amd/02-riose-amd-validation.png" alt="Verifier output showing AMD_PRODUCT_PATH_FUNCTIONAL, amd_rocm, 24 animals, 48 outputs, and parity pass" width="100%"></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <strong>03 · Backend detection</strong><br>
+        <img src="docs/evidence/amd/03-amd-backend-detection.png" alt="Backend detection showing ROCm available and CUDA runtime unavailable" width="72%">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-![Notebook environment showing the AMD device, runtime versions, and compute service startup](docs/evidence/amd/01-amd-environment.png)
-
-**Successful product-path verifier result**
-
-![Verifier output showing AMD_PRODUCT_PATH_FUNCTIONAL, amd_rocm, 24 animals, 48 outputs, and parity pass](docs/evidence/amd/02-riose-amd-validation.png)
-
-**Backend detection**
-
-![Backend detection showing ROCm available and CUDA runtime unavailable](docs/evidence/amd/03-amd-backend-detection.png)
+The first two captures are paired for comparison; the backend-detection capture is shown on its own row for legibility.
 
 See [AMD_VALIDATION.md](docs/evidence/amd/AMD_VALIDATION.md) for the run record and reproduction notes.
 
