@@ -4,9 +4,9 @@
   <img src="docs/assets/readme/12-riose-cover-wide.png" alt="RIOSE wordmark and subtitle beside a Nelore cow on a pasture illustration" width="100%">
 </p>
 
-**An exploratory livestock simulation and experiment workspace, with a separately scoped AMD ROCm validation record.**
+**A browser-based workspace for exploring and comparing livestock scenarios through reproducible simulations.**
 
-RIOSE compares livestock scenarios in a browser. Results are deterministic demonstrations from simplified rules, not validated forecasts or management recommendations.
+RIOSE lets you compare modeled outcomes under different management choices and includes a separately documented AMD ROCm/PyTorch validation path. Its simplified models are exploratory; results are not validated forecasts or management recommendations.
 
 [Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](docs/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
 
