@@ -10,8 +10,6 @@ RIOSE lets you set a baseline, change one management factor, and compare runs th
 
 [Live demo](https://agro-smallville-mvp.qwdqwdwqdqdqwdwwqqw.chatgpt.site) · [Experiment workspace](experiments.html) · [AMD evidence](docs/evidence/amd/AMD_VALIDATION.md) · [Scientific model notes](docs/modelos/interface-modelos-cientificos.md) · [Repository guide](docs/architecture/repository-layout.md)
 
-`amd` · `rocm` · `pytorch` · `simulation` · `livestock`
-
 ## Product workspace
 
 Set a baseline, change one selected factor, and compare the two simulated runs.
