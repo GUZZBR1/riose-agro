@@ -380,7 +380,7 @@ def process_all(raw_dir: Path = RAW_DIR, output_dir: Path = OUTPUT_DIR, manifest
     try:
         import pyarrow  # noqa: F401
     except ImportError as error:
-        raise RuntimeError("Parquet output requires pyarrow; install requirements-format-parquet.txt") from error
+        raise RuntimeError("Parquet output requires pyarrow; install requirements/format-parquet.txt") from error
     files = load_verified_file_manifest(manifest_path)
     output_dir = output_dir.resolve()
     quality_report_path = output_dir / "quality-report.json"

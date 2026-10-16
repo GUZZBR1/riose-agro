@@ -17,3 +17,5 @@ The repository groups command-line tools by responsibility. `package.json` remai
 | `experiments/` | Protocols, source snapshots, evaluation outputs and research records. |
 
 The renderer, art processing pipeline, visual scene schemas, scenario editor and graphics benchmarks were removed. The remaining browser benchmark compares scientific JavaScript and Rust/WASM execution in Workers; it reports no product presentation phase. Data provenance can make a script path observable, so only move pinned scripts together with all manifests, imports, tests and documentation that reference them.
+
+The unpinned Python environments live under requirements/: data-audit and optional format-parquet. Data-processing and research-ML remain at the root because frozen baseline hashes, paths, and a hash-pinned source command depend on them.

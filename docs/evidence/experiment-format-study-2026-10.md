@@ -44,13 +44,13 @@ PyArrow é opcional e permanece fora das dependências do app. Sem `FORMAT_STUDY
 
 ```sh
 python3 -m venv /tmp/riose-format-venv
-/tmp/riose-format-venv/bin/python -m pip install -r requirements-format-parquet.txt
+/tmp/riose-format-venv/bin/python -m pip install -r requirements/format-parquet.txt
 FORMAT_STUDY_PYTHON=/tmp/riose-format-venv/bin/python \
 FORMAT_STUDY_RECORDS=25 FORMAT_STUDY_REPETITIONS=31 \
 node --expose-gc scripts/research_experiment_format.mjs > /tmp/experiment-format-study.json
 ```
 
-`requirements-format-parquet.txt` fixa `pyarrow==26.0.0`. Para rodar somente a comparação JSON/JSONL sem PyArrow, execute `npm run research:experiment-format`; os controles de lote e repetições continuam opcionais. A saída JSON informa se Parquet foi medido ou ignorado. O redirecionamento acima salva o relatório localmente; só atualize o artefato versionado após verificar a revisão e a marca `dirty` incluídas na captura.
+`requirements/format-parquet.txt` fixa `pyarrow==26.0.0`. Para rodar somente a comparação JSON/JSONL sem PyArrow, execute `npm run research:experiment-format`; os controles de lote e repetições continuam opcionais. A saída JSON informa se Parquet foi medido ou ignorado. O redirecionamento acima salva o relatório localmente; só atualize o artefato versionado após verificar a revisão e a marca `dirty` incluídas na captura.
 
 ## Captura limpa anterior (2026-10-13, revisão b70f25b)
 

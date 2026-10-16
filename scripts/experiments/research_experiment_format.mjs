@@ -303,7 +303,7 @@ for (const {run, result} of records) {
         `Parquet was measured with opt-in PyArrow ${parquetResults.engine.version}; installed distribution footprint is ${parquetResults.installedPackageBytes} bytes, excluding the Python runtime and system libraries. The prototype dependency is isolated from application runtime dependencies.`,
         'Parquet measurement used the same generated records and exact normalized round-trip contract; PyArrow package installation is a separate opt-in research environment and is not a runtime migration.',
       ] : [
-        'Parquet was not measured because PyArrow is absent from the selected Python interpreter. To reproduce the optional measurement, install requirements-format-parquet.txt and set FORMAT_STUDY_PYTHON to that interpreter.',
+        'Parquet was not measured because PyArrow is absent from the selected Python interpreter. To reproduce the optional measurement, install requirements/format-parquet.txt and set FORMAT_STUDY_PYTHON to that interpreter.',
       ]),
       'Timing is specific to this host and includes local file IO; medians/spread are not cross-host product thresholds.',
     ],
